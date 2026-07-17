@@ -12,12 +12,23 @@ use crossterm::terminal::disable_raw_mode;
 use crossterm::terminal::enable_raw_mode;
 use ratatui::Terminal;
 use ratatui::backend::CrosstermBackend;
+use ratatui::layout::Alignment;
 use ratatui::layout::Constraint;
 use ratatui::layout::Direction;
 use ratatui::layout::Layout;
 use ratatui::widgets::Paragraph;
 
 type BirdTerminal = Terminal<CrosstermBackend<std::io::Stdout>>;
+
+const LOGO: &str = r#"
+          \
+      \\ \
+   \\\\ \
+\\\\\\ \
+      
+B I R D B O A R D
+3 3
+      "#;
 
 fn init_terminal() -> Result<BirdTerminal> {
     let mut stdout = std::io::stdout();
@@ -34,20 +45,20 @@ fn restore_terminal(terminal: &mut BirdTerminal) -> Result<()> {
 
 fn run(terminal: &mut BirdTerminal, app: &mut App) -> Result<()> {
     while app.running {
-        let greeting = Paragraph::new("Welcome to birdboard");
-        let placeholder = Paragraph::new("Draft board comming soon...");
-        let quiting = Paragraph::new("Press 'q' to quit");
+        let logo = Paragraph::new(LOGO).alignment(Alignment::Center);
+        let placeholder = Paragraph::new("Big board incomming...").alignment(Alignment::Center);
+        let quiting = Paragraph::new("Press 'q' to quit").alignment(Alignment::Left);
 
         terminal.draw(|frame| {
             let areas = Layout::default()
                 .direction(Direction::Vertical)
                 .constraints([
-                    Constraint::Length(3),
+                    Constraint::Length(10),
                     Constraint::Min(0),
-                    Constraint::Length(3),
+                    Constraint::Length(1),
                 ])
                 .split(frame.area());
-            frame.render_widget(greeting, areas[0]);
+            frame.render_widget(logo, areas[0]);
             frame.render_widget(placeholder, areas[1]);
             frame.render_widget(quiting, areas[2]);
         })?;
