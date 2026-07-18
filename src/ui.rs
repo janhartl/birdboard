@@ -8,10 +8,10 @@ use ratatui::Frame;
 pub fn draw(frame: &mut Frame, app: &App) {
     match app.screen {
         Screen::Home => {
-            home::draw(frame);
+            home::draw(frame, app);
         }
         Screen::Draft => {
-            draft::draw(frame);
+            draft::draw(frame, app);
         }
     }
 }

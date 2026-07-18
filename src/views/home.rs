@@ -1,3 +1,5 @@
+use crate::app::App;
+
 use ratatui::Frame;
 use ratatui::layout::Alignment;
 use ratatui::layout::Constraint;
@@ -16,7 +18,7 @@ Who's playing for 2nd?
 
       "#;
 
-pub fn draw(frame: &mut Frame) {
+pub fn draw(frame: &mut Frame, app: &App) {
     let logo = Paragraph::new(LOGO).alignment(Alignment::Center);
     let placeholder = Paragraph::new("Big board incomming...").alignment(Alignment::Center);
     let quiting = Paragraph::new("Press 'q' to quit").alignment(Alignment::Left);
