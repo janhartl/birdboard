@@ -1,5 +1,7 @@
 mod app;
+mod data;
 mod event;
+mod player;
 mod tui;
 mod ui;
 
@@ -29,7 +31,7 @@ fn run(terminal: &mut BirdTerminal, app: &mut App) -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    let mut app = App::new();
+    let mut app = App::new()?;
     let mut terminal = init_terminal()?;
 
     let result = run(&mut terminal, &mut app);

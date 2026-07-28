@@ -1,16 +1,11 @@
+use crate::data::load_players;
+use crate::player::Player;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
 
 pub enum Screen {
     Home,
     Draft,
-}
-
-#[derive(Debug, Clone)]
-pub struct Player {
-    pub name: String,
-    pub position: String,
-    pub projected_value: u8,
 }
 
 pub struct App {
@@ -20,24 +15,13 @@ pub struct App {
 }
 
 impl App {
-    pub fn new() -> App {
-        let players = vec![
-            Player {
-                name: String::from("Larry"),
-                position: String::from("SF"),
-                projected_value: 200,
-            },
-            Player {
-                name: String::from("Luka"),
-                position: String::from("PG"),
-                projected_value: 77,
-            },
-        ];
-        App {
+    pub fn new() -> Result<App, csv::Error> {
+        let players = load_players("data/players.csv")?;
+        Ok(App {
             running: true,
             screen: Screen::Home,
-            players: players,
-        }
+            players,
+        })
     }
 
     pub fn quit(&mut self) {

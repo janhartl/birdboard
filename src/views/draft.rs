@@ -4,22 +4,31 @@ use ratatui::layout::Alignment;
 use ratatui::layout::Constraint;
 use ratatui::layout::Direction;
 use ratatui::layout::Layout;
+use ratatui::text::Line;
+use ratatui::widgets::List;
+use ratatui::widgets::ListItem;
 use ratatui::widgets::Paragraph;
 
 pub fn draw(frame: &mut Frame, app: &App) {
-    let text = format!(
-        "{} | {} | ${}",
-        app.players[0].name.as_str(),
-        app.players[0].position.as_str(),
-        app.players[0].projected_value,
-    );
-    let placeholder = Paragraph::new(text).alignment(Alignment::Center);
-    let quiting = Paragraph::new("Press 'q' to quit").alignment(Alignment::Left);
-
     let areas = Layout::default()
         .direction(Direction::Vertical)
         .constraints([Constraint::Min(0), Constraint::Length(1)])
         .split(frame.area());
-    frame.render_widget(placeholder, areas[0]);
-    frame.render_widget(quiting, areas[1]);
+
+    let mut player_items = Vec::new();
+
+    for player in &app.players {
+        let text = format!(
+            "{} | {} | ${}",
+            player.name.as_str(),
+            player.position.as_str(),
+            player.projected_value,
+        );
+        player_items.push(ListItem::new(Line::from(text).alignment(Alignment::Center)));
+    }
+    let player_list = List::new(player_items);
+    let quitting = Paragraph::new("Press 'q' to quit").alignment(Alignment::Left);
+
+    frame.render_widget(player_list, areas[0]);
+    frame.render_widget(quitting, areas[1]);
 }
