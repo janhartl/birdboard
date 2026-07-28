@@ -35,7 +35,24 @@ impl App {
             KeyCode::Char('q') => self.quit(),
             KeyCode::Char('1') => self.screen = Screen::Home,
             KeyCode::Char('2') => self.screen = Screen::Draft,
+
+            KeyCode::Char('j') if matches!(&self.screen, Screen::Draft) => self.select_next(),
+            KeyCode::Char('k') if matches!(&self.screen, Screen::Draft) => self.select_previous(),
             _ => {}
+        }
+    }
+    pub fn select_next(&mut self) {
+        if let Some(index) = self.selected_player
+            && index + 1 < self.players.len()
+        {
+            self.selected_player = Some(index + 1);
+        }
+    }
+    pub fn select_previous(&mut self) {
+        if let Some(index) = self.selected_player
+            && index > 0
+        {
+            self.selected_player = Some(index - 1);
         }
     }
 }
