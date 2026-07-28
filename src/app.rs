@@ -12,15 +12,18 @@ pub struct App {
     pub running: bool,
     pub screen: Screen,
     pub players: Vec<Player>,
+    pub selected_player: Option<usize>,
 }
 
 impl App {
     pub fn new() -> Result<App, csv::Error> {
         let players = load_players("data/players.csv")?;
+        let selected_player = if players.is_empty() { None } else { Some(0) };
         Ok(App {
             running: true,
             screen: Screen::Home,
             players,
+            selected_player,
         })
     }
 
