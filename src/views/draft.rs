@@ -1,5 +1,4 @@
 use crate::app::App;
-use crate::player;
 use ratatui::Frame;
 use ratatui::layout::Alignment;
 use ratatui::layout::Constraint;

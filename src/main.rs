@@ -1,7 +1,9 @@
 mod app;
 mod data;
+mod draft;
 mod event;
 mod player;
+mod team;
 mod tui;
 mod ui;
 
