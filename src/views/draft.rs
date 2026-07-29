@@ -1,4 +1,5 @@
 use crate::app::App;
+use crate::player;
 use ratatui::Frame;
 use ratatui::layout::Alignment;
 use ratatui::layout::Constraint;
@@ -20,9 +21,10 @@ pub fn draw(frame: &mut Frame, app: &App) {
 
     let mut player_items = Vec::new();
 
-    for player in &app.players {
+    for (index, player) in app.players.iter().enumerate() {
         let text = format!(
-            "{} | {} | ${}",
+            " {}. | {} | {} | ${}",
+            index + 1,
             player.name.as_str(),
             player.position.as_str(),
             player.projected_value,
@@ -31,8 +33,22 @@ pub fn draw(frame: &mut Frame, app: &App) {
     }
     let player_list =
         List::new(player_items).highlight_style(Style::default().add_modifier(Modifier::REVERSED));
-    let mut list_state = ListState::default();
-    list_state.select(app.selected_player);
+
+    let visible_rows = areas[0].height as usize;
+    let half_screen_height = visible_rows / 2;
+    let offset = match app.selected_player {
+        Some(index) => {
+            let desired_offset = index.saturating_sub(half_screen_height);
+            let max_offset = app.players.len().saturating_sub(visible_rows);
+
+            desired_offset.min(max_offset)
+        }
+        None => 0,
+    };
+
+    let mut list_state = ListState::default()
+        .with_selected(app.selected_player)
+        .with_offset(offset);
 
     let quitting = Paragraph::new("Press 'q' to quit").alignment(Alignment::Left);
 
