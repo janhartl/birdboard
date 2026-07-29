@@ -15,3 +15,9 @@ pub enum DraftError {
     InsufficientFunds,
     PlayerAlreadyDrafted,
 }
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum DraftMode {
+    BrowsingPlayers,
+    RecordingDraft,
+}

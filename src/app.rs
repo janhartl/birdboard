@@ -1,5 +1,6 @@
 use crate::data::load_players;
 use crate::draft::DraftError;
+use crate::draft::DraftMode;
 use crate::draft::DraftPick;
 use crate::player::Player;
 use crate::team::{FantasyTeam, TeamId};
@@ -18,6 +19,9 @@ pub struct App {
     pub selected_player: Option<usize>,
     pub teams: Vec<FantasyTeam>,
     pub draft_picks: Vec<DraftPick>,
+    pub draft_price_input: String,
+    pub draft_mode: DraftMode,
+    pub selected_team: Option<usize>,
 }
 
 impl App {
@@ -44,6 +48,9 @@ impl App {
             selected_player,
             teams,
             draft_picks,
+            draft_mode: DraftMode::BrowsingPlayers,
+            selected_team: None,
+            draft_price_input: String::new(),
         })
     }
 
@@ -53,11 +60,71 @@ impl App {
     pub fn handle_key(&mut self, key: KeyEvent) {
         match key.code {
             KeyCode::Char('q') => self.quit(),
-            KeyCode::Char('1') => self.screen = Screen::Home,
-            KeyCode::Char('2') => self.screen = Screen::Draft,
+            KeyCode::Char('h') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
+                self.screen = Screen::Home;
+            }
+            KeyCode::Char('b') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
+                self.screen = Screen::Draft;
+            }
 
-            KeyCode::Char('j') if matches!(&self.screen, Screen::Draft) => self.select_next(),
-            KeyCode::Char('k') if matches!(&self.screen, Screen::Draft) => self.select_previous(),
+            KeyCode::Char('j')
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
+            {
+                self.select_next()
+            }
+            KeyCode::Char('k')
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
+            {
+                self.select_previous()
+            }
+
+            KeyCode::Char('j')
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
+            {
+                self.select_next_team()
+            }
+            KeyCode::Char('k')
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
+            {
+                self.select_previous_team()
+            }
+            KeyCode::Char(digit)
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::RecordingDraft)
+                    && digit.is_ascii_digit()
+                    && self.draft_price_input.len() < 3 =>
+            {
+                self.draft_price_input.push(digit);
+            }
+            KeyCode::Backspace
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
+            {
+                self.draft_price_input.pop();
+            }
+            KeyCode::Esc
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
+            {
+                self.escape_drafting_selected_player();
+            }
+
+            KeyCode::Enter
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(self.draft_mode, DraftMode::BrowsingPlayers) =>
+            {
+                self.begin_drafting_selected_player();
+            }
+            KeyCode::Enter
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
+            {
+                self.confirm_recorded_draft();
+            }
             _ => {}
         }
     }
@@ -116,6 +183,53 @@ impl App {
 
         Ok(())
     }
+    pub fn begin_drafting_selected_player(&mut self) {
+        if self.selected_player.is_some() && !self.teams.is_empty() {
+            self.draft_mode = DraftMode::RecordingDraft;
+            self.selected_team = Some(0);
+            self.draft_price_input.clear();
+        }
+    }
+    pub fn select_next_team(&mut self) {
+        if self.teams.is_empty() {
+            self.selected_team = None;
+            return;
+        }
+        self.selected_team = match self.selected_team {
+            Some(index) => Some((index + 1) % self.teams.len()),
+            None => Some(0),
+        };
+    }
+    pub fn select_previous_team(&mut self) {
+        if self.teams.is_empty() {
+            self.selected_team = None;
+            return;
+        }
+        self.selected_team = match self.selected_team {
+            Some(0) => Some(self.teams.len() - 1),
+            Some(index) => Some(index - 1),
+            None => Some(0),
+        };
+    }
+    pub fn confirm_recorded_draft(&mut self) {
+        let (Some(player_index), Some(team_index)) = (self.selected_player, self.selected_team)
+        else {
+            return;
+        };
+        let Ok(price) = self.draft_price_input.parse::<u8>() else {
+            return;
+        };
+        if self.record_draft(player_index, team_index, price).is_ok() {
+            self.draft_mode = DraftMode::BrowsingPlayers;
+            self.selected_team = None;
+            self.draft_price_input.clear();
+        }
+    }
+    pub fn escape_drafting_selected_player(&mut self) {
+        self.draft_mode = DraftMode::BrowsingPlayers;
+        self.selected_team = None;
+        self.draft_price_input.clear();
+    }
 }
 
 #[cfg(test)]
@@ -137,6 +251,9 @@ mod tests {
                 budget: 200,
             }],
             draft_picks: Vec::new(),
+            draft_mode: DraftMode::BrowsingPlayers,
+            selected_team: None,
+            draft_price_input: String::new(),
         }
     }
 
@@ -330,5 +447,69 @@ mod tests {
         assert_eq!(pick.player_id, PlayerId(0));
         assert_eq!(pick.team_id, TeamId(0));
         assert_eq!(pick.price, 37);
+    }
+    #[test]
+    fn beginning_draft_of_selected_player_opens_team_chooser() {
+        let mut app = test_app(
+            vec![Player {
+                id: PlayerId(0),
+                name: String::from("Bird"),
+                position: String::from("SF"),
+                projected_value: 50,
+            }],
+            Some(0),
+        );
+
+        app.begin_drafting_selected_player();
+
+        assert_eq!(app.draft_mode, DraftMode::RecordingDraft);
+        assert_eq!(app.selected_team, Some(0));
+    }
+    #[test]
+    fn confirming_recorded_draft_records_pick_and_resets_input() {
+        let mut app = test_app(
+            vec![Player {
+                id: PlayerId(0),
+                name: String::from("Bird"),
+                position: String::from("SF"),
+                projected_value: 50,
+            }],
+            Some(0),
+        );
+
+        app.begin_drafting_selected_player();
+        app.draft_price_input = String::from("37");
+
+        app.confirm_recorded_draft();
+
+        assert_eq!(app.draft_picks.len(), 1);
+        assert_eq!(app.teams[0].budget, 163);
+        assert_eq!(app.draft_mode, DraftMode::BrowsingPlayers);
+        assert_eq!(app.selected_team, None);
+        assert!(app.draft_price_input.is_empty());
+    }
+    #[test]
+    fn escaping_recorded_draft_cancels_without_recording_pick() {
+        let mut app = test_app(
+            vec![Player {
+                id: PlayerId(0),
+                name: String::from("Bird"),
+                position: String::from("SF"),
+                projected_value: 50,
+            }],
+            Some(0),
+        );
+
+        app.begin_drafting_selected_player();
+        app.draft_price_input = String::from("37");
+
+        app.escape_drafting_selected_player();
+
+        assert_eq!(app.draft_mode, DraftMode::BrowsingPlayers);
+        assert_eq!(app.selected_team, None);
+        assert!(app.draft_price_input.is_empty());
+
+        assert!(app.draft_picks.is_empty());
+        assert_eq!(app.teams[0].budget, 200);
     }
 }

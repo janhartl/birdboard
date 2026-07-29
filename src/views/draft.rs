@@ -1,4 +1,5 @@
 use crate::app::App;
+use crate::draft::DraftMode;
 use ratatui::Frame;
 use ratatui::layout::Alignment;
 use ratatui::layout::Constraint;
@@ -49,8 +50,27 @@ pub fn draw(frame: &mut Frame, app: &App) {
         .with_selected(app.selected_player)
         .with_offset(offset);
 
-    let quitting = Paragraph::new("Press 'q' to quit").alignment(Alignment::Left);
-
     frame.render_stateful_widget(player_list, areas[0], &mut list_state);
-    frame.render_widget(quitting, areas[1]);
+
+    let footer_text = match app.draft_mode {
+        DraftMode::BrowsingPlayers => String::from("[j/k] | [Enter] to draft | [q] Quit"),
+
+        DraftMode::RecordingDraft => {
+            if let (Some(player_index), Some(team_index)) = (app.selected_player, app.selected_team)
+            {
+                let player = &app.players[player_index];
+                let team = &app.teams[team_index];
+
+                format!(
+                    "Draft: {} -> {} |  Price: ${}_",
+                    player.name, team.name, app.draft_price_input,
+                )
+            } else {
+                String::from("Unable to record draft")
+            }
+        }
+    };
+
+    let footer = Paragraph::new(footer_text).alignment(Alignment::Center);
+    frame.render_widget(footer, areas[1]);
 }
