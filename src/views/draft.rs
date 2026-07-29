@@ -22,14 +22,25 @@ pub fn draw(frame: &mut Frame, app: &App) {
     let mut player_items = Vec::new();
 
     for (index, player) in app.players.iter().enumerate() {
+        let draft_pick = app.draft_pick_for_player(player.id);
+        let drafted = draft_pick.is_some();
+        let status = if drafted { " | DRAFTED" } else { "" };
         let text = format!(
-            " {}. | {} | {} | ${}",
+            " {}. | {} | {} | ${}{}",
             index + 1,
-            player.name.as_str(),
-            player.position.as_str(),
+            player.name,
+            player.position,
             player.projected_value,
+            status,
         );
-        player_items.push(ListItem::new(Line::from(text).alignment(Alignment::Center)));
+        let style = if drafted {
+            Style::default().add_modifier(Modifier::DIM)
+        } else {
+            Style::default()
+        };
+
+        player_items
+            .push(ListItem::new(Line::from(text).alignment(Alignment::Center)).style(style));
     }
     let player_list =
         List::new(player_items).highlight_style(Style::default().add_modifier(Modifier::REVERSED));

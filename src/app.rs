@@ -3,7 +3,7 @@ use crate::data::load_teams;
 use crate::draft::DraftError;
 use crate::draft::DraftMode;
 use crate::draft::DraftPick;
-use crate::player::Player;
+use crate::player::{Player, PlayerId};
 use crate::team::FantasyTeam;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
@@ -219,6 +219,11 @@ impl App {
         self.draft_mode = DraftMode::BrowsingPlayers;
         self.selected_team = None;
         self.draft_price_input.clear();
+    }
+    pub fn draft_pick_for_player(&self, player_id: PlayerId) -> Option<&DraftPick> {
+        self.draft_picks
+            .iter()
+            .find(|pick| pick.player_id == player_id)
     }
 }
 
