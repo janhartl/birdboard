@@ -56,3 +56,84 @@ impl App {
         }
     }
 }
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn test_app(players: Vec<Player>, selected_player: Option<usize>) -> App {
+        App {
+            running: true,
+            screen: Screen::Draft,
+            players,
+            selected_player,
+        }
+    }
+
+    #[test]
+    fn selecting_next_moves_to_next_player() {
+        let mut app = test_app(
+            vec![
+                Player {
+                    name: String::from("Bird"),
+                    position: String::from("SF"),
+                    projected_value: 200,
+                },
+                Player {
+                    name: String::from("Luka"),
+                    position: String::from("PG"),
+                    projected_value: 77,
+                },
+            ],
+            Some(0),
+        );
+        app.select_next();
+        assert_eq!(app.selected_player, Some(1));
+    }
+    #[test]
+    fn selecting_previous_on_first_players_stays_on_first_player() {
+        let mut app = test_app(
+            vec![
+                Player {
+                    name: String::from("Bird"),
+                    position: String::from("SF"),
+                    projected_value: 200,
+                },
+                Player {
+                    name: String::from("Luka"),
+                    position: String::from("PG"),
+                    projected_value: 77,
+                },
+            ],
+            Some(0),
+        );
+        app.select_previous();
+        assert_eq!(app.selected_player, Some(0));
+    }
+    #[test]
+    fn selecting_next_on_last_players_stays_on_last_player() {
+        let mut app = test_app(
+            vec![
+                Player {
+                    name: String::from("Bird"),
+                    position: String::from("SF"),
+                    projected_value: 200,
+                },
+                Player {
+                    name: String::from("Luka"),
+                    position: String::from("PG"),
+                    projected_value: 77,
+                },
+            ],
+            Some(1),
+        );
+        app.select_next();
+        assert_eq!(app.selected_player, Some(1));
+    }
+    #[test]
+    fn empty_board_naviagtion() {
+        let mut app = test_app(vec![], None);
+        app.select_next();
+        app.select_previous();
+        assert_eq!(app.selected_player, None);
+    }
+}
