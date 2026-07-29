@@ -2,7 +2,7 @@ use crate::data::load_players;
 use crate::draft::DraftError;
 use crate::draft::DraftPick;
 use crate::player::Player;
-use crate::team::FantasyTeam;
+use crate::team::{FantasyTeam, TeamId};
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
 
@@ -26,10 +26,12 @@ impl App {
         let selected_player = if players.is_empty() { None } else { Some(0) };
         let teams = vec![
             FantasyTeam {
+                id: TeamId(0),
                 name: String::from("Luka Legends"),
                 budget: 200,
             },
             FantasyTeam {
+                id: TeamId(1),
                 name: String::from("Drustvo telesne vadbe"),
                 budget: 200,
             },
@@ -87,11 +89,13 @@ impl App {
         if self.teams.get(team_index).is_none() {
             return Err(DraftError::InvalidTeam);
         }
+        let player_id = self.players[player_index].id;
+        let team_id = self.teams[team_index].id;
 
         let player_already_drafted = self
             .draft_picks
             .iter()
-            .any(|pick| pick.player_index == player_index);
+            .any(|pick| pick.player_id == player_id);
 
         if player_already_drafted {
             return Err(DraftError::PlayerAlreadyDrafted);
@@ -104,8 +108,8 @@ impl App {
 
         self.teams[team_index].budget -= price;
         let draft_pick = DraftPick {
-            player_index,
-            team_index,
+            player_id,
+            team_id,
             price,
         };
         self.draft_picks.push(draft_pick);
@@ -116,6 +120,9 @@ impl App {
 
 #[cfg(test)]
 mod tests {
+    use crate::player::PlayerId;
+    use crate::team::TeamId;
+
     use super::*;
 
     fn test_app(players: Vec<Player>, selected_player: Option<usize>) -> App {
@@ -125,6 +132,7 @@ mod tests {
             players,
             selected_player,
             teams: vec![FantasyTeam {
+                id: TeamId(0),
                 name: String::from("DTV"),
                 budget: 200,
             }],
@@ -137,11 +145,13 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
+                    id: PlayerId(0),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                 },
                 Player {
+                    id: PlayerId(1),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -157,11 +167,13 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
+                    id: PlayerId(0),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                 },
                 Player {
+                    id: PlayerId(1),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -177,11 +189,13 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
+                    id: PlayerId(0),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                 },
                 Player {
+                    id: PlayerId(1),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -204,11 +218,13 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
+                    id: PlayerId(0),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                 },
                 Player {
+                    id: PlayerId(1),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -225,11 +241,13 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
+                    id: PlayerId(0),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                 },
                 Player {
+                    id: PlayerId(1),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -246,11 +264,13 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
+                    id: PlayerId(0),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                 },
                 Player {
+                    id: PlayerId(1),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -266,11 +286,13 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
+                    id: PlayerId(0),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                 },
                 Player {
+                    id: PlayerId(1),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -279,8 +301,8 @@ mod tests {
             Some(0),
         );
         app.draft_picks.push(DraftPick {
-            player_index: 0,
-            team_index: 0,
+            player_id: PlayerId(0),
+            team_id: TeamId(0),
             price: 1,
         });
         let result = app.record_draft(0, 0, 1);
@@ -290,6 +312,7 @@ mod tests {
     fn successful_draft_records_pick_and_reduces_budget() {
         let mut app = test_app(
             vec![Player {
+                id: PlayerId(0),
                 name: String::from("Bird"),
                 position: String::from("SF"),
                 projected_value: 200,
@@ -304,8 +327,8 @@ mod tests {
         assert_eq!(app.draft_picks.len(), 1);
 
         let pick = &app.draft_picks[0];
-        assert_eq!(pick.player_index, 0);
-        assert_eq!(pick.team_index, 0);
+        assert_eq!(pick.player_id, PlayerId(0));
+        assert_eq!(pick.team_id, TeamId(0));
         assert_eq!(pick.price, 37);
     }
 }

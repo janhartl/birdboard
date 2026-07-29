@@ -1,7 +1,10 @@
+use crate::player::PlayerId;
+use crate::team::TeamId;
+
 #[derive(Debug, Clone)]
 pub struct DraftPick {
-    pub player_index: usize,
-    pub team_index: usize,
+    pub player_id: PlayerId,
+    pub team_id: TeamId,
     pub price: u8,
 }
 
