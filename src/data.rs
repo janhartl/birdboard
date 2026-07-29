@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 
 use crate::player::{Player, PlayerId};
+use crate::team::FantasyTeam;
 
 pub fn load_players(path: &str) -> Result<Vec<Player>, csv::Error> {
     let mut reader = csv::Reader::from_path(path)?;
@@ -13,6 +14,19 @@ pub fn load_players(path: &str) -> Result<Vec<Player>, csv::Error> {
     }
 
     Ok(players)
+}
+
+pub fn load_teams(path: &str) -> Result<Vec<FantasyTeam>, csv::Error> {
+    let mut reader = csv::Reader::from_path(path)?;
+
+    let mut teams = Vec::new();
+
+    for result in reader.deserialize::<FantasyTeam>() {
+        let team = result?;
+        teams.push(team);
+    }
+
+    Ok(teams)
 }
 
 #[derive(Debug, PartialEq)]

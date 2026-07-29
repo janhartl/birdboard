@@ -1,9 +1,10 @@
 use crate::data::load_players;
+use crate::data::load_teams;
 use crate::draft::DraftError;
 use crate::draft::DraftMode;
 use crate::draft::DraftPick;
 use crate::player::Player;
-use crate::team::{FantasyTeam, TeamId};
+use crate::team::FantasyTeam;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
 
@@ -28,18 +29,7 @@ impl App {
     pub fn new() -> Result<App, csv::Error> {
         let players = load_players("data/players.csv")?;
         let selected_player = if players.is_empty() { None } else { Some(0) };
-        let teams = vec![
-            FantasyTeam {
-                id: TeamId(0),
-                name: String::from("Luka Legends"),
-                budget: 200,
-            },
-            FantasyTeam {
-                id: TeamId(1),
-                name: String::from("Drustvo telesne vadbe"),
-                budget: 200,
-            },
-        ];
+        let teams = load_teams("data/teams.csv")?;
         let draft_picks = Vec::new();
         Ok(App {
             running: true,
