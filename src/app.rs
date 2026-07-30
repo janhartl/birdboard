@@ -229,6 +229,9 @@ impl App {
             .iter()
             .find(|pick| pick.player_id == player_id)
     }
+    pub fn player_by_id(&self, player_id: PlayerId) -> Option<&Player> {
+        self.players.iter().find(|player| player.id == player_id)
+    }
 }
 
 #[cfg(test)]

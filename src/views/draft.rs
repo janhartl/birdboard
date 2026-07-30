@@ -12,6 +12,7 @@ use ratatui::widgets::List;
 use ratatui::widgets::ListItem;
 use ratatui::widgets::ListState;
 use ratatui::widgets::Paragraph;
+use ratatui::widgets::{Block, Borders};
 
 pub fn draw(frame: &mut Frame, app: &App) {
     let areas = Layout::default()
@@ -23,6 +24,14 @@ pub fn draw(frame: &mut Frame, app: &App) {
         .direction(Direction::Horizontal)
         .constraints([Constraint::Percentage(75), Constraint::Percentage(25)])
         .split(areas[0]);
+
+    let team_areas = Layout::default()
+        .direction(Direction::Vertical)
+        .constraints([
+            Constraint::Length(app.teams.len() as u16),
+            Constraint::Min(0),
+        ])
+        .split(content_areas[1]);
 
     let mut player_items = Vec::new();
 
@@ -82,7 +91,43 @@ pub fn draw(frame: &mut Frame, app: &App) {
     }
 
     let team_list = List::new(team_items);
-    frame.render_widget(team_list, content_areas[1]);
+    frame.render_widget(team_list, team_areas[0]);
+
+    match (app.draft_mode, app.selected_team) {
+        (DraftMode::RecordingDraft, Some(team_index)) => {
+            let team = &app.teams[team_index];
+
+            let mut roster_items = Vec::new();
+            for pick in app
+                .draft_picks
+                .iter()
+                .filter(|pick| pick.team_id == team.id)
+            {
+                if let Some(player) = app.player_by_id(pick.player_id) {
+                    let text = format!("{} | ${}", player.name, pick.price);
+
+                    roster_items.push(ListItem::new(text));
+                }
+            }
+            if roster_items.is_empty() {
+                roster_items.push(
+                    ListItem::new("No players drafted")
+                        .style(Style::default().add_modifier(Modifier::DIM)),
+                );
+            }
+
+            let roster_list = List::new(roster_items).block(
+                Block::default()
+                    .borders(Borders::ALL)
+                    .title(team.name.as_str()),
+            );
+            frame.render_widget(roster_list, team_areas[1]);
+        }
+
+        _ => {
+            frame.render_widget(Paragraph::new(""), team_areas[1]);
+        }
+    };
 
     let footer_text = match app.draft_mode {
         DraftMode::BrowsingPlayers => String::from("[j/k] | [Enter] Draft player | [q] Quit"),
