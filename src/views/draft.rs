@@ -19,6 +19,11 @@ pub fn draw(frame: &mut Frame, app: &App) {
         .constraints([Constraint::Min(0), Constraint::Length(1)])
         .split(frame.area());
 
+    let content_areas = Layout::default()
+        .direction(Direction::Horizontal)
+        .constraints([Constraint::Percentage(70), Constraint::Percentage(30)])
+        .split(areas[0]);
+
     let mut player_items = Vec::new();
 
     for (index, player) in app.players.iter().enumerate() {
@@ -45,7 +50,7 @@ pub fn draw(frame: &mut Frame, app: &App) {
     let player_list =
         List::new(player_items).highlight_style(Style::default().add_modifier(Modifier::REVERSED));
 
-    let visible_rows = areas[0].height as usize;
+    let visible_rows = content_areas[0].height as usize;
     let half_screen_height = visible_rows / 2;
     let offset = match app.selected_player {
         Some(index) => {
@@ -61,7 +66,16 @@ pub fn draw(frame: &mut Frame, app: &App) {
         .with_selected(app.selected_player)
         .with_offset(offset);
 
-    frame.render_stateful_widget(player_list, areas[0], &mut list_state);
+    frame.render_stateful_widget(player_list, content_areas[0], &mut list_state);
+
+    let mut team_items = Vec::new();
+    for team in &app.teams {
+        let text = format!(" {} |   ${} ", team.name, team.budget,);
+        team_items.push(ListItem::new(Line::from(text).alignment(Alignment::Center)));
+    }
+
+    let team_list = List::new(team_items);
+    frame.render_widget(team_list, content_areas[1]);
 
     let footer_text = match app.draft_mode {
         DraftMode::BrowsingPlayers => String::from("[j/k] | [Enter] Draft player | [q] Quit"),
