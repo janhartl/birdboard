@@ -20,4 +20,5 @@ pub enum DraftError {
 pub enum DraftMode {
     BrowsingPlayers,
     RecordingDraft,
+    SearchingPlayer,
 }

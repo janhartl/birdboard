@@ -8,6 +8,9 @@ use crate::team::FantasyTeam;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
 
+use fuzzy_matcher::FuzzyMatcher;
+use fuzzy_matcher::skim::SkimMatcherV2;
+
 pub enum Screen {
     Home,
     Draft,
@@ -23,6 +26,7 @@ pub struct App {
     pub draft_price_input: String,
     pub draft_mode: DraftMode,
     pub selected_team: Option<usize>,
+    pub search_query: String,
 }
 
 impl App {
@@ -41,6 +45,7 @@ impl App {
             draft_mode: DraftMode::BrowsingPlayers,
             selected_team: None,
             draft_price_input: String::new(),
+            search_query: String::new(),
         })
     }
 
@@ -49,7 +54,9 @@ impl App {
     }
     pub fn handle_key(&mut self, key: KeyEvent) {
         match key.code {
-            KeyCode::Char('q') => self.quit(),
+            KeyCode::Char('q') if !matches!(self.draft_mode, DraftMode::SearchingPlayer) => {
+                self.quit()
+            }
             KeyCode::Char('h') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
                 self.screen = Screen::Home;
             }
@@ -102,7 +109,13 @@ impl App {
             {
                 self.escape_drafting_selected_player();
             }
-
+            KeyCode::Esc
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::SearchingPlayer) =>
+            {
+                self.search_query.clear();
+                self.draft_mode = DraftMode::BrowsingPlayers;
+            }
             KeyCode::Enter
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(self.draft_mode, DraftMode::BrowsingPlayers)
@@ -118,6 +131,34 @@ impl App {
                     && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
             {
                 self.confirm_recorded_draft();
+            }
+            KeyCode::Enter
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::SearchingPlayer) =>
+            {
+                self.search_query.clear();
+                self.draft_mode = DraftMode::BrowsingPlayers;
+            }
+            KeyCode::Backspace
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::SearchingPlayer) =>
+            {
+                self.search_query.pop();
+                self.update_search_selection();
+            }
+            KeyCode::Char('/')
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
+            {
+                self.search_query.clear();
+                self.draft_mode = DraftMode::SearchingPlayer;
+            }
+            KeyCode::Char(char)
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::SearchingPlayer) =>
+            {
+                self.search_query.push(char);
+                self.update_search_selection();
             }
             _ => {}
         }
@@ -232,6 +273,27 @@ impl App {
     pub fn player_by_id(&self, player_id: PlayerId) -> Option<&Player> {
         self.players.iter().find(|player| player.id == player_id)
     }
+    fn update_search_selection(&mut self) {
+        if self.search_query.is_empty() {
+            return;
+        }
+        let matcher = SkimMatcherV2::default();
+
+        let best_match = self
+            .players
+            .iter()
+            .enumerate()
+            .filter_map(|(index, player)| {
+                matcher
+                    .fuzzy_match(&player.name, &self.search_query)
+                    .map(|score| (index, score))
+            })
+            .max_by_key(|(_, score)| *score);
+
+        if let Some((index, _score)) = best_match {
+            self.selected_player = Some(index);
+        }
+    }
 }
 
 #[cfg(test)]
@@ -256,6 +318,7 @@ mod tests {
             draft_mode: DraftMode::BrowsingPlayers,
             selected_team: None,
             draft_price_input: String::new(),
+            search_query: String::new(),
         }
     }
 

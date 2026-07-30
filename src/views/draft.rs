@@ -130,6 +130,9 @@ pub fn draw(frame: &mut Frame, app: &App) {
     };
 
     let footer_text = match app.draft_mode {
+        DraftMode::SearchingPlayer => {
+            format!("/{}_", app.search_query)
+        }
         DraftMode::BrowsingPlayers => String::from("[j/k] | [Enter] Draft player | [q] Quit"),
 
         DraftMode::RecordingDraft => {
