@@ -7,7 +7,6 @@ use ratatui::layout::Direction;
 use ratatui::layout::Layout;
 use ratatui::style::Modifier;
 use ratatui::style::Style;
-use ratatui::text::Line;
 use ratatui::widgets::List;
 use ratatui::widgets::ListItem;
 use ratatui::widgets::ListState;
@@ -35,16 +34,49 @@ pub fn draw(frame: &mut Frame, app: &App) {
 
     let mut player_items = Vec::new();
 
+    let board_width = content_areas[0].width as usize;
+
+    let rank_width = app.players.len().to_string().len();
+
+    let name_width = app
+        .players
+        .iter()
+        .map(|player| player.name.chars().count())
+        .max()
+        .unwrap_or(0)
+        .saturating_add(10);
+
+    let position_width = app
+        .players
+        .iter()
+        .map(|player| player.position.chars().count())
+        .max()
+        .unwrap_or(0);
+
+    let value_width = app
+        .players
+        .iter()
+        .map(|player| format!("${}", player.projected_value).chars().count())
+        .max()
+        .unwrap_or(0);
+
+    let status_width = 1;
+
+    let table_width = rank_width + name_width + position_width + value_width + status_width + 9;
+
+    let left_padding = board_width.saturating_sub(table_width) / 2;
+    let padding = " ".repeat(left_padding);
+
     for (index, player) in app.players.iter().enumerate() {
         let draft_pick = app.draft_pick_for_player(player.id);
         let drafted = draft_pick.is_some();
-        let status = if drafted { " | DRAFTED" } else { "" };
+        let status = if drafted { " DRAFTED" } else { "" };
         let text = format!(
-            " {}. | {} | {} | ${}{}",
+            " {:>rank_width$}.  {:<name_width$}  {:<position_width$}  {:>value_width$} {}",
             index + 1,
             player.name,
             player.position,
-            player.projected_value,
+            format!("${}", player.projected_value),
             status,
         );
         let style = if drafted {
@@ -53,8 +85,7 @@ pub fn draw(frame: &mut Frame, app: &App) {
             Style::default()
         };
 
-        player_items
-            .push(ListItem::new(Line::from(text).alignment(Alignment::Center)).style(style));
+        player_items.push(ListItem::new(text).style(style));
     }
     let player_list =
         List::new(player_items).highlight_style(Style::default().add_modifier(Modifier::REVERSED));
@@ -78,19 +109,28 @@ pub fn draw(frame: &mut Frame, app: &App) {
     frame.render_stateful_widget(player_list, content_areas[0], &mut list_state);
 
     let mut team_items = Vec::new();
-    for team in &app.teams {
+    for (index, team) in app.teams.iter().enumerate() {
+        let selected =
+            matches!(app.draft_mode, DraftMode::RecordingDraft) && app.selected_team == Some(index);
+
+        let marker = if selected { ">" } else { " " };
         let budget = format!("${}", team.budget);
 
-        let row_width = content_areas[1].width.saturating_sub(2) as usize;
+        let row_width = content_areas[1].width.saturating_sub(1) as usize;
 
-        let name_width = row_width.saturating_sub(budget.len());
+        let name_width = row_width.saturating_sub(2).saturating_sub(budget.len());
 
-        let text = format!(" {:<name_width$}{} ", team.name, budget,);
+        let text = format!("{} {:<name_width$}{} ", marker, team.name, budget);
 
-        team_items.push(ListItem::new(text));
+        let style = if selected {
+            Style::default().add_modifier(Modifier::BOLD)
+        } else {
+            Style::default().add_modifier(Modifier::DIM)
+        };
+        team_items.push(ListItem::new(text).style(style));
     }
 
-    let team_list = List::new(team_items);
+    let team_list = List::new(team_items).block(Block::default().borders(Borders::LEFT));
     frame.render_widget(team_list, team_areas[0]);
 
     match (app.draft_mode, app.selected_team) {
@@ -122,10 +162,12 @@ pub fn draw(frame: &mut Frame, app: &App) {
                 );
             }
 
+            let roster_count = roster_items.len();
+
             let roster_list = List::new(roster_items).block(
                 Block::default()
                     .borders(Borders::ALL)
-                    .title(team.name.as_str()),
+                    .title(format!("Roster · {roster_count}/13")),
             );
             frame.render_widget(roster_list, team_areas[1]);
         }
@@ -139,7 +181,9 @@ pub fn draw(frame: &mut Frame, app: &App) {
         DraftMode::SearchingPlayer => {
             format!("/{}_", app.search_query)
         }
-        DraftMode::BrowsingPlayers => String::from("[j/k] | [Enter] Draft player | [q] Quit"),
+        DraftMode::BrowsingPlayers => {
+            String::from("[j/k] | [/] Search | [Enter] Draft player | [q] Quit")
+        }
 
         DraftMode::RecordingDraft => {
             if let (Some(player_index), Some(team_index)) = (app.selected_player, app.selected_team)
