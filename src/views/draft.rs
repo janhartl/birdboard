@@ -104,7 +104,13 @@ pub fn draw(frame: &mut Frame, app: &App) {
                 .filter(|pick| pick.team_id == team.id)
             {
                 if let Some(player) = app.player_by_id(pick.player_id) {
-                    let text = format!("{} | ${}", player.name, pick.price);
+                    let price = format!("${}", pick.price);
+
+                    let row_width = team_areas[1].width.saturating_sub(2) as usize;
+
+                    let name_width = row_width.saturating_sub(price.len());
+
+                    let text = format!("{:<name_width$}{}", player.display_name(), price,);
 
                     roster_items.push(ListItem::new(text));
                 }
