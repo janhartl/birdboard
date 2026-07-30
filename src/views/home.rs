@@ -20,8 +20,9 @@ Who's playing for 2nd?
 
 pub fn draw(frame: &mut Frame, _app: &App) {
     let logo = Paragraph::new(LOGO).alignment(Alignment::Center);
-    let placeholder = Paragraph::new("Big board incomming...").alignment(Alignment::Center);
-    let quiting = Paragraph::new("Press 'q' to quit").alignment(Alignment::Left);
+    let placeholder =
+        Paragraph::new("[h] Home | [b] Big board | [?] Help").alignment(Alignment::Center);
+    let quiting = Paragraph::new("[q] Quit").alignment(Alignment::Left);
 
     let areas = Layout::default()
         .direction(Direction::Vertical)

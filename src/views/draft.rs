@@ -64,7 +64,7 @@ pub fn draw(frame: &mut Frame, app: &App) {
     frame.render_stateful_widget(player_list, areas[0], &mut list_state);
 
     let footer_text = match app.draft_mode {
-        DraftMode::BrowsingPlayers => String::from("[j/k] | [Enter] to draft | [q] Quit"),
+        DraftMode::BrowsingPlayers => String::from("[j/k] | [Enter] Draft player | [q] Quit"),
 
         DraftMode::RecordingDraft => {
             if let (Some(player_index), Some(team_index)) = (app.selected_player, app.selected_team)

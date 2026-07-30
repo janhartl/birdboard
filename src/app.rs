@@ -105,7 +105,11 @@ impl App {
 
             KeyCode::Enter
                 if matches!(&self.screen, Screen::Draft)
-                    && matches!(self.draft_mode, DraftMode::BrowsingPlayers) =>
+                    && matches!(self.draft_mode, DraftMode::BrowsingPlayers)
+                    && let Some(player_index) = self.selected_player
+                    && self
+                        .draft_pick_for_player(self.players[player_index].id)
+                        .is_none() =>
             {
                 self.begin_drafting_selected_player();
             }
