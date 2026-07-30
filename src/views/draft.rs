@@ -34,8 +34,6 @@ pub fn draw(frame: &mut Frame, app: &App) {
 
     let mut player_items = Vec::new();
 
-    let board_width = content_areas[0].width as usize;
-
     let rank_width = app.players.len().to_string().len();
 
     let name_width = app
@@ -59,13 +57,6 @@ pub fn draw(frame: &mut Frame, app: &App) {
         .map(|player| format!("${}", player.projected_value).chars().count())
         .max()
         .unwrap_or(0);
-
-    let status_width = 1;
-
-    let table_width = rank_width + name_width + position_width + value_width + status_width + 9;
-
-    let left_padding = board_width.saturating_sub(table_width) / 2;
-    let padding = " ".repeat(left_padding);
 
     for (index, player) in app.players.iter().enumerate() {
         let draft_pick = app.draft_pick_for_player(player.id);
@@ -155,14 +146,14 @@ pub fn draw(frame: &mut Frame, app: &App) {
                     roster_items.push(ListItem::new(text));
                 }
             }
+            let roster_count = roster_items.len();
+
             if roster_items.is_empty() {
                 roster_items.push(
                     ListItem::new("No players drafted")
                         .style(Style::default().add_modifier(Modifier::DIM)),
                 );
             }
-
-            let roster_count = roster_items.len();
 
             let roster_list = List::new(roster_items).block(
                 Block::default()
