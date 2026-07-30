@@ -55,12 +55,14 @@ mod tests {
                 name: String::from("Bird"),
                 position: String::from("SF"),
                 projected_value: 50,
+                short_name: Some(String::from("Bird")),
             },
             Player {
                 id: PlayerId(0),
                 name: String::from("Larry"),
                 position: String::from("SF"),
                 projected_value: 50,
+                short_name: Some(String::from("Bird")),
             },
         ];
         let result = validate_unique_player_ids(&players);
@@ -74,12 +76,14 @@ mod tests {
                 name: String::from("Bird"),
                 position: String::from("SF"),
                 projected_value: 50,
+                short_name: Some(String::from("Bird")),
             },
             Player {
                 id: PlayerId(1),
                 name: String::from("Larry"),
                 position: String::from("SF"),
                 projected_value: 50,
+                short_name: Some(String::from("Bird")),
             },
         ];
         let result = validate_unique_player_ids(&players);

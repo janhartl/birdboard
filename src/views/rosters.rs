@@ -1,7 +1,8 @@
 use crate::app::App;
 use ratatui::Frame;
 use ratatui::layout::{Constraint, Direction, Layout};
-use ratatui::widgets::{Block, Borders};
+use ratatui::style::{Modifier, Style};
+use ratatui::widgets::{Block, Borders, List, ListItem};
 
 pub fn draw(frame: &mut Frame, app: &App) {
     let areas = Layout::default()
@@ -22,11 +23,33 @@ pub fn draw(frame: &mut Frame, app: &App) {
             .split(areas[row_index]);
 
         for (team, area) in teams.iter().zip(columns.iter()) {
-            let roster_block = Block::default()
-                .borders(Borders::ALL)
-                .title(team.name.as_str());
+            let mut roster_items = Vec::new();
 
-            frame.render_widget(roster_block, *area);
+            for pick in app
+                .draft_picks
+                .iter()
+                .filter(|pick| pick.team_id == team.id)
+            {
+                if let Some(player) = app.player_by_id(pick.player_id) {
+                    let text = format!("{} | ${}", player.display_name(), pick.price);
+                    roster_items.push(ListItem::new(text));
+                }
+            }
+
+            if roster_items.is_empty() {
+                roster_items.push(
+                    ListItem::new("No players drafted")
+                        .style(Style::default().add_modifier(Modifier::DIM)),
+                );
+            }
+
+            let roster_list = List::new(roster_items).block(
+                Block::default()
+                    .borders(Borders::ALL)
+                    .title(team.name.as_str()),
+            );
+
+            frame.render_widget(roster_list, *area);
         }
     }
 }
