@@ -16,12 +16,12 @@ const LOGO: &str = r#"
 B I R D B O A R D
 Who's playing for 2nd?
 
-      "#;
+"#;
 
 pub fn draw(frame: &mut Frame, _app: &App) {
     let logo = Paragraph::new(LOGO).alignment(Alignment::Center);
     let placeholder =
-        Paragraph::new("[h] Home | [b] Big board | [?] Help").alignment(Alignment::Center);
+        Paragraph::new("[h] Home | [b] Big board | [r] Rosters ").alignment(Alignment::Center);
     let quiting = Paragraph::new("[q] Quit").alignment(Alignment::Left);
 
     let areas = Layout::default()

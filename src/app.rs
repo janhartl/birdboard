@@ -14,6 +14,7 @@ use fuzzy_matcher::skim::SkimMatcherV2;
 pub enum Screen {
     Home,
     Draft,
+    Rosters,
 }
 
 pub struct App {
@@ -62,6 +63,9 @@ impl App {
             }
             KeyCode::Char('b') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
                 self.screen = Screen::Draft;
+            }
+            KeyCode::Char('r') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
+                self.screen = Screen::Rosters;
             }
 
             KeyCode::Char('j')
