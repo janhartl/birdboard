@@ -21,7 +21,7 @@ pub fn draw(frame: &mut Frame, app: &App) {
 
     let content_areas = Layout::default()
         .direction(Direction::Horizontal)
-        .constraints([Constraint::Percentage(70), Constraint::Percentage(30)])
+        .constraints([Constraint::Percentage(75), Constraint::Percentage(25)])
         .split(areas[0]);
 
     let mut player_items = Vec::new();
@@ -70,8 +70,15 @@ pub fn draw(frame: &mut Frame, app: &App) {
 
     let mut team_items = Vec::new();
     for team in &app.teams {
-        let text = format!(" {} |   ${} ", team.name, team.budget,);
-        team_items.push(ListItem::new(Line::from(text).alignment(Alignment::Center)));
+        let budget = format!("${}", team.budget);
+
+        let row_width = content_areas[1].width.saturating_sub(2) as usize;
+
+        let name_width = row_width.saturating_sub(budget.len());
+
+        let text = format!(" {:<name_width$}{} ", team.name, budget,);
+
+        team_items.push(ListItem::new(text));
     }
 
     let team_list = List::new(team_items);
