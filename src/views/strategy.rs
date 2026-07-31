@@ -1,5 +1,5 @@
 use crate::app::App;
-use crate::strategy::{Build, ReplacementGroup, active_build, replacement_for_player};
+use crate::strategy::{Build, ReplacementGroup};
 
 use ratatui::Frame;
 use ratatui::layout::{Alignment, Constraint, Direction, Layout};
@@ -18,25 +18,18 @@ pub fn draw(frame: &mut Frame, app: &App) {
         .constraints([Constraint::Percentage(58), Constraint::Percentage(42)])
         .split(areas[0]);
 
-    let active_build = active_build(&app.builds, |player_id| {
-        app.team_has_player(app.user_team_id, player_id)
-    });
+    let active_build = app.current_build();
 
-    let replacement = active_build.and_then(|build| {
-        build.target_players.iter().copied().find_map(|player_id| {
-            let drafted_by_other_team = matches!(
-                app.draft_pick_for_player(player_id),
-                Some(pick)
-                    if pick.team_id != app.user_team_id
-            );
+    let replacements = app.triggered_replacements();
+    let replacement_count = replacements.len();
 
-            if drafted_by_other_team {
-                replacement_for_player(&app.replacements, player_id)
-            } else {
-                None
-            }
-        })
-    });
+    let selected_replacement_index = if replacement_count == 0 {
+        0
+    } else {
+        app.selected_replacement % replacement_count
+    };
+
+    let replacement = replacements.get(selected_replacement_index).copied();
 
     let build_content = match active_build {
         Some(build) => build_text(build, app),
@@ -79,20 +72,30 @@ pub fn draw(frame: &mut Frame, app: &App) {
             )),
         ]),
     };
+    let replacement_title = if replacement_count == 0 {
+        String::from(" Replacement Matrix ")
+    } else {
+        format!(
+            " Replacement Matrix · {}/{} ",
+            selected_replacement_index + 1,
+            replacement_count,
+        )
+    };
 
     let replacement_panel = Paragraph::new(replacement_content)
         .block(
             Block::default()
                 .borders(Borders::ALL)
-                .title(" Replacement Matrix "),
+                .title(replacement_title),
         )
         .wrap(Wrap { trim: false });
 
     frame.render_widget(replacement_panel, strategy_areas[1]);
 
-    let footer = Paragraph::new("[b] Big board | [h] Home | [r] Rosters | [q] Quit")
-        .alignment(Alignment::Center)
-        .style(Style::default().add_modifier(Modifier::DIM));
+    let footer =
+        Paragraph::new("[j/k] Replacement | [b] Big board | [h] Home | [r] Rosters | [q] Quit")
+            .alignment(Alignment::Center)
+            .style(Style::default().add_modifier(Modifier::DIM));
 
     frame.render_widget(footer, areas[1]);
 }

@@ -4,7 +4,9 @@ use crate::draft::DraftError;
 use crate::draft::DraftMode;
 use crate::draft::DraftPick;
 use crate::player::{Player, PlayerId};
-use crate::strategy::{Build, ReplacementGroup, load_builds, load_replacements};
+use crate::strategy::{
+    Build, ReplacementGroup, active_build, load_builds, load_replacements, replacement_for_player,
+};
 use crate::team::FantasyTeam;
 use crate::team::TeamId;
 use anyhow::Result;
@@ -35,6 +37,7 @@ pub struct App {
     pub user_team_id: TeamId,
     pub builds: Vec<Build>,
     pub replacements: Vec<ReplacementGroup>,
+    pub selected_replacement: usize,
 }
 
 impl App {
@@ -59,6 +62,7 @@ impl App {
             user_team_id: TeamId(1),
             builds,
             replacements,
+            selected_replacement: 0,
         })
     }
 
@@ -107,6 +111,13 @@ impl App {
                     && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
             {
                 self.select_previous_team()
+            }
+            KeyCode::Char('j') if matches!(&self.screen, Screen::Strategy) => {
+                self.select_next_replacement();
+            }
+
+            KeyCode::Char('k') if matches!(&self.screen, Screen::Strategy) => {
+                self.select_previous_replacement();
             }
             KeyCode::Char(digit)
                 if matches!(&self.screen, Screen::Draft)
@@ -300,6 +311,55 @@ impl App {
     pub fn team_by_id(&self, team_id: TeamId) -> Option<&FantasyTeam> {
         self.teams.iter().find(|team| team.id == team_id)
     }
+    pub fn current_build(&self) -> Option<&Build> {
+        active_build(&self.builds, |player_id| {
+            self.team_has_player(self.user_team_id, player_id)
+        })
+    }
+
+    pub fn triggered_replacements(&self) -> Vec<&ReplacementGroup> {
+        let Some(build) = self.current_build() else {
+            return Vec::new();
+        };
+
+        build
+            .target_players
+            .iter()
+            .copied()
+            .filter(|player_id| {
+                matches!(
+                    self.draft_pick_for_player(*player_id),
+                    Some(pick)
+                        if pick.team_id != self.user_team_id
+                )
+            })
+            .filter_map(|player_id| replacement_for_player(&self.replacements, player_id))
+            .collect()
+    }
+    pub fn select_next_replacement(&mut self) {
+        let count = self.triggered_replacements().len();
+
+        if count == 0 {
+            return;
+        }
+
+        let current = self.selected_replacement % count;
+
+        self.selected_replacement = (current + 1) % count;
+    }
+
+    pub fn select_previous_replacement(&mut self) {
+        let count = self.triggered_replacements().len();
+
+        if count == 0 {
+            return;
+        }
+
+        let current = self.selected_replacement % count;
+
+        self.selected_replacement = (current + count - 1) % count;
+    }
+
     fn update_search_selection(&mut self) {
         if self.search_query.is_empty() {
             return;
@@ -349,6 +409,7 @@ mod tests {
             user_team_id: TeamId(1),
             builds: Vec::new(),
             replacements: Vec::new(),
+            selected_replacement: 0,
         }
     }
 
