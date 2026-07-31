@@ -175,7 +175,7 @@ pub fn draw(frame: &mut Frame, app: &App) {
         DraftMode::SearchingPlayer => Line::from(format!("/{}_", app.search_query)),
 
         DraftMode::BrowsingPlayers => Line::from(Span::styled(
-            "[j/k] Move | [/] Search | [Enter] Draft player | [q] Quit",
+            "[j/k] Move | [/] Search | [Enter] Draft player | [u] Undo last | [q] Quit",
             dim_style,
         )),
 

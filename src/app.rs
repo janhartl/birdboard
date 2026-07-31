@@ -1,5 +1,6 @@
 use crate::data::load_players;
 use crate::data::load_teams;
+use crate::data::validate_data;
 use crate::draft::DraftError;
 use crate::draft::DraftMode;
 use crate::draft::DraftPick;
@@ -48,6 +49,9 @@ impl App {
         let draft_picks = Vec::new();
         let builds = load_builds("data/builds.toml")?;
         let replacements = load_replacements("data/replacements.toml")?;
+
+        validate_data(&players, &teams, &builds, &replacements)?;
+
         Ok(App {
             running: true,
             screen: Screen::Home,
@@ -182,6 +186,12 @@ impl App {
             {
                 self.search_query.clear();
                 self.draft_mode = DraftMode::SearchingPlayer;
+            }
+            KeyCode::Char('u')
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
+            {
+                self.undo_last_pick();
             }
             KeyCode::Char(char)
                 if matches!(&self.screen, Screen::Draft)
@@ -358,6 +368,33 @@ impl App {
         let current = self.selected_replacement % count;
 
         self.selected_replacement = (current + count - 1) % count;
+    }
+    pub fn undo_last_pick(&mut self) -> bool {
+        let Some(pick) = self.draft_picks.pop() else {
+            return false;
+        };
+
+        let Some(team_index) = self.teams.iter().position(|team| team.id == pick.team_id) else {
+            // Preserve the draft if its team cannot be found.
+            self.draft_picks.push(pick);
+            return false;
+        };
+
+        let Some(refunded_budget) = self.teams[team_index].budget.checked_add(pick.price) else {
+            self.draft_picks.push(pick);
+            return false;
+        };
+
+        self.teams[team_index].budget = refunded_budget;
+
+        self.selected_player = self
+            .players
+            .iter()
+            .position(|player| player.id == pick.player_id);
+
+        self.selected_replacement = 0;
+
+        true
     }
 
     fn update_search_selection(&mut self) {
@@ -685,5 +722,38 @@ mod tests {
 
         assert!(app.draft_picks.is_empty());
         assert_eq!(app.teams[0].budget, 200);
+    }
+    #[test]
+    fn undo_last_pick_removes_pick_and_refunds_team() {
+        let mut app = test_app();
+
+        let original_budget = app.teams[0].budget;
+
+        app.record_draft(0, 0, 25).unwrap();
+
+        assert_eq!(app.draft_picks.len(), 1);
+        assert_eq!(app.teams[0].budget, original_budget - 25);
+
+        let undone = app.undo_last_pick();
+
+        assert!(undone);
+        assert!(app.draft_picks.is_empty());
+        assert_eq!(app.teams[0].budget, original_budget);
+        assert_eq!(app.selected_player, Some(0));
+    }
+    #[test]
+    fn undo_with_no_picks_is_harmless() {
+        let mut app = test_app();
+
+        let budgets: Vec<u8> = app.teams.iter().map(|team| team.budget).collect();
+
+        let undone = app.undo_last_pick();
+
+        assert!(!undone);
+        assert!(app.draft_picks.is_empty());
+
+        let budgets_after: Vec<u8> = app.teams.iter().map(|team| team.budget).collect();
+
+        assert_eq!(budgets_after, budgets);
     }
 }
