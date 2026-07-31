@@ -72,15 +72,37 @@ fn build_text(build: &Build, app: &App) -> Text<'static> {
     if !build.target_players.is_empty() {
         lines.push(Line::from(""));
 
-        lines.push(Line::from(Span::styled("Primary targets", heading_style)));
+        lines.push(Line::from(Span::styled("Targets", heading_style)));
 
         for player_id in &build.target_players {
-            let player_name = app
-                .player_by_id(*player_id)
-                .map(|player| player.display_name().to_string())
-                .unwrap_or_else(|| String::from("Unknown player"));
+            let Some(player) = app.player_by_id(*player_id) else {
+                continue;
+            };
 
-            lines.push(Line::from(format!("  • {player_name}")));
+            let (status, style) = match app.draft_pick_for_player(*player_id) {
+                None => (String::from("AVAILABLE"), Style::default()),
+
+                Some(pick) => {
+                    let team_name = app
+                        .team_by_id(pick.team_id)
+                        .map(|team| team.name.as_str())
+                        .unwrap_or("Unknown team");
+
+                    (
+                        format!("DRAFTED → {team_name}"),
+                        Style::default().add_modifier(Modifier::DIM),
+                    )
+                }
+            };
+
+            let row = format!(
+                "  {:<20}  ${:<3}  {}",
+                player.display_name(),
+                player.projected_value,
+                status,
+            );
+
+            lines.push(Line::from(Span::styled(row, style)));
         }
     }
 

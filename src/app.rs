@@ -294,6 +294,9 @@ impl App {
             .iter()
             .any(|pick| pick.team_id == team_id && pick.player_id == player_id)
     }
+    pub fn team_by_id(&self, team_id: TeamId) -> Option<&FantasyTeam> {
+        self.teams.iter().find(|team| team.id == team_id)
+    }
     fn update_search_selection(&mut self) {
         if self.search_query.is_empty() {
             return;
