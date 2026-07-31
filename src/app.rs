@@ -5,6 +5,7 @@ use crate::draft::DraftMode;
 use crate::draft::DraftPick;
 use crate::player::{Player, PlayerId};
 use crate::team::FantasyTeam;
+use crate::team::TeamId;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
 
@@ -15,6 +16,7 @@ pub enum Screen {
     Home,
     Draft,
     Rosters,
+    Strategy,
 }
 
 pub struct App {
@@ -28,6 +30,7 @@ pub struct App {
     pub draft_mode: DraftMode,
     pub selected_team: Option<usize>,
     pub search_query: String,
+    pub user_team_id: TeamId,
 }
 
 impl App {
@@ -47,6 +50,7 @@ impl App {
             selected_team: None,
             draft_price_input: String::new(),
             search_query: String::new(),
+            user_team_id: TeamId(1),
         })
     }
 
@@ -66,6 +70,9 @@ impl App {
             }
             KeyCode::Char('r') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
                 self.screen = Screen::Rosters;
+            }
+            KeyCode::Char('s') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
+                self.screen = Screen::Strategy;
             }
 
             KeyCode::Char('j')
@@ -277,6 +284,11 @@ impl App {
     pub fn player_by_id(&self, player_id: PlayerId) -> Option<&Player> {
         self.players.iter().find(|player| player.id == player_id)
     }
+    pub fn team_has_player(&self, team_id: TeamId, player_id: PlayerId) -> bool {
+        self.draft_picks
+            .iter()
+            .any(|pick| pick.team_id == team_id && pick.player_id == player_id)
+    }
     fn update_search_selection(&mut self) {
         if self.search_query.is_empty() {
             return;
@@ -323,6 +335,7 @@ mod tests {
             selected_team: None,
             draft_price_input: String::new(),
             search_query: String::new(),
+            user_team_id: TeamId(1),
         }
     }
 

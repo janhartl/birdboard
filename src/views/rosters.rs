@@ -70,8 +70,8 @@ pub fn draw(frame: &mut Frame, app: &App) {
 
             frame.render_widget(roster_list, *area);
         }
-        let footer =
-            Paragraph::new("[b] Big board | [h] Home | [q] Quit").alignment(Alignment::Center);
+        let footer = Paragraph::new("[b] Big board | [h] Home | [s] Strategy | [q] Quit")
+            .alignment(Alignment::Center);
         frame.render_widget(footer, areas[row_count]);
     }
 }

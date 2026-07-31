@@ -23,8 +23,8 @@ pub fn draw(frame: &mut Frame, _app: &App) {
     let logo = Paragraph::new(LOGO).alignment(Alignment::Center);
     let slogan = Paragraph::new(Line::from("Who's playing for 2nd?").italic().dim())
         .alignment(Alignment::Center);
-    let command_line =
-        Paragraph::new("[h] Home | [b] Big board | [r] Rosters ").alignment(Alignment::Center);
+    let command_line = Paragraph::new("[h] Home | [b] Big board | [r] Rosters | [s] Strategy")
+        .alignment(Alignment::Center);
     let quit = Paragraph::new("[q] Quit").alignment(Alignment::Left);
 
     let areas = Layout::default()
