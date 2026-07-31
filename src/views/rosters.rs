@@ -1,28 +1,36 @@
 use crate::app::App;
 use ratatui::Frame;
-use ratatui::layout::{Constraint, Direction, Layout};
+use ratatui::layout::{Alignment, Constraint, Direction, Layout};
 use ratatui::style::{Modifier, Style};
-use ratatui::widgets::{Block, Borders, List, ListItem};
+use ratatui::text::Line;
+use ratatui::widgets::{Block, Borders, List, ListItem, Paragraph};
 
 pub fn draw(frame: &mut Frame, app: &App) {
+    const TEAMS_PER_ROW: usize = 5;
+    const ROSTER_HEIGHT: u16 = 15;
+
+    let row_count = app.teams.len().div_ceil(TEAMS_PER_ROW).max(1);
+
+    let mut vertical_constraints = vec![Constraint::Length(ROSTER_HEIGHT); row_count];
+
+    vertical_constraints.push(Constraint::Length(1));
+
     let areas = Layout::default()
         .direction(Direction::Vertical)
-        .constraints([
-            Constraint::Length(15),
-            Constraint::Length(15),
-            Constraint::Length(1),
-        ])
+        .constraints(vertical_constraints)
         .split(frame.area());
 
-    let teams_per_row = app.teams.len().div_ceil(2).max(1);
-
-    for (row_index, teams) in app.teams.chunks(teams_per_row).enumerate() {
+    for (row_index, teams) in app.teams.chunks(TEAMS_PER_ROW).enumerate() {
         let columns = Layout::default()
             .direction(Direction::Horizontal)
-            .constraints(vec![Constraint::Ratio(1, teams.len() as u32); teams.len()])
+            .constraints(vec![
+                Constraint::Ratio(1, TEAMS_PER_ROW as u32);
+                TEAMS_PER_ROW
+            ])
             .split(areas[row_index]);
 
-        for (team, area) in teams.iter().zip(columns.iter()) {
+        let first_column = (TEAMS_PER_ROW - teams.len()) / 2;
+        for (team, area) in teams.iter().zip(columns.iter().skip(first_column)) {
             let mut roster_items = Vec::new();
 
             for pick in app
@@ -43,20 +51,27 @@ pub fn draw(frame: &mut Frame, app: &App) {
                 }
             }
 
+            let roster_count = roster_items.len();
             if roster_items.is_empty() {
                 roster_items.push(
-                    ListItem::new("No players drafted")
-                        .style(Style::default().add_modifier(Modifier::DIM)),
+                    ListItem::new("Empty").style(Style::default().add_modifier(Modifier::DIM)),
                 );
             }
 
             let roster_list = List::new(roster_items).block(
                 Block::default()
                     .borders(Borders::ALL)
-                    .title(team.name.as_str()),
+                    .title_top(Line::from(format!(" {} ", team.name,)).alignment(Alignment::Center))
+                    .title_bottom(
+                        Line::from(format!(" ${} · {}/13", team.budget, roster_count,))
+                            .alignment(Alignment::Center),
+                    ),
             );
 
             frame.render_widget(roster_list, *area);
         }
+        let footer =
+            Paragraph::new("[b] Big board | [h] Home | [q] Quit").alignment(Alignment::Center);
+        frame.render_widget(footer, areas[row_count]);
     }
 }

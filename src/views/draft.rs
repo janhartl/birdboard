@@ -183,7 +183,7 @@ pub fn draw(frame: &mut Frame, app: &App) {
                 let team = &app.teams[team_index];
 
                 format!(
-                    "Draft: {} -> {} |  Price: ${}_",
+                    "[j/k] Team  | [Enter] Confirm | [Esc] Cancel || Draft: {} -> {} |  Price: ${}_",
                     player.name, team.name, app.draft_price_input,
                 )
             } else {
