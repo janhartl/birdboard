@@ -4,8 +4,10 @@ use crate::draft::DraftError;
 use crate::draft::DraftMode;
 use crate::draft::DraftPick;
 use crate::player::{Player, PlayerId};
+use crate::strategy::{Build, load_builds};
 use crate::team::FantasyTeam;
 use crate::team::TeamId;
+use anyhow::Result;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
 
@@ -31,14 +33,16 @@ pub struct App {
     pub selected_team: Option<usize>,
     pub search_query: String,
     pub user_team_id: TeamId,
+    pub builds: Vec<Build>,
 }
 
 impl App {
-    pub fn new() -> Result<App, csv::Error> {
+    pub fn new() -> Result<App> {
         let players = load_players("data/players.csv")?;
         let selected_player = if players.is_empty() { None } else { Some(0) };
         let teams = load_teams("data/teams.csv")?;
         let draft_picks = Vec::new();
+        let builds = load_builds("data/builds.toml")?;
         Ok(App {
             running: true,
             screen: Screen::Home,
@@ -51,6 +55,7 @@ impl App {
             draft_price_input: String::new(),
             search_query: String::new(),
             user_team_id: TeamId(1),
+            builds,
         })
     }
 
@@ -336,6 +341,7 @@ mod tests {
             draft_price_input: String::new(),
             search_query: String::new(),
             user_team_id: TeamId(1),
+            builds: Vec::new(),
         }
     }
 

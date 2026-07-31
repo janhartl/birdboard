@@ -10,3 +10,4 @@ anyhow = "1"
 serde = { version = "1.0.229", features = ["derive"] }
 csv = "1.4.0"
 fuzzy-matcher = "0.3.7"
+toml = "1.1.4"

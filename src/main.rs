@@ -3,6 +3,7 @@ mod data;
 mod draft;
 mod event;
 mod player;
+mod strategy;
 mod team;
 mod tui;
 mod ui;

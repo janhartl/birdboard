@@ -7,6 +7,7 @@ use ratatui::layout::Direction;
 use ratatui::layout::Layout;
 use ratatui::style::Modifier;
 use ratatui::style::Style;
+use ratatui::text::{Line, Span};
 use ratatui::widgets::List;
 use ratatui::widgets::ListItem;
 use ratatui::widgets::ListState;
@@ -168,13 +169,15 @@ pub fn draw(frame: &mut Frame, app: &App) {
         }
     };
 
-    let footer_text = match app.draft_mode {
-        DraftMode::SearchingPlayer => {
-            format!("/{}_", app.search_query)
-        }
-        DraftMode::BrowsingPlayers => {
-            String::from("[j/k] | [/] Search | [Enter] Draft player | [q] Quit")
-        }
+    let dim_style = Style::default().add_modifier(Modifier::DIM);
+
+    let footer_line = match app.draft_mode {
+        DraftMode::SearchingPlayer => Line::from(format!("/{}_", app.search_query)),
+
+        DraftMode::BrowsingPlayers => Line::from(Span::styled(
+            "[j/k] Move | [/] Search | [Enter] Draft player | [q] Quit",
+            dim_style,
+        )),
 
         DraftMode::RecordingDraft => {
             if let (Some(player_index), Some(team_index)) = (app.selected_player, app.selected_team)
@@ -182,16 +185,22 @@ pub fn draw(frame: &mut Frame, app: &App) {
                 let player = &app.players[player_index];
                 let team = &app.teams[team_index];
 
-                format!(
-                    "[j/k] Team  | [Enter] Confirm | [Esc] Cancel || Draft: {} -> {} |  Price: ${}_",
-                    player.name, team.name, app.draft_price_input,
-                )
+                Line::from(vec![
+                    Span::styled(
+                        "[j/k] Team | [Enter] Confirm | [Esc] Cancel  ||  ",
+                        dim_style,
+                    ),
+                    Span::raw(format!(
+                        "Draft: {} -> {} | Price: ${}_",
+                        player.name, team.name, app.draft_price_input,
+                    )),
+                ])
             } else {
-                String::from("Unable to record draft")
+                Line::from("Unable to record draft")
             }
         }
     };
 
-    let footer = Paragraph::new(footer_text).alignment(Alignment::Center);
+    let footer = Paragraph::new(footer_line).alignment(Alignment::Center);
     frame.render_widget(footer, areas[1]);
 }
