@@ -4,7 +4,7 @@ use crate::draft::DraftError;
 use crate::draft::DraftMode;
 use crate::draft::DraftPick;
 use crate::player::{Player, PlayerId};
-use crate::strategy::{Build, load_builds};
+use crate::strategy::{Build, ReplacementGroup, load_builds, load_replacements};
 use crate::team::FantasyTeam;
 use crate::team::TeamId;
 use anyhow::Result;
@@ -34,6 +34,7 @@ pub struct App {
     pub search_query: String,
     pub user_team_id: TeamId,
     pub builds: Vec<Build>,
+    pub replacements: Vec<ReplacementGroup>,
 }
 
 impl App {
@@ -43,6 +44,7 @@ impl App {
         let teams = load_teams("data/teams.csv")?;
         let draft_picks = Vec::new();
         let builds = load_builds("data/builds.toml")?;
+        let replacements = load_replacements("data/replacements.toml")?;
         Ok(App {
             running: true,
             screen: Screen::Home,
@@ -56,6 +58,7 @@ impl App {
             search_query: String::new(),
             user_team_id: TeamId(1),
             builds,
+            replacements,
         })
     }
 
@@ -345,6 +348,7 @@ mod tests {
             search_query: String::new(),
             user_team_id: TeamId(1),
             builds: Vec::new(),
+            replacements: Vec::new(),
         }
     }
 
