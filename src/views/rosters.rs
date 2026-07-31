@@ -1,7 +1,7 @@
 use crate::app::App;
 use ratatui::Frame;
 use ratatui::layout::{Alignment, Constraint, Direction, Layout};
-use ratatui::style::{Modifier, Style};
+use ratatui::style::{Modifier, Style, Stylize};
 use ratatui::text::Line;
 use ratatui::widgets::{Block, Borders, List, ListItem, Paragraph};
 
@@ -71,7 +71,8 @@ pub fn draw(frame: &mut Frame, app: &App) {
             frame.render_widget(roster_list, *area);
         }
         let footer = Paragraph::new("[b] Big board | [h] Home | [s] Strategy | [q] Quit")
-            .alignment(Alignment::Center);
+            .alignment(Alignment::Center)
+            .style(Style::default().add_modifier(Modifier::DIM));
         frame.render_widget(footer, areas[row_count]);
     }
 }
