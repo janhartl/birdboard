@@ -1,4 +1,4 @@
-use crate::app::App;
+use crate::app::{App, BoardMode, SessionPhase};
 use crate::draft::DraftMode;
 use ratatui::Frame;
 use ratatui::layout::Alignment;
@@ -174,10 +174,23 @@ pub fn draw(frame: &mut Frame, app: &App) {
     let footer_line = match app.draft_mode {
         DraftMode::SearchingPlayer => Line::from(format!("/{}_", app.search_query)),
 
-        DraftMode::BrowsingPlayers => Line::from(Span::styled(
-            "[j/k] Move | [/] Search | [Enter] Draft player | [u] Undo last | [q] Quit",
-            dim_style,
-        )),
+        DraftMode::BrowsingPlayers => {
+            let controls = match (&app.session_phase, &app.board_mode) {
+                (SessionPhase::Preparation, BoardMode::Browse) => {
+                    "PREPARATION · [j/k] Move | [/] Search | [Enter] Draft player | [E] Edit | [u] Undo last | [q] Quit"
+                }
+
+                (SessionPhase::Preparation, BoardMode::Edit) => {
+                    "PREPARATION · EDIT MODE | [j/k] Move | [E/Esc] Leave edit mode"
+                }
+
+                (SessionPhase::LiveDraft, _) => {
+                    "LIVE DRAFT · [j/k] Move | [/] Search | [Enter] Draft player | [u] Undo last | [q] Quit"
+                }
+            };
+
+            Line::from(Span::styled(controls, dim_style))
+        }
 
         DraftMode::RecordingDraft => {
             if let (Some(player_index), Some(team_index)) = (app.selected_player, app.selected_team)

@@ -24,9 +24,23 @@ pub enum Screen {
     Strategy,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SessionPhase {
+    Preparation,
+    LiveDraft,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum BoardMode {
+    Browse,
+    Edit,
+}
+
 pub struct App {
     pub running: bool,
     pub screen: Screen,
+    pub session_phase: SessionPhase,
+    pub board_mode: BoardMode,
     pub players: Vec<Player>,
     pub selected_player: Option<usize>,
     pub teams: Vec<FantasyTeam>,
@@ -67,6 +81,8 @@ impl App {
             builds,
             replacements,
             selected_replacement: 0,
+            session_phase: SessionPhase::Preparation,
+            board_mode: BoardMode::Browse,
         })
     }
 
@@ -89,6 +105,12 @@ impl App {
             }
             KeyCode::Char('s') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
                 self.screen = Screen::Strategy;
+            }
+            KeyCode::Char('E')
+                if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
+            {
+                self.toggle_board_edit_mode();
             }
 
             KeyCode::Char('j')
@@ -145,6 +167,12 @@ impl App {
             }
             KeyCode::Esc
                 if matches!(&self.screen, Screen::Draft)
+                    && matches!(&self.board_mode, BoardMode::Edit) =>
+            {
+                self.board_mode = BoardMode::Browse;
+            }
+            KeyCode::Esc
+                if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::SearchingPlayer) =>
             {
                 self.search_query.clear();
@@ -153,6 +181,7 @@ impl App {
             KeyCode::Enter
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(self.draft_mode, DraftMode::BrowsingPlayers)
+                    && matches!(&self.board_mode, BoardMode::Browse)
                     && let Some(player_index) = self.selected_player
                     && self
                         .draft_pick_for_player(self.players[player_index].id)
@@ -182,7 +211,8 @@ impl App {
             }
             KeyCode::Char('/')
                 if matches!(&self.screen, Screen::Draft)
-                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
+                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers)
+                    && matches!(&self.board_mode, BoardMode::Browse) =>
             {
                 self.search_query.clear();
                 self.draft_mode = DraftMode::SearchingPlayer;
@@ -255,6 +285,8 @@ impl App {
             price,
         };
         self.draft_picks.push(draft_pick);
+        self.session_phase = SessionPhase::LiveDraft;
+        self.board_mode = BoardMode::Browse;
 
         Ok(())
     }
@@ -396,6 +428,18 @@ impl App {
 
         true
     }
+    pub fn editing_allowed(&self) -> bool {
+        matches!(self.session_phase, SessionPhase::Preparation)
+    }
+    pub fn toggle_board_edit_mode(&mut self) {
+        if !self.editing_allowed() {
+            return;
+        }
+        self.board_mode = match self.board_mode {
+            BoardMode::Browse => BoardMode::Edit,
+            BoardMode::Edit => BoardMode::Browse,
+        };
+    }
 
     fn update_search_selection(&mut self) {
         if self.search_query.is_empty() {
@@ -447,6 +491,8 @@ mod tests {
             builds: Vec::new(),
             replacements: Vec::new(),
             selected_replacement: 0,
+            session_phase: SessionPhase::Preparation,
+            board_mode: BoardMode::Browse,
         }
     }
 
