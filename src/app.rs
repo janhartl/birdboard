@@ -49,6 +49,62 @@ pub struct PlayerRegister {
     pub original_index: usize,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PlayerFormMode {
+    Add,
+    Edit(PlayerId),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PlayerFormField {
+    Name,
+    ShortName,
+    Position,
+    ProjectedValue,
+}
+
+impl PlayerFormField {
+    fn next(self) -> Self {
+        match self {
+            Self::Name => Self::ShortName,
+            Self::ShortName => Self::Position,
+            Self::Position => Self::ProjectedValue,
+            Self::ProjectedValue => Self::Name,
+        }
+    }
+
+    fn previous(self) -> Self {
+        match self {
+            Self::Name => Self::ProjectedValue,
+            Self::ShortName => Self::Name,
+            Self::Position => Self::ShortName,
+            Self::ProjectedValue => Self::Position,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct PlayerForm {
+    pub mode: PlayerFormMode,
+    pub active_field: PlayerFormField,
+    pub name: String,
+    pub short_name: String,
+    pub position: String,
+    pub projected_value: String,
+    pub error: Option<String>,
+}
+
+impl PlayerForm {
+    fn active_value_mut(&mut self) -> &mut String {
+        match self.active_field {
+            PlayerFormField::Name => &mut self.name,
+            PlayerFormField::ShortName => &mut self.short_name,
+            PlayerFormField::Position => &mut self.position,
+            PlayerFormField::ProjectedValue => &mut self.projected_value,
+        }
+    }
+}
+
 pub struct App {
     pub running: bool,
     pub screen: Screen,
@@ -70,6 +126,7 @@ pub struct App {
     pub player_register: Option<PlayerRegister>,
     pub data_dirty: bool,
     pub edit_status: Option<String>,
+    pub player_form: Option<PlayerForm>,
 }
 
 impl App {
@@ -104,6 +161,7 @@ impl App {
             player_register: None,
             data_dirty: false,
             edit_status: None,
+            player_form: None,
         })
     }
 
@@ -111,6 +169,10 @@ impl App {
         self.running = false;
     }
     pub fn handle_key(&mut self, key: KeyEvent) {
+        if self.player_form.is_some() {
+            self.handle_player_form_key(key);
+            return;
+        }
         if matches!(&self.screen, Screen::Draft)
             && matches!(&self.draft_mode, DraftMode::SearchingPlayer)
         {
@@ -182,6 +244,17 @@ impl App {
                     self.pending_edit_command = PendingEditCommand::None;
 
                     self.select_previous();
+                }
+                KeyCode::Enter => {
+                    self.pending_edit_command = PendingEditCommand::None;
+
+                    self.open_edit_player_form();
+                }
+
+                KeyCode::Char('a') => {
+                    self.pending_edit_command = PendingEditCommand::None;
+
+                    self.open_add_player_form();
                 }
                 KeyCode::Char('s') => {
                     self.pending_edit_command = PendingEditCommand::None;
@@ -576,6 +649,7 @@ impl App {
         self.players.insert(insert_index, register.player);
         self.selected_player = Some(insert_index);
         self.data_dirty = true;
+        self.edit_status = None;
 
         true
     }
@@ -594,6 +668,7 @@ impl App {
         self.players.insert(insert_index, register.player);
         self.selected_player = Some(insert_index);
         self.data_dirty = true;
+        self.edit_status = None;
 
         true
     }
@@ -609,6 +684,197 @@ impl App {
         self.player_register = None;
 
         Ok(())
+    }
+    fn open_edit_player_form(&mut self) {
+        let Some(player_index) = self.selected_player else {
+            return;
+        };
+
+        let Some(player) = self.players.get(player_index) else {
+            return;
+        };
+
+        self.edit_status = None;
+
+        self.player_form = Some(PlayerForm {
+            mode: PlayerFormMode::Edit(player.id),
+            active_field: PlayerFormField::Name,
+            name: player.name.clone(),
+            short_name: player.short_name.clone().unwrap_or_default(),
+            position: player.position.clone(),
+            projected_value: player.projected_value.to_string(),
+            error: None,
+        });
+    }
+
+    fn open_add_player_form(&mut self) {
+        self.edit_status = None;
+
+        self.player_form = Some(PlayerForm {
+            mode: PlayerFormMode::Add,
+            active_field: PlayerFormField::Name,
+            name: String::new(),
+            short_name: String::new(),
+            position: String::new(),
+            projected_value: String::new(),
+            error: None,
+        });
+    }
+
+    fn handle_player_form_key(&mut self, key: KeyEvent) {
+        match key.code {
+            KeyCode::Esc => {
+                self.player_form = None;
+            }
+
+            KeyCode::Tab => {
+                if let Some(form) = &mut self.player_form {
+                    form.active_field = form.active_field.next();
+                    form.error = None;
+                }
+            }
+
+            KeyCode::BackTab => {
+                if let Some(form) = &mut self.player_form {
+                    form.active_field = form.active_field.previous();
+                    form.error = None;
+                }
+            }
+
+            KeyCode::Backspace => {
+                if let Some(form) = &mut self.player_form {
+                    form.active_value_mut().pop();
+                    form.error = None;
+                }
+            }
+
+            KeyCode::Enter => {
+                self.apply_player_form();
+            }
+
+            KeyCode::Char(character) => {
+                let Some(form) = &mut self.player_form else {
+                    return;
+                };
+
+                if matches!(form.active_field, PlayerFormField::ProjectedValue) {
+                    if character.is_ascii_digit() && form.projected_value.len() < 3 {
+                        form.projected_value.push(character);
+                    }
+                } else {
+                    form.active_value_mut().push(character);
+                }
+
+                form.error = None;
+            }
+
+            _ => {}
+        }
+    }
+    fn apply_player_form(&mut self) {
+        let Some(form) = self.player_form.as_ref() else {
+            return;
+        };
+
+        let mode = form.mode;
+        let name = form.name.trim().to_string();
+        let short_name = form.short_name.trim().to_string();
+        let position = form.position.trim().to_string();
+        let projected_value_input = form.projected_value.trim().to_string();
+
+        if name.is_empty() {
+            self.set_player_form_error("Player name cannot be empty.");
+            return;
+        }
+
+        if position.is_empty() {
+            self.set_player_form_error("Position cannot be empty.");
+            return;
+        }
+
+        let Ok(projected_value) = projected_value_input.parse::<u8>() else {
+            self.set_player_form_error("Projected value must be between 0 and 255.");
+            return;
+        };
+
+        let short_name = if short_name.is_empty() {
+            None
+        } else {
+            Some(short_name)
+        };
+
+        match mode {
+            PlayerFormMode::Edit(player_id) => {
+                let Some(player) = self
+                    .players
+                    .iter_mut()
+                    .find(|player| player.id == player_id)
+                else {
+                    self.set_player_form_error("The selected player no longer exists.");
+                    return;
+                };
+
+                player.name = name;
+                player.short_name = short_name;
+                player.position = position;
+                player.projected_value = projected_value;
+            }
+
+            PlayerFormMode::Add => {
+                let Some(player_id) = self.next_available_player_id() else {
+                    self.set_player_form_error("No unused player IDs remain.");
+                    return;
+                };
+
+                let insert_index = match self.selected_player {
+                    Some(index) => (index + 1).min(self.players.len()),
+
+                    None => 0,
+                };
+
+                self.players.insert(
+                    insert_index,
+                    Player {
+                        id: player_id,
+                        name,
+                        short_name,
+                        position,
+                        projected_value,
+                    },
+                );
+
+                self.selected_player = Some(insert_index);
+            }
+        }
+
+        self.player_form = None;
+        self.data_dirty = true;
+        self.edit_status = None;
+    }
+
+    fn set_player_form_error(&mut self, message: impl Into<String>) {
+        if let Some(form) = &mut self.player_form {
+            form.error = Some(message.into());
+        }
+    }
+
+    fn next_available_player_id(&self) -> Option<PlayerId> {
+        let largest_id = self
+            .players
+            .iter()
+            .map(|player| player.id.0)
+            .chain(
+                self.player_register
+                    .iter()
+                    .map(|register| register.player.id.0),
+            )
+            .max();
+
+        match largest_id {
+            Some(id) => id.checked_add(1).map(PlayerId),
+
+            None => Some(PlayerId(0)),
+        }
     }
     fn update_search_selection(&mut self) {
         if self.search_query.is_empty() {
@@ -666,6 +932,7 @@ mod tests {
             player_register: None,
             data_dirty: false,
             edit_status: None,
+            player_form: None,
         }
     }
 
