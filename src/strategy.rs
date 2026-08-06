@@ -1,10 +1,11 @@
 use crate::player::PlayerId;
 
 use anyhow::{Context, Result};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::fs;
+use std::path::Path;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Build {
     pub id: String,
     pub title: String,
@@ -14,7 +15,7 @@ pub struct Build {
     pub target_players: Vec<PlayerId>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct BuildSection {
     pub title: String,
     pub items: Vec<String>,
@@ -25,7 +26,12 @@ struct BuildFile {
     builds: Vec<Build>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Serialize)]
+struct BuildFileRef<'a> {
+    builds: &'a [Build],
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct ReplacementGroup {
     pub id: String,
     pub title: String,
@@ -36,7 +42,7 @@ pub struct ReplacementGroup {
     pub rule: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct ReplacementOption {
     pub player_id: PlayerId,
     pub left: String,
@@ -48,6 +54,11 @@ struct ReplacementFile {
     replacements: Vec<ReplacementGroup>,
 }
 
+#[derive(Serialize)]
+struct ReplacementFileRef<'a> {
+    replacements: &'a [ReplacementGroup],
+}
+
 pub fn load_builds(path: &str) -> Result<Vec<Build>> {
     let contents = fs::read_to_string(path)
         .with_context(|| format!("failed to read strategy file: {path}"))?;
@@ -56,6 +67,26 @@ pub fn load_builds(path: &str) -> Result<Vec<Build>> {
         .with_context(|| format!("failed to parse strategy file: {path}"))?;
 
     Ok(build_file.builds)
+}
+
+pub fn save_builds(path: impl AsRef<Path>, builds: &[Build]) -> Result<()> {
+    let path = path.as_ref();
+    let temporary_path = path.with_extension("toml.tmp");
+
+    let contents =
+        toml::to_string_pretty(&BuildFileRef { builds }).context("failed to serialize builds")?;
+
+    fs::write(&temporary_path, contents).with_context(|| {
+        format!(
+            "failed to write temporary build file: {}",
+            temporary_path.display(),
+        )
+    })?;
+
+    fs::rename(&temporary_path, path)
+        .with_context(|| format!("failed to replace {} with saved build data", path.display(),))?;
+
+    Ok(())
 }
 
 pub fn active_build<F>(builds: &[Build], owns_player: F) -> Option<&Build>
@@ -81,6 +112,30 @@ pub fn load_replacements(path: &str) -> Result<Vec<ReplacementGroup>> {
         .with_context(|| format!("failed to parse replacement file: {path}"))?;
 
     Ok(replacement_file.replacements)
+}
+
+pub fn save_replacements(path: impl AsRef<Path>, replacements: &[ReplacementGroup]) -> Result<()> {
+    let path = path.as_ref();
+    let temporary_path = path.with_extension("toml.tmp");
+
+    let contents = toml::to_string_pretty(&ReplacementFileRef { replacements })
+        .context("failed to serialize replacement matrices")?;
+
+    fs::write(&temporary_path, contents).with_context(|| {
+        format!(
+            "failed to write temporary replacement file: {}",
+            temporary_path.display(),
+        )
+    })?;
+
+    fs::rename(&temporary_path, path).with_context(|| {
+        format!(
+            "failed to replace {} with saved replacement data",
+            path.display(),
+        )
+    })?;
+
+    Ok(())
 }
 
 pub fn replacement_for_player(

@@ -9,6 +9,7 @@ use crate::draft::DraftPick;
 use crate::player::{Player, PlayerId};
 use crate::strategy::{
     Build, ReplacementGroup, active_build, load_builds, load_replacements, replacement_for_player,
+    save_builds, save_replacements,
 };
 use crate::team::FantasyTeam;
 use crate::team::TeamId;
@@ -119,6 +120,51 @@ pub struct TeamInput {
     pub error: Option<String>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StrategyPane {
+    Build,
+    Replacement,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum BuildEditTarget {
+    Title,
+    Identity,
+    SectionTitle(usize),
+    SectionItem {
+        section_index: usize,
+        item_index: usize,
+    },
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ReplacementEditTarget {
+    Title,
+    AlternativeLeft(usize),
+    AlternativeRight(usize),
+    Rule,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum StrategyTextTarget {
+    Build {
+        build_index: usize,
+        target: BuildEditTarget,
+    },
+
+    Replacement {
+        group_index: usize,
+        target: ReplacementEditTarget,
+    },
+}
+
+#[derive(Debug)]
+pub struct StrategyTextInput {
+    pub target: StrategyTextTarget,
+    pub value: String,
+    pub error: Option<String>,
+}
+
 pub struct App {
     pub running: bool,
     pub screen: Screen,
@@ -141,7 +187,15 @@ pub struct App {
 
     pub builds: Vec<Build>,
     pub replacements: Vec<ReplacementGroup>,
+
+    pub strategy_pane: StrategyPane,
+    pub selected_build: usize,
+    pub selected_replacement_group: usize,
     pub selected_replacement: usize,
+
+    pub selected_strategy_row: usize,
+    pub strategy_text_input: Option<StrategyTextInput>,
+    pub strategy_dirty: bool,
 
     pub pending_edit_command: PendingEditCommand,
 
@@ -210,7 +264,15 @@ impl App {
 
             builds,
             replacements,
+
+            strategy_pane: StrategyPane::Build,
+            selected_build: 0,
+            selected_replacement_group: 0,
             selected_replacement: 0,
+
+            selected_strategy_row: 0,
+            strategy_text_input: None,
+            strategy_dirty: false,
 
             pending_edit_command: PendingEditCommand::None,
 
@@ -235,10 +297,12 @@ impl App {
          *
          * 1. Player form
          * 2. Team-name input
-         * 3. Player search
-         * 4. Draft-screen edit commands
-         * 5. Roster-screen edit commands
-         * 6. Normal/global commands
+         * 3. Strategy text input
+         * 4. Player search
+         * 5. Big Board edit commands
+         * 6. Rosters edit commands
+         * 7. Strategy edit commands
+         * 8. Normal/global commands
          */
 
         if self.player_form.is_some() {
@@ -248,6 +312,11 @@ impl App {
 
         if self.team_input.is_some() {
             self.handle_team_input_key(key);
+            return;
+        }
+
+        if self.strategy_text_input.is_some() {
+            self.handle_strategy_text_input_key(key);
             return;
         }
 
@@ -350,7 +419,6 @@ impl App {
                 }
 
                 _ => {
-                    // An unrelated key cancels a pending first `d`.
                     self.pending_edit_command = PendingEditCommand::None;
                 }
             }
@@ -423,6 +491,47 @@ impl App {
             return;
         }
 
+        if matches!(&self.screen, Screen::Strategy)
+            && matches!(&self.interaction_mode, InteractionMode::Edit)
+        {
+            match key.code {
+                KeyCode::Tab | KeyCode::BackTab => {
+                    self.toggle_strategy_pane();
+                }
+
+                KeyCode::Char('j') => {
+                    self.select_next_strategy_edit_row();
+                }
+
+                KeyCode::Char('k') => {
+                    self.select_previous_strategy_edit_row();
+                }
+
+                KeyCode::Enter => {
+                    self.open_strategy_text_input();
+                }
+
+                KeyCode::Char('s') => {
+                    let status = match self.save_strategy_data() {
+                        Ok(()) => String::from("Saved strategy data"),
+                        Err(error) => format!("SAVE FAILED: {error}"),
+                    };
+
+                    self.edit_status = Some(status);
+                }
+
+                KeyCode::Char('E') | KeyCode::Esc => {
+                    self.interaction_mode = InteractionMode::Browse;
+                    self.selected_strategy_row = 0;
+                    self.edit_status = None;
+                }
+
+                _ => {}
+            }
+
+            return;
+        }
+
         match key.code {
             KeyCode::Char('q') if !matches!(&self.draft_mode, DraftMode::SearchingPlayer) => {
                 self.quit();
@@ -448,11 +557,8 @@ impl App {
                 self.toggle_edit_mode();
             }
 
-            KeyCode::Esc
-                if matches!(&self.interaction_mode, InteractionMode::Edit)
-                    && matches!(&self.screen, Screen::Rosters | Screen::Strategy) =>
-            {
-                self.toggle_edit_mode();
+            KeyCode::Tab | KeyCode::BackTab if matches!(&self.screen, Screen::Strategy) => {
+                self.toggle_strategy_pane();
             }
 
             KeyCode::Char('j')
@@ -484,11 +590,11 @@ impl App {
             }
 
             KeyCode::Char('j') if matches!(&self.screen, Screen::Strategy) => {
-                self.select_next_replacement();
+                self.select_next_strategy_item();
             }
 
             KeyCode::Char('k') if matches!(&self.screen, Screen::Strategy) => {
-                self.select_previous_replacement();
+                self.select_previous_strategy_item();
             }
 
             KeyCode::Char(digit)
@@ -610,9 +716,12 @@ impl App {
 
         self.session_phase = SessionPhase::LiveDraft;
         self.interaction_mode = InteractionMode::Browse;
+
         self.pending_edit_command = PendingEditCommand::None;
+
         self.player_form = None;
         self.team_input = None;
+        self.strategy_text_input = None;
 
         Ok(())
     }
@@ -748,7 +857,6 @@ impl App {
         };
 
         let Some(team_index) = self.teams.iter().position(|team| team.id == pick.team_id) else {
-            // Preserve the draft if its team cannot be found.
             self.draft_picks.push(pick);
             return false;
         };
@@ -786,6 +894,10 @@ impl App {
                     && !self.teams.is_empty()
                 {
                     self.selected_roster_team = Some(0);
+                }
+
+                if matches!(self.screen, Screen::Strategy) {
+                    self.selected_strategy_row = 0;
                 }
 
                 InteractionMode::Edit
@@ -881,9 +993,6 @@ impl App {
         save_players("data/players.csv", &self.players)?;
 
         self.data_dirty = false;
-
-        // A successful save while a player is still cut means
-        // that the deletion has been confirmed.
         self.player_register = None;
 
         Ok(())
@@ -972,6 +1081,190 @@ impl App {
         save_teams("data/teams.csv", &self.teams)?;
 
         self.teams_dirty = false;
+
+        Ok(())
+    }
+
+    pub fn toggle_strategy_pane(&mut self) {
+        self.strategy_pane = match self.strategy_pane {
+            StrategyPane::Build => StrategyPane::Replacement,
+            StrategyPane::Replacement => StrategyPane::Build,
+        };
+
+        self.selected_strategy_row = 0;
+    }
+
+    pub fn select_next_strategy_item(&mut self) {
+        match self.strategy_pane {
+            StrategyPane::Build => {
+                if matches!(self.session_phase, SessionPhase::LiveDraft) {
+                    return;
+                }
+
+                if self.builds.is_empty() {
+                    self.selected_build = 0;
+                    return;
+                }
+
+                self.selected_build = (self.selected_build + 1) % self.builds.len();
+            }
+
+            StrategyPane::Replacement => {
+                if matches!(self.session_phase, SessionPhase::Preparation) {
+                    if self.replacements.is_empty() {
+                        self.selected_replacement_group = 0;
+                        return;
+                    }
+
+                    self.selected_replacement_group =
+                        (self.selected_replacement_group + 1) % self.replacements.len();
+                } else {
+                    self.select_next_replacement();
+                }
+            }
+        }
+    }
+
+    pub fn select_previous_strategy_item(&mut self) {
+        match self.strategy_pane {
+            StrategyPane::Build => {
+                if matches!(self.session_phase, SessionPhase::LiveDraft) {
+                    return;
+                }
+
+                if self.builds.is_empty() {
+                    self.selected_build = 0;
+                    return;
+                }
+
+                self.selected_build = if self.selected_build == 0 {
+                    self.builds.len() - 1
+                } else {
+                    self.selected_build - 1
+                };
+            }
+
+            StrategyPane::Replacement => {
+                if matches!(self.session_phase, SessionPhase::Preparation) {
+                    if self.replacements.is_empty() {
+                        self.selected_replacement_group = 0;
+                        return;
+                    }
+
+                    self.selected_replacement_group = if self.selected_replacement_group == 0 {
+                        self.replacements.len() - 1
+                    } else {
+                        self.selected_replacement_group - 1
+                    };
+                } else {
+                    self.select_previous_replacement();
+                }
+            }
+        }
+    }
+
+    pub fn build_edit_targets(&self) -> Vec<BuildEditTarget> {
+        let Some(build) = self.builds.get(self.selected_build) else {
+            return Vec::new();
+        };
+
+        let mut targets = vec![BuildEditTarget::Title, BuildEditTarget::Identity];
+
+        for (section_index, section) in build.sections.iter().enumerate() {
+            targets.push(BuildEditTarget::SectionTitle(section_index));
+
+            for item_index in 0..section.items.len() {
+                targets.push(BuildEditTarget::SectionItem {
+                    section_index,
+                    item_index,
+                });
+            }
+        }
+
+        targets
+    }
+
+    pub fn replacement_edit_targets(&self) -> Vec<ReplacementEditTarget> {
+        let Some(group) = self.replacements.get(self.selected_replacement_group) else {
+            return Vec::new();
+        };
+
+        let mut targets = vec![ReplacementEditTarget::Title];
+
+        for option_index in 0..group.alternatives.len() {
+            targets.push(ReplacementEditTarget::AlternativeLeft(option_index));
+            targets.push(ReplacementEditTarget::AlternativeRight(option_index));
+        }
+
+        targets.push(ReplacementEditTarget::Rule);
+
+        targets
+    }
+
+    pub fn selected_build_edit_target(&self) -> Option<BuildEditTarget> {
+        let targets = self.build_edit_targets();
+
+        if targets.is_empty() {
+            return None;
+        }
+
+        targets
+            .get(self.selected_strategy_row % targets.len())
+            .copied()
+    }
+
+    pub fn selected_replacement_edit_target(&self) -> Option<ReplacementEditTarget> {
+        let targets = self.replacement_edit_targets();
+
+        if targets.is_empty() {
+            return None;
+        }
+
+        targets
+            .get(self.selected_strategy_row % targets.len())
+            .copied()
+    }
+
+    fn strategy_edit_target_count(&self) -> usize {
+        match self.strategy_pane {
+            StrategyPane::Build => self.build_edit_targets().len(),
+            StrategyPane::Replacement => self.replacement_edit_targets().len(),
+        }
+    }
+
+    pub fn select_next_strategy_edit_row(&mut self) {
+        let count = self.strategy_edit_target_count();
+
+        if count == 0 {
+            self.selected_strategy_row = 0;
+            return;
+        }
+
+        self.selected_strategy_row = (self.selected_strategy_row + 1) % count;
+    }
+
+    pub fn select_previous_strategy_edit_row(&mut self) {
+        let count = self.strategy_edit_target_count();
+
+        if count == 0 {
+            self.selected_strategy_row = 0;
+            return;
+        }
+
+        self.selected_strategy_row = if self.selected_strategy_row == 0 {
+            count - 1
+        } else {
+            self.selected_strategy_row - 1
+        };
+    }
+
+    pub fn save_strategy_data(&mut self) -> Result<()> {
+        validate_data(&self.players, &self.teams, &self.builds, &self.replacements)?;
+
+        save_builds("data/builds.toml", &self.builds)?;
+        save_replacements("data/replacements.toml", &self.replacements)?;
+
+        self.strategy_dirty = false;
 
         Ok(())
     }
@@ -1281,6 +1574,253 @@ impl App {
         }
     }
 
+    fn open_strategy_text_input(&mut self) {
+        let target = match self.strategy_pane {
+            StrategyPane::Build => {
+                let Some(target) = self.selected_build_edit_target() else {
+                    return;
+                };
+
+                StrategyTextTarget::Build {
+                    build_index: self.selected_build,
+                    target,
+                }
+            }
+
+            StrategyPane::Replacement => {
+                let Some(target) = self.selected_replacement_edit_target() else {
+                    return;
+                };
+
+                StrategyTextTarget::Replacement {
+                    group_index: self.selected_replacement_group,
+                    target,
+                }
+            }
+        };
+
+        let Some(value) = self.strategy_text_value(target) else {
+            return;
+        };
+
+        self.strategy_text_input = Some(StrategyTextInput {
+            target,
+            value,
+            error: None,
+        });
+
+        self.edit_status = None;
+    }
+
+    fn strategy_text_value(&self, target: StrategyTextTarget) -> Option<String> {
+        match target {
+            StrategyTextTarget::Build {
+                build_index,
+                target,
+            } => {
+                let build = self.builds.get(build_index)?;
+
+                match target {
+                    BuildEditTarget::Title => Some(build.title.clone()),
+
+                    BuildEditTarget::Identity => Some(build.identity.clone()),
+
+                    BuildEditTarget::SectionTitle(section_index) => {
+                        Some(build.sections.get(section_index)?.title.clone())
+                    }
+
+                    BuildEditTarget::SectionItem {
+                        section_index,
+                        item_index,
+                    } => Some(
+                        build
+                            .sections
+                            .get(section_index)?
+                            .items
+                            .get(item_index)?
+                            .clone(),
+                    ),
+                }
+            }
+
+            StrategyTextTarget::Replacement {
+                group_index,
+                target,
+            } => {
+                let group = self.replacements.get(group_index)?;
+
+                match target {
+                    ReplacementEditTarget::Title => Some(group.title.clone()),
+
+                    ReplacementEditTarget::AlternativeLeft(option_index) => {
+                        Some(group.alternatives.get(option_index)?.left.clone())
+                    }
+
+                    ReplacementEditTarget::AlternativeRight(option_index) => {
+                        Some(group.alternatives.get(option_index)?.right.clone())
+                    }
+
+                    ReplacementEditTarget::Rule => Some(group.rule.clone().unwrap_or_default()),
+                }
+            }
+        }
+    }
+
+    fn handle_strategy_text_input_key(&mut self, key: KeyEvent) {
+        match key.code {
+            KeyCode::Esc => {
+                self.strategy_text_input = None;
+            }
+
+            KeyCode::Backspace => {
+                if let Some(input) = &mut self.strategy_text_input {
+                    input.value.pop();
+                    input.error = None;
+                }
+            }
+
+            KeyCode::Enter => {
+                self.apply_strategy_text_input();
+            }
+
+            KeyCode::Char(character) => {
+                if let Some(input) = &mut self.strategy_text_input {
+                    input.value.push(character);
+                    input.error = None;
+                }
+            }
+
+            _ => {}
+        }
+    }
+
+    fn apply_strategy_text_input(&mut self) {
+        let Some(input) = self.strategy_text_input.as_ref() else {
+            return;
+        };
+
+        let target = input.target;
+        let value = input.value.trim().to_string();
+
+        let rule_target = matches!(
+            target,
+            StrategyTextTarget::Replacement {
+                target: ReplacementEditTarget::Rule,
+                ..
+            }
+        );
+
+        if value.is_empty() && !rule_target {
+            self.set_strategy_text_input_error("Text cannot be empty.");
+            return;
+        }
+
+        match target {
+            StrategyTextTarget::Build {
+                build_index,
+                target,
+            } => {
+                let Some(build) = self.builds.get_mut(build_index) else {
+                    self.set_strategy_text_input_error("The selected build no longer exists.");
+                    return;
+                };
+
+                match target {
+                    BuildEditTarget::Title => {
+                        build.title = value;
+                    }
+
+                    BuildEditTarget::Identity => {
+                        build.identity = value;
+                    }
+
+                    BuildEditTarget::SectionTitle(section_index) => {
+                        let Some(section) = build.sections.get_mut(section_index) else {
+                            self.set_strategy_text_input_error(
+                                "The selected section no longer exists.",
+                            );
+                            return;
+                        };
+
+                        section.title = value;
+                    }
+
+                    BuildEditTarget::SectionItem {
+                        section_index,
+                        item_index,
+                    } => {
+                        let Some(item) = build
+                            .sections
+                            .get_mut(section_index)
+                            .and_then(|section| section.items.get_mut(item_index))
+                        else {
+                            self.set_strategy_text_input_error(
+                                "The selected item no longer exists.",
+                            );
+                            return;
+                        };
+
+                        *item = value;
+                    }
+                }
+            }
+
+            StrategyTextTarget::Replacement {
+                group_index,
+                target,
+            } => {
+                let Some(group) = self.replacements.get_mut(group_index) else {
+                    self.set_strategy_text_input_error(
+                        "The selected replacement matrix no longer exists.",
+                    );
+                    return;
+                };
+
+                match target {
+                    ReplacementEditTarget::Title => {
+                        group.title = value;
+                    }
+
+                    ReplacementEditTarget::AlternativeLeft(option_index) => {
+                        let Some(option) = group.alternatives.get_mut(option_index) else {
+                            self.set_strategy_text_input_error(
+                                "The selected replacement no longer exists.",
+                            );
+                            return;
+                        };
+
+                        option.left = value;
+                    }
+
+                    ReplacementEditTarget::AlternativeRight(option_index) => {
+                        let Some(option) = group.alternatives.get_mut(option_index) else {
+                            self.set_strategy_text_input_error(
+                                "The selected replacement no longer exists.",
+                            );
+                            return;
+                        };
+
+                        option.right = value;
+                    }
+
+                    ReplacementEditTarget::Rule => {
+                        group.rule = if value.is_empty() { None } else { Some(value) };
+                    }
+                }
+            }
+        }
+
+        self.strategy_text_input = None;
+        self.strategy_dirty = true;
+        self.edit_status = None;
+    }
+
+    fn set_strategy_text_input_error(&mut self, message: impl Into<String>) {
+        if let Some(input) = &mut self.strategy_text_input {
+            input.error = Some(message.into());
+        }
+    }
+
     fn update_search_selection(&mut self) {
         if self.search_query.is_empty() {
             return;
@@ -1340,7 +1880,15 @@ mod tests {
 
             builds: Vec::new(),
             replacements: Vec::new(),
+
+            strategy_pane: StrategyPane::Build,
+            selected_build: 0,
+            selected_replacement_group: 0,
             selected_replacement: 0,
+
+            selected_strategy_row: 0,
+            strategy_text_input: None,
+            strategy_dirty: false,
 
             pending_edit_command: PendingEditCommand::None,
 
@@ -1461,25 +2009,7 @@ mod tests {
 
     #[test]
     fn nonexistent_player_index() {
-        let mut app = test_app(
-            vec![
-                Player {
-                    id: PlayerId(0),
-                    name: String::from("Bird"),
-                    position: String::from("SF"),
-                    projected_value: 200,
-                    short_name: Some(String::from("Bird")),
-                },
-                Player {
-                    id: PlayerId(1),
-                    name: String::from("Luka"),
-                    position: String::from("PG"),
-                    projected_value: 77,
-                    short_name: Some(String::from("Luka")),
-                },
-            ],
-            None,
-        );
+        let mut app = single_player_test_app();
 
         let invalid_player_index = app.players.len();
         let result = app.record_draft(invalid_player_index, 0, 10);
@@ -1489,25 +2019,7 @@ mod tests {
 
     #[test]
     fn nonexistent_team_index() {
-        let mut app = test_app(
-            vec![
-                Player {
-                    id: PlayerId(0),
-                    name: String::from("Bird"),
-                    position: String::from("SF"),
-                    projected_value: 200,
-                    short_name: Some(String::from("Bird")),
-                },
-                Player {
-                    id: PlayerId(1),
-                    name: String::from("Luka"),
-                    position: String::from("PG"),
-                    projected_value: 77,
-                    short_name: Some(String::from("Luka")),
-                },
-            ],
-            Some(0),
-        );
+        let mut app = single_player_test_app();
 
         let invalid_team_index = app.teams.len();
         let result = app.record_draft(0, invalid_team_index, 10);
@@ -1517,25 +2029,7 @@ mod tests {
 
     #[test]
     fn unaffordable_draft_return_insufficient_funds() {
-        let mut app = test_app(
-            vec![
-                Player {
-                    id: PlayerId(0),
-                    name: String::from("Bird"),
-                    position: String::from("SF"),
-                    projected_value: 200,
-                    short_name: Some(String::from("Bird")),
-                },
-                Player {
-                    id: PlayerId(1),
-                    name: String::from("Luka"),
-                    position: String::from("PG"),
-                    projected_value: 77,
-                    short_name: Some(String::from("Luka")),
-                },
-            ],
-            Some(0),
-        );
+        let mut app = single_player_test_app();
 
         let result = app.record_draft(0, 0, 201);
 
@@ -1544,25 +2038,7 @@ mod tests {
 
     #[test]
     fn drafting_already_drafted_player_returns_player_already_drafted() {
-        let mut app = test_app(
-            vec![
-                Player {
-                    id: PlayerId(0),
-                    name: String::from("Bird"),
-                    position: String::from("SF"),
-                    projected_value: 200,
-                    short_name: Some(String::from("Bird")),
-                },
-                Player {
-                    id: PlayerId(1),
-                    name: String::from("Luka"),
-                    position: String::from("PG"),
-                    projected_value: 77,
-                    short_name: Some(String::from("Luka")),
-                },
-            ],
-            Some(0),
-        );
+        let mut app = single_player_test_app();
 
         app.draft_picks.push(DraftPick {
             player_id: PlayerId(0),
