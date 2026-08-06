@@ -1,6 +1,8 @@
 use std::collections::{HashMap, HashSet};
+use std::fs;
+use std::path::Path;
 
-use anyhow::{Result, bail};
+use anyhow::{Context, Result, bail};
 
 use crate::player::{Player, PlayerId};
 use crate::strategy::{Build, ReplacementGroup};
@@ -227,4 +229,52 @@ mod tests {
                 .contains("duplicate player ID")
         );
     }
+}
+
+pub fn save_players(path: impl AsRef<Path>, players: &[Player]) -> Result<()> {
+    let path = path.as_ref();
+
+    // players.csv -> players.csv.tmp
+    let temporary_path = path.with_extension("csv.tmp");
+
+    let save_result = (|| -> Result<()> {
+        let mut writer = csv::WriterBuilder::new()
+            .has_headers(true)
+            .from_path(&temporary_path)
+            .with_context(|| {
+                format!(
+                    "failed to create temporary player file: {}",
+                    temporary_path.display(),
+                )
+            })?;
+
+        for player in players {
+            writer
+                .serialize(player)
+                .with_context(|| format!("failed to serialize player {:?}", player.name,))?;
+        }
+
+        writer.flush().with_context(|| {
+            format!("failed to flush player file: {}", temporary_path.display(),)
+        })?;
+
+        // Close the file before renaming it.
+        drop(writer);
+
+        fs::rename(&temporary_path, path).with_context(|| {
+            format!(
+                "failed to replace {} with saved player data",
+                path.display(),
+            )
+        })?;
+
+        Ok(())
+    })();
+
+    // Do not leave a broken temporary file behind.
+    if save_result.is_err() {
+        let _ = fs::remove_file(&temporary_path);
+    }
+
+    save_result
 }

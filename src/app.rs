@@ -1,5 +1,6 @@
 use crate::data::load_players;
 use crate::data::load_teams;
+use crate::data::save_players;
 use crate::data::validate_data;
 use crate::draft::DraftError;
 use crate::draft::DraftMode;
@@ -36,6 +37,18 @@ pub enum BoardMode {
     Edit,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PendingEditCommand {
+    None,
+    Delete,
+}
+
+#[derive(Debug)]
+pub struct PlayerRegister {
+    pub player: Player,
+    pub original_index: usize,
+}
+
 pub struct App {
     pub running: bool,
     pub screen: Screen,
@@ -53,6 +66,10 @@ pub struct App {
     pub builds: Vec<Build>,
     pub replacements: Vec<ReplacementGroup>,
     pub selected_replacement: usize,
+    pub pending_edit_command: PendingEditCommand,
+    pub player_register: Option<PlayerRegister>,
+    pub data_dirty: bool,
+    pub edit_status: Option<String>,
 }
 
 impl App {
@@ -83,6 +100,10 @@ impl App {
             selected_replacement: 0,
             session_phase: SessionPhase::Preparation,
             board_mode: BoardMode::Browse,
+            pending_edit_command: PendingEditCommand::None,
+            player_register: None,
+            data_dirty: false,
+            edit_status: None,
         })
     }
 
@@ -90,6 +111,109 @@ impl App {
         self.running = false;
     }
     pub fn handle_key(&mut self, key: KeyEvent) {
+        if matches!(&self.screen, Screen::Draft)
+            && matches!(&self.draft_mode, DraftMode::SearchingPlayer)
+        {
+            match key.code {
+                KeyCode::Esc | KeyCode::Enter => {
+                    self.search_query.clear();
+                    self.draft_mode = DraftMode::BrowsingPlayers;
+                }
+
+                KeyCode::Backspace => {
+                    self.search_query.pop();
+                    self.update_search_selection();
+                }
+
+                KeyCode::Char(character) => {
+                    self.search_query.push(character);
+                    self.update_search_selection();
+                }
+
+                _ => {}
+            }
+
+            return;
+        }
+
+        if matches!(&self.screen, Screen::Draft)
+            && matches!(&self.draft_mode, DraftMode::BrowsingPlayers)
+            && matches!(&self.board_mode, BoardMode::Edit)
+        {
+            match key.code {
+                KeyCode::Char('/') => {
+                    self.pending_edit_command = PendingEditCommand::None;
+
+                    self.search_query.clear();
+                    self.draft_mode = DraftMode::SearchingPlayer;
+                }
+
+                KeyCode::Char('d') => match self.pending_edit_command {
+                    PendingEditCommand::None => {
+                        self.pending_edit_command = PendingEditCommand::Delete;
+                    }
+
+                    PendingEditCommand::Delete => {
+                        self.cut_selected_player();
+
+                        self.pending_edit_command = PendingEditCommand::None;
+                    }
+                },
+
+                KeyCode::Char('p') => {
+                    self.pending_edit_command = PendingEditCommand::None;
+
+                    self.paste_player_after();
+                }
+
+                KeyCode::Char('P') => {
+                    self.pending_edit_command = PendingEditCommand::None;
+
+                    self.paste_player_before();
+                }
+
+                KeyCode::Char('j') => {
+                    self.pending_edit_command = PendingEditCommand::None;
+
+                    self.select_next();
+                }
+
+                KeyCode::Char('k') => {
+                    self.pending_edit_command = PendingEditCommand::None;
+
+                    self.select_previous();
+                }
+                KeyCode::Char('s') => {
+                    self.pending_edit_command = PendingEditCommand::None;
+
+                    let status = match self.save_player_board() {
+                        Ok(()) => String::from("Saved data/players.csv"),
+
+                        Err(error) => {
+                            format!("SAVE FAILED: {error}")
+                        }
+                    };
+
+                    self.edit_status = Some(status);
+                }
+
+                KeyCode::Char('E') | KeyCode::Esc => {
+                    self.pending_edit_command = PendingEditCommand::None;
+
+                    // Do not leave edit mode while a player is cut.
+                    if self.player_register.is_none() {
+                        self.board_mode = BoardMode::Browse;
+                    }
+                }
+
+                _ => {
+                    // An unrelated key cancels a pending first `d`.
+                    self.pending_edit_command = PendingEditCommand::None;
+                }
+            }
+
+            return;
+        }
         match key.code {
             KeyCode::Char('q') if !matches!(self.draft_mode, DraftMode::SearchingPlayer) => {
                 self.quit()
@@ -165,19 +289,7 @@ impl App {
             {
                 self.escape_drafting_selected_player();
             }
-            KeyCode::Esc
-                if matches!(&self.screen, Screen::Draft)
-                    && matches!(&self.board_mode, BoardMode::Edit) =>
-            {
-                self.board_mode = BoardMode::Browse;
-            }
-            KeyCode::Esc
-                if matches!(&self.screen, Screen::Draft)
-                    && matches!(&self.draft_mode, DraftMode::SearchingPlayer) =>
-            {
-                self.search_query.clear();
-                self.draft_mode = DraftMode::BrowsingPlayers;
-            }
+
             KeyCode::Enter
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(self.draft_mode, DraftMode::BrowsingPlayers)
@@ -195,24 +307,9 @@ impl App {
             {
                 self.confirm_recorded_draft();
             }
-            KeyCode::Enter
-                if matches!(&self.screen, Screen::Draft)
-                    && matches!(&self.draft_mode, DraftMode::SearchingPlayer) =>
-            {
-                self.search_query.clear();
-                self.draft_mode = DraftMode::BrowsingPlayers;
-            }
-            KeyCode::Backspace
-                if matches!(&self.screen, Screen::Draft)
-                    && matches!(&self.draft_mode, DraftMode::SearchingPlayer) =>
-            {
-                self.search_query.pop();
-                self.update_search_selection();
-            }
             KeyCode::Char('/')
                 if matches!(&self.screen, Screen::Draft)
-                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers)
-                    && matches!(&self.board_mode, BoardMode::Browse) =>
+                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
             {
                 self.search_query.clear();
                 self.draft_mode = DraftMode::SearchingPlayer;
@@ -222,13 +319,6 @@ impl App {
                     && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
             {
                 self.undo_last_pick();
-            }
-            KeyCode::Char(char)
-                if matches!(&self.screen, Screen::Draft)
-                    && matches!(&self.draft_mode, DraftMode::SearchingPlayer) =>
-            {
-                self.search_query.push(char);
-                self.update_search_selection();
             }
             _ => {}
         }
@@ -440,7 +530,86 @@ impl App {
             BoardMode::Edit => BoardMode::Browse,
         };
     }
+    pub fn cut_selected_player(&mut self) -> bool {
+        if self.player_register.is_some() {
+            return false;
+        }
 
+        let Some(player_index) = self.selected_player else {
+            return false;
+        };
+
+        if player_index >= self.players.len() {
+            return false;
+        }
+
+        let player = self.players.remove(player_index);
+
+        self.player_register = Some(PlayerRegister {
+            player,
+            original_index: player_index,
+        });
+
+        self.selected_player = if self.players.is_empty() {
+            None
+        } else {
+            Some(player_index.min(self.players.len() - 1))
+        };
+
+        self.data_dirty = true;
+        self.edit_status = None;
+
+        true
+    }
+
+    pub fn paste_player_after(&mut self) -> bool {
+        let Some(register) = self.player_register.take() else {
+            return false;
+        };
+
+        let insert_index = match self.selected_player {
+            Some(player_index) => (player_index + 1).min(self.players.len()),
+
+            None => 0,
+        };
+
+        self.players.insert(insert_index, register.player);
+        self.selected_player = Some(insert_index);
+        self.data_dirty = true;
+
+        true
+    }
+
+    pub fn paste_player_before(&mut self) -> bool {
+        let Some(register) = self.player_register.take() else {
+            return false;
+        };
+
+        let insert_index = match self.selected_player {
+            Some(player_index) => player_index.min(self.players.len()),
+
+            None => 0,
+        };
+
+        self.players.insert(insert_index, register.player);
+        self.selected_player = Some(insert_index);
+        self.data_dirty = true;
+
+        true
+    }
+    pub fn save_player_board(&mut self) -> Result<()> {
+        validate_data(&self.players, &self.teams, &self.builds, &self.replacements)?;
+
+        save_players("data/players.csv", &self.players)?;
+
+        self.data_dirty = false;
+
+        // A successful save while a player is still cut means
+        // that the deletion has been confirmed.
+        self.player_register = None;
+
+        Ok(())
+    }
     fn update_search_selection(&mut self) {
         if self.search_query.is_empty() {
             return;
@@ -493,6 +662,10 @@ mod tests {
             selected_replacement: 0,
             session_phase: SessionPhase::Preparation,
             board_mode: BoardMode::Browse,
+            pending_edit_command: PendingEditCommand::None,
+            player_register: None,
+            data_dirty: false,
+            edit_status: None,
         }
     }
 

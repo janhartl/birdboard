@@ -1,4 +1,4 @@
-use crate::app::{App, BoardMode, SessionPhase};
+use crate::app::{App, BoardMode, PendingEditCommand, SessionPhase};
 use crate::draft::DraftMode;
 use ratatui::Frame;
 use ratatui::layout::Alignment;
@@ -174,24 +174,50 @@ pub fn draw(frame: &mut Frame, app: &App) {
     let footer_line = match app.draft_mode {
         DraftMode::SearchingPlayer => Line::from(format!("/{}_", app.search_query)),
 
-        DraftMode::BrowsingPlayers => {
-            let controls = match (&app.session_phase, &app.board_mode) {
-                (SessionPhase::Preparation, BoardMode::Browse) => {
-                    "PREPARATION · [j/k] Move | [/] Search | [Enter] Draft player | [E] Edit | [u] Undo last | [q] Quit"
-                }
+        DraftMode::BrowsingPlayers => match (&app.session_phase, &app.board_mode) {
+            (SessionPhase::Preparation, BoardMode::Browse) => Line::from(Span::styled(
+                "PREPARATION · [j/k] Move | [/] Search | \
+             [Enter] Draft | [E] Edit | [q] Quit",
+                dim_style,
+            )),
 
-                (SessionPhase::Preparation, BoardMode::Edit) => {
-                    "PREPARATION · EDIT MODE | [j/k] Move | [E/Esc] Leave edit mode"
-                }
+            (SessionPhase::Preparation, BoardMode::Edit) => {
+                let unsaved = if app.data_dirty { " · UNSAVED" } else { "" };
 
-                (SessionPhase::LiveDraft, _) => {
-                    "LIVE DRAFT · [j/k] Move | [/] Search | [Enter] Draft player | [u] Undo last | [q] Quit"
-                }
-            };
+                let pending = if matches!(app.pending_edit_command, PendingEditCommand::Delete) {
+                    " · d…"
+                } else {
+                    ""
+                };
 
-            Line::from(Span::styled(controls, dim_style))
-        }
+                let register = app
+                    .player_register
+                    .as_ref()
+                    .map(|register| format!(" · CUT: {}", register.player.display_name(),))
+                    .unwrap_or_default();
 
+                let status = app
+                    .edit_status
+                    .as_ref()
+                    .map(|message| format!(" · {message}"))
+                    .unwrap_or_default();
+
+                Line::from(Span::styled(
+                    format!(
+                        "PREPARATION · EDIT{unsaved}{pending}{register}{status} | \
+                     [j/k] Move | [/] Search | [dd] Cut | \
+                     [p/P] Paste | [s] Save | [E/Esc] Leave"
+                    ),
+                    dim_style,
+                ))
+            }
+
+            (SessionPhase::LiveDraft, _) => Line::from(Span::styled(
+                "LIVE DRAFT · [j/k] Move | [/] Search | \
+             [Enter] Draft | [u] Undo | [q] Quit",
+                dim_style,
+            )),
+        },
         DraftMode::RecordingDraft => {
             if let (Some(player_index), Some(team_index)) = (app.selected_player, app.selected_team)
             {
