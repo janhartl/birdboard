@@ -1,5 +1,6 @@
 use crate::app::{
-    App, BoardMode, PendingEditCommand, PlayerForm, PlayerFormField, PlayerFormMode, SessionPhase,
+    App, InteractionMode, PendingEditCommand, PlayerForm, PlayerFormField, PlayerFormMode,
+    SessionPhase,
 };
 use crate::draft::DraftMode;
 
@@ -158,7 +159,7 @@ fn render_right_detail_panel(frame: &mut Frame, app: &App, area: Rect) {
         return;
     }
 
-    if matches!(&app.board_mode, BoardMode::Edit) {
+    if matches!(&app.interaction_mode, InteractionMode::Edit) {
         match &app.player_form {
             Some(form) => {
                 render_player_form(frame, form, area);
@@ -403,15 +404,15 @@ fn render_footer(frame: &mut Frame, app: &App, area: Rect) {
 }
 
 fn browsing_footer(app: &App, dim_style: Style) -> Line<'static> {
-    match (&app.session_phase, &app.board_mode) {
-        (SessionPhase::Preparation, BoardMode::Browse) => Line::from(Span::styled(
+    match (&app.session_phase, &app.interaction_mode) {
+        (SessionPhase::Preparation, InteractionMode::Browse) => Line::from(Span::styled(
             "PREPARATION · [j/k] Move | \
              [/] Search | [Enter] Draft | \
              [E] Edit | [q] Quit",
             dim_style,
         )),
 
-        (SessionPhase::Preparation, BoardMode::Edit) => {
+        (SessionPhase::Preparation, InteractionMode::Edit) => {
             let unsaved = if app.data_dirty { " · UNSAVED" } else { "" };
 
             let pending = if matches!(app.pending_edit_command, PendingEditCommand::Delete) {

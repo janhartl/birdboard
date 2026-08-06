@@ -1,6 +1,7 @@
 use crate::data::load_players;
 use crate::data::load_teams;
 use crate::data::save_players;
+use crate::data::save_teams;
 use crate::data::validate_data;
 use crate::draft::DraftError;
 use crate::draft::DraftMode;
@@ -11,10 +12,10 @@ use crate::strategy::{
 };
 use crate::team::FantasyTeam;
 use crate::team::TeamId;
+
 use anyhow::Result;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
-
 use fuzzy_matcher::FuzzyMatcher;
 use fuzzy_matcher::skim::SkimMatcherV2;
 
@@ -32,7 +33,7 @@ pub enum SessionPhase {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum BoardMode {
+pub enum InteractionMode {
     Browse,
     Edit,
 }
@@ -105,35 +106,82 @@ impl PlayerForm {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum TeamInputMode {
+    Add,
+    Edit(TeamId),
+}
+
+#[derive(Debug)]
+pub struct TeamInput {
+    pub mode: TeamInputMode,
+    pub value: String,
+    pub error: Option<String>,
+}
+
 pub struct App {
     pub running: bool,
     pub screen: Screen,
     pub session_phase: SessionPhase,
-    pub board_mode: BoardMode,
+    pub interaction_mode: InteractionMode,
+
     pub players: Vec<Player>,
     pub selected_player: Option<usize>,
+
     pub teams: Vec<FantasyTeam>,
+    pub selected_roster_team: Option<usize>,
+    pub user_team_id: TeamId,
+
     pub draft_picks: Vec<DraftPick>,
     pub draft_price_input: String,
     pub draft_mode: DraftMode,
     pub selected_team: Option<usize>,
+
     pub search_query: String,
-    pub user_team_id: TeamId,
+
     pub builds: Vec<Build>,
     pub replacements: Vec<ReplacementGroup>,
     pub selected_replacement: usize,
+
     pub pending_edit_command: PendingEditCommand,
+
     pub player_register: Option<PlayerRegister>,
-    pub data_dirty: bool,
-    pub edit_status: Option<String>,
     pub player_form: Option<PlayerForm>,
+    pub data_dirty: bool,
+
+    pub team_input: Option<TeamInput>,
+    pub teams_dirty: bool,
+
+    pub edit_status: Option<String>,
 }
 
 impl App {
     pub fn new() -> Result<App> {
         let players = load_players("data/players.csv")?;
+
         let selected_player = if players.is_empty() { None } else { Some(0) };
-        let teams = load_teams("data/teams.csv")?;
+
+        let mut teams = load_teams("data/teams.csv")?;
+
+        let user_team_id = teams
+            .iter()
+            .find(|team| team.is_user)
+            .map(|team| team.id)
+            .or_else(|| {
+                teams
+                    .iter()
+                    .find(|team| team.id == TeamId(1))
+                    .map(|team| team.id)
+            })
+            .or_else(|| teams.first().map(|team| team.id))
+            .unwrap_or(TeamId(0));
+
+        if let Some(team) = teams.iter_mut().find(|team| team.id == user_team_id) {
+            team.is_user = true;
+        }
+
+        let selected_roster_team = if teams.is_empty() { None } else { Some(0) };
+
         let draft_picks = Vec::new();
         let builds = load_builds("data/builds.toml")?;
         let replacements = load_replacements("data/replacements.toml")?;
@@ -143,36 +191,66 @@ impl App {
         Ok(App {
             running: true,
             screen: Screen::Home,
+            session_phase: SessionPhase::Preparation,
+            interaction_mode: InteractionMode::Browse,
+
             players,
             selected_player,
+
             teams,
+            selected_roster_team,
+            user_team_id,
+
             draft_picks,
+            draft_price_input: String::new(),
             draft_mode: DraftMode::BrowsingPlayers,
             selected_team: None,
-            draft_price_input: String::new(),
+
             search_query: String::new(),
-            user_team_id: TeamId(1),
+
             builds,
             replacements,
             selected_replacement: 0,
-            session_phase: SessionPhase::Preparation,
-            board_mode: BoardMode::Browse,
+
             pending_edit_command: PendingEditCommand::None,
+
             player_register: None,
-            data_dirty: false,
-            edit_status: None,
             player_form: None,
+            data_dirty: false,
+
+            team_input: None,
+            teams_dirty: false,
+
+            edit_status: None,
         })
     }
 
     pub fn quit(&mut self) {
         self.running = false;
     }
+
     pub fn handle_key(&mut self, key: KeyEvent) {
+        /*
+         * Input priority:
+         *
+         * 1. Player form
+         * 2. Team-name input
+         * 3. Player search
+         * 4. Draft-screen edit commands
+         * 5. Roster-screen edit commands
+         * 6. Normal/global commands
+         */
+
         if self.player_form.is_some() {
             self.handle_player_form_key(key);
             return;
         }
+
+        if self.team_input.is_some() {
+            self.handle_team_input_key(key);
+            return;
+        }
+
         if matches!(&self.screen, Screen::Draft)
             && matches!(&self.draft_mode, DraftMode::SearchingPlayer)
         {
@@ -200,7 +278,7 @@ impl App {
 
         if matches!(&self.screen, Screen::Draft)
             && matches!(&self.draft_mode, DraftMode::BrowsingPlayers)
-            && matches!(&self.board_mode, BoardMode::Edit)
+            && matches!(&self.interaction_mode, InteractionMode::Edit)
         {
             match key.code {
                 KeyCode::Char('/') => {
@@ -217,54 +295,46 @@ impl App {
 
                     PendingEditCommand::Delete => {
                         self.cut_selected_player();
-
                         self.pending_edit_command = PendingEditCommand::None;
                     }
                 },
 
                 KeyCode::Char('p') => {
                     self.pending_edit_command = PendingEditCommand::None;
-
                     self.paste_player_after();
                 }
 
                 KeyCode::Char('P') => {
                     self.pending_edit_command = PendingEditCommand::None;
-
                     self.paste_player_before();
                 }
 
                 KeyCode::Char('j') => {
                     self.pending_edit_command = PendingEditCommand::None;
-
                     self.select_next();
                 }
 
                 KeyCode::Char('k') => {
                     self.pending_edit_command = PendingEditCommand::None;
-
                     self.select_previous();
                 }
+
                 KeyCode::Enter => {
                     self.pending_edit_command = PendingEditCommand::None;
-
                     self.open_edit_player_form();
                 }
 
                 KeyCode::Char('a') => {
                     self.pending_edit_command = PendingEditCommand::None;
-
                     self.open_add_player_form();
                 }
+
                 KeyCode::Char('s') => {
                     self.pending_edit_command = PendingEditCommand::None;
 
                     let status = match self.save_player_board() {
                         Ok(()) => String::from("Saved data/players.csv"),
-
-                        Err(error) => {
-                            format!("SAVE FAILED: {error}")
-                        }
+                        Err(error) => format!("SAVE FAILED: {error}"),
                     };
 
                     self.edit_status = Some(status);
@@ -275,7 +345,7 @@ impl App {
 
                     // Do not leave edit mode while a player is cut.
                     if self.player_register.is_none() {
-                        self.board_mode = BoardMode::Browse;
+                        self.interaction_mode = InteractionMode::Browse;
                     }
                 }
 
@@ -287,54 +357,132 @@ impl App {
 
             return;
         }
-        match key.code {
-            KeyCode::Char('q') if !matches!(self.draft_mode, DraftMode::SearchingPlayer) => {
-                self.quit()
+
+        if matches!(&self.screen, Screen::Rosters)
+            && matches!(&self.interaction_mode, InteractionMode::Edit)
+        {
+            match key.code {
+                KeyCode::Tab => {
+                    self.pending_edit_command = PendingEditCommand::None;
+                    self.select_next_roster_team();
+                }
+
+                KeyCode::BackTab => {
+                    self.pending_edit_command = PendingEditCommand::None;
+                    self.select_previous_roster_team();
+                }
+
+                KeyCode::Enter => {
+                    self.pending_edit_command = PendingEditCommand::None;
+                    self.open_edit_team_input();
+                }
+
+                KeyCode::Char('a') => {
+                    self.pending_edit_command = PendingEditCommand::None;
+                    self.open_add_team_input();
+                }
+
+                KeyCode::Char('c') => {
+                    self.pending_edit_command = PendingEditCommand::None;
+                    self.mark_selected_team_as_user();
+                }
+
+                KeyCode::Char('d') => match self.pending_edit_command {
+                    PendingEditCommand::None => {
+                        self.pending_edit_command = PendingEditCommand::Delete;
+                    }
+
+                    PendingEditCommand::Delete => {
+                        self.remove_selected_team();
+                        self.pending_edit_command = PendingEditCommand::None;
+                    }
+                },
+
+                KeyCode::Char('s') => {
+                    self.pending_edit_command = PendingEditCommand::None;
+
+                    let status = match self.save_team_data() {
+                        Ok(()) => String::from("Saved data/teams.csv"),
+                        Err(error) => format!("SAVE FAILED: {error}"),
+                    };
+
+                    self.edit_status = Some(status);
+                }
+
+                KeyCode::Char('E') | KeyCode::Esc => {
+                    self.pending_edit_command = PendingEditCommand::None;
+                    self.interaction_mode = InteractionMode::Browse;
+                    self.edit_status = None;
+                }
+
+                _ => {
+                    self.pending_edit_command = PendingEditCommand::None;
+                }
             }
+
+            return;
+        }
+
+        match key.code {
+            KeyCode::Char('q') if !matches!(&self.draft_mode, DraftMode::SearchingPlayer) => {
+                self.quit();
+            }
+
             KeyCode::Char('h') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
                 self.screen = Screen::Home;
             }
+
             KeyCode::Char('b') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
                 self.screen = Screen::Draft;
             }
+
             KeyCode::Char('r') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
                 self.screen = Screen::Rosters;
             }
+
             KeyCode::Char('s') if matches!(&self.draft_mode, DraftMode::BrowsingPlayers) => {
                 self.screen = Screen::Strategy;
             }
-            KeyCode::Char('E')
-                if matches!(&self.screen, Screen::Draft)
-                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
+
+            KeyCode::Char('E') if self.current_screen_is_editable() && self.editing_allowed() => {
+                self.toggle_edit_mode();
+            }
+
+            KeyCode::Esc
+                if matches!(&self.interaction_mode, InteractionMode::Edit)
+                    && matches!(&self.screen, Screen::Rosters | Screen::Strategy) =>
             {
-                self.toggle_board_edit_mode();
+                self.toggle_edit_mode();
             }
 
             KeyCode::Char('j')
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
             {
-                self.select_next()
+                self.select_next();
             }
+
             KeyCode::Char('k')
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
             {
-                self.select_previous()
+                self.select_previous();
             }
 
             KeyCode::Char('j')
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
             {
-                self.select_next_team()
+                self.select_next_team();
             }
+
             KeyCode::Char('k')
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
             {
-                self.select_previous_team()
+                self.select_previous_team();
             }
+
             KeyCode::Char('j') if matches!(&self.screen, Screen::Strategy) => {
                 self.select_next_replacement();
             }
@@ -342,6 +490,7 @@ impl App {
             KeyCode::Char('k') if matches!(&self.screen, Screen::Strategy) => {
                 self.select_previous_replacement();
             }
+
             KeyCode::Char(digit)
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::RecordingDraft)
@@ -350,12 +499,14 @@ impl App {
             {
                 self.draft_price_input.push(digit);
             }
+
             KeyCode::Backspace
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
             {
                 self.draft_price_input.pop();
             }
+
             KeyCode::Esc
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
@@ -365,8 +516,8 @@ impl App {
 
             KeyCode::Enter
                 if matches!(&self.screen, Screen::Draft)
-                    && matches!(self.draft_mode, DraftMode::BrowsingPlayers)
-                    && matches!(&self.board_mode, BoardMode::Browse)
+                    && matches!(&self.draft_mode, DraftMode::BrowsingPlayers)
+                    && matches!(&self.interaction_mode, InteractionMode::Browse)
                     && let Some(player_index) = self.selected_player
                     && self
                         .draft_pick_for_player(self.players[player_index].id)
@@ -374,12 +525,14 @@ impl App {
             {
                 self.begin_drafting_selected_player();
             }
+
             KeyCode::Enter
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::RecordingDraft) =>
             {
                 self.confirm_recorded_draft();
             }
+
             KeyCode::Char('/')
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
@@ -387,15 +540,18 @@ impl App {
                 self.search_query.clear();
                 self.draft_mode = DraftMode::SearchingPlayer;
             }
+
             KeyCode::Char('u')
                 if matches!(&self.screen, Screen::Draft)
                     && matches!(&self.draft_mode, DraftMode::BrowsingPlayers) =>
             {
                 self.undo_last_pick();
             }
+
             _ => {}
         }
     }
+
     pub fn select_next(&mut self) {
         if let Some(index) = self.selected_player
             && index + 1 < self.players.len()
@@ -403,6 +559,7 @@ impl App {
             self.selected_player = Some(index + 1);
         }
     }
+
     pub fn select_previous(&mut self) {
         if let Some(index) = self.selected_player
             && index > 0
@@ -424,6 +581,7 @@ impl App {
         if self.teams.get(team_index).is_none() {
             return Err(DraftError::InvalidTeam);
         }
+
         let player_id = self.players[player_index].id;
         let team_id = self.teams[team_index].id;
 
@@ -435,6 +593,7 @@ impl App {
         if player_already_drafted {
             return Err(DraftError::PlayerAlreadyDrafted);
         }
+
         let team = &self.teams[team_index];
 
         if price > team.budget {
@@ -442,17 +601,22 @@ impl App {
         }
 
         self.teams[team_index].budget -= price;
-        let draft_pick = DraftPick {
+
+        self.draft_picks.push(DraftPick {
             player_id,
             team_id,
             price,
-        };
-        self.draft_picks.push(draft_pick);
+        });
+
         self.session_phase = SessionPhase::LiveDraft;
-        self.board_mode = BoardMode::Browse;
+        self.interaction_mode = InteractionMode::Browse;
+        self.pending_edit_command = PendingEditCommand::None;
+        self.player_form = None;
+        self.team_input = None;
 
         Ok(())
     }
+
     pub fn begin_drafting_selected_player(&mut self) {
         if self.selected_player.is_some() && !self.teams.is_empty() {
             self.draft_mode = DraftMode::RecordingDraft;
@@ -460,62 +624,75 @@ impl App {
             self.draft_price_input.clear();
         }
     }
+
     pub fn select_next_team(&mut self) {
         if self.teams.is_empty() {
             self.selected_team = None;
             return;
         }
+
         self.selected_team = match self.selected_team {
             Some(index) => Some((index + 1) % self.teams.len()),
             None => Some(0),
         };
     }
+
     pub fn select_previous_team(&mut self) {
         if self.teams.is_empty() {
             self.selected_team = None;
             return;
         }
+
         self.selected_team = match self.selected_team {
             Some(0) => Some(self.teams.len() - 1),
             Some(index) => Some(index - 1),
             None => Some(0),
         };
     }
+
     pub fn confirm_recorded_draft(&mut self) {
         let (Some(player_index), Some(team_index)) = (self.selected_player, self.selected_team)
         else {
             return;
         };
+
         let Ok(price) = self.draft_price_input.parse::<u8>() else {
             return;
         };
+
         if self.record_draft(player_index, team_index, price).is_ok() {
             self.draft_mode = DraftMode::BrowsingPlayers;
             self.selected_team = None;
             self.draft_price_input.clear();
         }
     }
+
     pub fn escape_drafting_selected_player(&mut self) {
         self.draft_mode = DraftMode::BrowsingPlayers;
         self.selected_team = None;
         self.draft_price_input.clear();
     }
+
     pub fn draft_pick_for_player(&self, player_id: PlayerId) -> Option<&DraftPick> {
         self.draft_picks
             .iter()
             .find(|pick| pick.player_id == player_id)
     }
+
     pub fn player_by_id(&self, player_id: PlayerId) -> Option<&Player> {
         self.players.iter().find(|player| player.id == player_id)
     }
+
     pub fn team_has_player(&self, team_id: TeamId, player_id: PlayerId) -> bool {
         self.draft_picks
             .iter()
             .any(|pick| pick.team_id == team_id && pick.player_id == player_id)
     }
+
     pub fn team_by_id(&self, team_id: TeamId) -> Option<&FantasyTeam> {
         self.teams.iter().find(|team| team.id == team_id)
     }
+
     pub fn current_build(&self) -> Option<&Build> {
         active_build(&self.builds, |player_id| {
             self.team_has_player(self.user_team_id, player_id)
@@ -534,13 +711,13 @@ impl App {
             .filter(|player_id| {
                 matches!(
                     self.draft_pick_for_player(*player_id),
-                    Some(pick)
-                        if pick.team_id != self.user_team_id
+                    Some(pick) if pick.team_id != self.user_team_id
                 )
             })
             .filter_map(|player_id| replacement_for_player(&self.replacements, player_id))
             .collect()
     }
+
     pub fn select_next_replacement(&mut self) {
         let count = self.triggered_replacements().len();
 
@@ -564,6 +741,7 @@ impl App {
 
         self.selected_replacement = (current + count - 1) % count;
     }
+
     pub fn undo_last_pick(&mut self) -> bool {
         let Some(pick) = self.draft_picks.pop() else {
             return false;
@@ -591,18 +769,42 @@ impl App {
 
         true
     }
+
     pub fn editing_allowed(&self) -> bool {
         matches!(self.session_phase, SessionPhase::Preparation)
     }
-    pub fn toggle_board_edit_mode(&mut self) {
+
+    pub fn toggle_edit_mode(&mut self) {
         if !self.editing_allowed() {
             return;
         }
-        self.board_mode = match self.board_mode {
-            BoardMode::Browse => BoardMode::Edit,
-            BoardMode::Edit => BoardMode::Browse,
+
+        self.interaction_mode = match self.interaction_mode {
+            InteractionMode::Browse => {
+                if matches!(self.screen, Screen::Rosters)
+                    && self.selected_roster_team.is_none()
+                    && !self.teams.is_empty()
+                {
+                    self.selected_roster_team = Some(0);
+                }
+
+                InteractionMode::Edit
+            }
+
+            InteractionMode::Edit => InteractionMode::Browse,
         };
+
+        self.pending_edit_command = PendingEditCommand::None;
+        self.edit_status = None;
     }
+
+    pub fn current_screen_is_editable(&self) -> bool {
+        matches!(
+            self.screen,
+            Screen::Draft | Screen::Rosters | Screen::Strategy
+        )
+    }
+
     pub fn cut_selected_player(&mut self) -> bool {
         if self.player_register.is_some() {
             return false;
@@ -642,11 +844,11 @@ impl App {
 
         let insert_index = match self.selected_player {
             Some(player_index) => (player_index + 1).min(self.players.len()),
-
             None => 0,
         };
 
         self.players.insert(insert_index, register.player);
+
         self.selected_player = Some(insert_index);
         self.data_dirty = true;
         self.edit_status = None;
@@ -661,17 +863,18 @@ impl App {
 
         let insert_index = match self.selected_player {
             Some(player_index) => player_index.min(self.players.len()),
-
             None => 0,
         };
 
         self.players.insert(insert_index, register.player);
+
         self.selected_player = Some(insert_index);
         self.data_dirty = true;
         self.edit_status = None;
 
         true
     }
+
     pub fn save_player_board(&mut self) -> Result<()> {
         validate_data(&self.players, &self.teams, &self.builds, &self.replacements)?;
 
@@ -685,6 +888,94 @@ impl App {
 
         Ok(())
     }
+
+    pub fn select_next_roster_team(&mut self) {
+        if self.teams.is_empty() {
+            self.selected_roster_team = None;
+            return;
+        }
+
+        self.selected_roster_team = Some(
+            self.selected_roster_team
+                .map_or(0, |index| (index + 1) % self.teams.len()),
+        );
+    }
+
+    pub fn select_previous_roster_team(&mut self) {
+        if self.teams.is_empty() {
+            self.selected_roster_team = None;
+            return;
+        }
+
+        self.selected_roster_team = Some(match self.selected_roster_team {
+            Some(0) | None => self.teams.len() - 1,
+            Some(index) => index - 1,
+        });
+    }
+
+    pub fn mark_selected_team_as_user(&mut self) -> bool {
+        let Some(team_index) = self.selected_roster_team else {
+            return false;
+        };
+
+        let Some(team_id) = self.teams.get(team_index).map(|team| team.id) else {
+            return false;
+        };
+
+        if team_id == self.user_team_id {
+            return false;
+        }
+
+        for team in &mut self.teams {
+            team.is_user = team.id == team_id;
+        }
+
+        self.user_team_id = team_id;
+        self.teams_dirty = true;
+        self.edit_status = None;
+
+        true
+    }
+
+    pub fn remove_selected_team(&mut self) -> bool {
+        if self.teams.len() <= 1 {
+            self.edit_status = Some(String::from("The final team cannot be removed."));
+            return false;
+        }
+
+        let Some(team_index) = self.selected_roster_team else {
+            return false;
+        };
+
+        let Some(team) = self.teams.get(team_index) else {
+            return false;
+        };
+
+        if team.id == self.user_team_id {
+            self.edit_status = Some(String::from("Mark another team as yours first."));
+            return false;
+        }
+
+        self.teams.remove(team_index);
+
+        self.selected_roster_team = Some(team_index.min(self.teams.len() - 1));
+
+        self.teams_dirty = true;
+        self.edit_status = None;
+
+        true
+    }
+
+    pub fn save_team_data(&mut self) -> Result<()> {
+        validate_data(&self.players, &self.teams, &self.builds, &self.replacements)?;
+
+        save_teams("data/teams.csv", &self.teams)?;
+
+        self.teams_dirty = false;
+
+        Ok(())
+    }
+
     fn open_edit_player_form(&mut self) {
         let Some(player_index) = self.selected_player else {
             return;
@@ -771,6 +1062,7 @@ impl App {
             _ => {}
         }
     }
+
     fn apply_player_form(&mut self) {
         let Some(form) = self.player_form.as_ref() else {
             return;
@@ -828,7 +1120,6 @@ impl App {
 
                 let insert_index = match self.selected_player {
                     Some(index) => (index + 1).min(self.players.len()),
-
                     None => 0,
                 };
 
@@ -872,14 +1163,129 @@ impl App {
 
         match largest_id {
             Some(id) => id.checked_add(1).map(PlayerId),
-
             None => Some(PlayerId(0)),
         }
     }
+
+    fn open_edit_team_input(&mut self) {
+        let Some(team_index) = self.selected_roster_team else {
+            return;
+        };
+
+        let Some(team) = self.teams.get(team_index) else {
+            return;
+        };
+
+        self.team_input = Some(TeamInput {
+            mode: TeamInputMode::Edit(team.id),
+            value: team.name.clone(),
+            error: None,
+        });
+
+        self.edit_status = None;
+    }
+
+    fn open_add_team_input(&mut self) {
+        self.team_input = Some(TeamInput {
+            mode: TeamInputMode::Add,
+            value: String::new(),
+            error: None,
+        });
+
+        self.edit_status = None;
+    }
+
+    fn handle_team_input_key(&mut self, key: KeyEvent) {
+        match key.code {
+            KeyCode::Esc => {
+                self.team_input = None;
+            }
+
+            KeyCode::Backspace => {
+                if let Some(input) = &mut self.team_input {
+                    input.value.pop();
+                    input.error = None;
+                }
+            }
+
+            KeyCode::Enter => {
+                self.apply_team_input();
+            }
+
+            KeyCode::Char(character) => {
+                if let Some(input) = &mut self.team_input {
+                    input.value.push(character);
+                    input.error = None;
+                }
+            }
+
+            _ => {}
+        }
+    }
+
+    fn apply_team_input(&mut self) {
+        let Some(input) = self.team_input.as_ref() else {
+            return;
+        };
+
+        let mode = input.mode;
+        let name = input.value.trim().to_string();
+
+        if name.is_empty() {
+            self.set_team_input_error("Team name cannot be empty.");
+            return;
+        }
+
+        match mode {
+            TeamInputMode::Edit(team_id) => {
+                let Some(team) = self.teams.iter_mut().find(|team| team.id == team_id) else {
+                    self.set_team_input_error("The selected team no longer exists.");
+                    return;
+                };
+
+                team.name = name;
+            }
+
+            TeamInputMode::Add => {
+                let Some(team_id) = self.next_available_team_id() else {
+                    self.set_team_input_error("No unused team IDs remain.");
+                    return;
+                };
+
+                self.teams.push(FantasyTeam {
+                    id: team_id,
+                    name,
+                    budget: 200,
+                    is_user: false,
+                });
+
+                self.selected_roster_team = Some(self.teams.len() - 1);
+            }
+        }
+
+        self.team_input = None;
+        self.teams_dirty = true;
+        self.edit_status = None;
+    }
+
+    fn set_team_input_error(&mut self, message: impl Into<String>) {
+        if let Some(input) = &mut self.team_input {
+            input.error = Some(message.into());
+        }
+    }
+
+    fn next_available_team_id(&self) -> Option<TeamId> {
+        match self.teams.iter().map(|team| team.id.0).max() {
+            Some(id) => id.checked_add(1).map(TeamId),
+            None => Some(TeamId(0)),
+        }
+    }
+
     fn update_search_selection(&mut self) {
         if self.search_query.is_empty() {
             return;
         }
+
         let matcher = SkimMatcherV2::default();
 
         let best_match = self
@@ -910,30 +1316,56 @@ mod tests {
         App {
             running: true,
             screen: Screen::Draft,
+            session_phase: SessionPhase::Preparation,
+            interaction_mode: InteractionMode::Browse,
+
             players,
             selected_player,
+
             teams: vec![FantasyTeam {
                 id: TeamId(0),
                 name: String::from("DTV"),
                 budget: 200,
+                is_user: true,
             }],
+            selected_roster_team: Some(0),
+            user_team_id: TeamId(0),
+
             draft_picks: Vec::new(),
+            draft_price_input: String::new(),
             draft_mode: DraftMode::BrowsingPlayers,
             selected_team: None,
-            draft_price_input: String::new(),
+
             search_query: String::new(),
-            user_team_id: TeamId(1),
+
             builds: Vec::new(),
             replacements: Vec::new(),
             selected_replacement: 0,
-            session_phase: SessionPhase::Preparation,
-            board_mode: BoardMode::Browse,
+
             pending_edit_command: PendingEditCommand::None,
+
             player_register: None,
-            data_dirty: false,
-            edit_status: None,
             player_form: None,
+            data_dirty: false,
+
+            team_input: None,
+            teams_dirty: false,
+
+            edit_status: None,
         }
+    }
+
+    fn single_player_test_app() -> App {
+        test_app(
+            vec![Player {
+                id: PlayerId(0),
+                name: String::from("Bird"),
+                position: String::from("SF"),
+                projected_value: 200,
+                short_name: Some(String::from("Bird")),
+            }],
+            Some(0),
+        )
     }
 
     #[test]
@@ -957,9 +1389,12 @@ mod tests {
             ],
             Some(0),
         );
+
         app.select_next();
+
         assert_eq!(app.selected_player, Some(1));
     }
+
     #[test]
     fn selecting_previous_on_first_players_stays_on_first_player() {
         let mut app = test_app(
@@ -981,9 +1416,12 @@ mod tests {
             ],
             Some(0),
         );
+
         app.select_previous();
+
         assert_eq!(app.selected_player, Some(0));
     }
+
     #[test]
     fn selecting_next_on_last_players_stays_on_last_player() {
         let mut app = test_app(
@@ -1005,16 +1443,22 @@ mod tests {
             ],
             Some(1),
         );
+
         app.select_next();
+
         assert_eq!(app.selected_player, Some(1));
     }
+
     #[test]
     fn empty_board_naviagtion() {
         let mut app = test_app(vec![], None);
+
         app.select_next();
         app.select_previous();
+
         assert_eq!(app.selected_player, None);
     }
+
     #[test]
     fn nonexistent_player_index() {
         let mut app = test_app(
@@ -1036,10 +1480,13 @@ mod tests {
             ],
             None,
         );
+
         let invalid_player_index = app.players.len();
         let result = app.record_draft(invalid_player_index, 0, 10);
+
         assert_eq!(result, Err(DraftError::InvalidPlayer));
     }
+
     #[test]
     fn nonexistent_team_index() {
         let mut app = test_app(
@@ -1061,10 +1508,13 @@ mod tests {
             ],
             Some(0),
         );
+
         let invalid_team_index = app.teams.len();
         let result = app.record_draft(0, invalid_team_index, 10);
+
         assert_eq!(result, Err(DraftError::InvalidTeam));
     }
+
     #[test]
     fn unaffordable_draft_return_insufficient_funds() {
         let mut app = test_app(
@@ -1086,9 +1536,12 @@ mod tests {
             ],
             Some(0),
         );
+
         let result = app.record_draft(0, 0, 201);
+
         assert_eq!(result, Err(DraftError::InsufficientFunds));
     }
+
     #[test]
     fn drafting_already_drafted_player_returns_player_already_drafted() {
         let mut app = test_app(
@@ -1110,26 +1563,21 @@ mod tests {
             ],
             Some(0),
         );
+
         app.draft_picks.push(DraftPick {
             player_id: PlayerId(0),
             team_id: TeamId(0),
             price: 1,
         });
+
         let result = app.record_draft(0, 0, 1);
+
         assert_eq!(result, Err(DraftError::PlayerAlreadyDrafted));
     }
+
     #[test]
     fn successful_draft_records_pick_and_reduces_budget() {
-        let mut app = test_app(
-            vec![Player {
-                id: PlayerId(0),
-                name: String::from("Bird"),
-                position: String::from("SF"),
-                projected_value: 200,
-                short_name: Some(String::from("Bird")),
-            }],
-            Some(0),
-        );
+        let mut app = single_player_test_app();
 
         let result = app.record_draft(0, 0, 37);
 
@@ -1138,40 +1586,25 @@ mod tests {
         assert_eq!(app.draft_picks.len(), 1);
 
         let pick = &app.draft_picks[0];
+
         assert_eq!(pick.player_id, PlayerId(0));
         assert_eq!(pick.team_id, TeamId(0));
         assert_eq!(pick.price, 37);
     }
+
     #[test]
     fn beginning_draft_of_selected_player_opens_team_chooser() {
-        let mut app = test_app(
-            vec![Player {
-                id: PlayerId(0),
-                name: String::from("Bird"),
-                position: String::from("SF"),
-                projected_value: 50,
-                short_name: Some(String::from("Bird")),
-            }],
-            Some(0),
-        );
+        let mut app = single_player_test_app();
 
         app.begin_drafting_selected_player();
 
         assert_eq!(app.draft_mode, DraftMode::RecordingDraft);
         assert_eq!(app.selected_team, Some(0));
     }
+
     #[test]
     fn confirming_recorded_draft_records_pick_and_resets_input() {
-        let mut app = test_app(
-            vec![Player {
-                id: PlayerId(0),
-                name: String::from("Bird"),
-                position: String::from("SF"),
-                projected_value: 50,
-                short_name: Some(String::from("Bird")),
-            }],
-            Some(0),
-        );
+        let mut app = single_player_test_app();
 
         app.begin_drafting_selected_player();
         app.draft_price_input = String::from("37");
@@ -1184,18 +1617,10 @@ mod tests {
         assert_eq!(app.selected_team, None);
         assert!(app.draft_price_input.is_empty());
     }
+
     #[test]
     fn escaping_recorded_draft_cancels_without_recording_pick() {
-        let mut app = test_app(
-            vec![Player {
-                id: PlayerId(0),
-                name: String::from("Bird"),
-                position: String::from("SF"),
-                projected_value: 50,
-                short_name: Some(String::from("Bird")),
-            }],
-            Some(0),
-        );
+        let mut app = single_player_test_app();
 
         app.begin_drafting_selected_player();
         app.draft_price_input = String::from("37");
@@ -1205,13 +1630,13 @@ mod tests {
         assert_eq!(app.draft_mode, DraftMode::BrowsingPlayers);
         assert_eq!(app.selected_team, None);
         assert!(app.draft_price_input.is_empty());
-
         assert!(app.draft_picks.is_empty());
         assert_eq!(app.teams[0].budget, 200);
     }
+
     #[test]
     fn undo_last_pick_removes_pick_and_refunds_team() {
-        let mut app = test_app();
+        let mut app = single_player_test_app();
 
         let original_budget = app.teams[0].budget;
 
@@ -1227,9 +1652,10 @@ mod tests {
         assert_eq!(app.teams[0].budget, original_budget);
         assert_eq!(app.selected_player, Some(0));
     }
+
     #[test]
     fn undo_with_no_picks_is_harmless() {
-        let mut app = test_app();
+        let mut app = single_player_test_app();
 
         let budgets: Vec<u8> = app.teams.iter().map(|team| team.budget).collect();
 

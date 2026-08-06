@@ -60,6 +60,11 @@ pub fn validate_data(
             bail!("duplicate team ID {:?} for team {:?}", team.id, team.name,);
         }
     }
+    let user_team_count = teams.iter().filter(|team| team.is_user).count();
+
+    if user_team_count > 1 {
+        bail!("multiple teams are marked as the user team");
+    }
 
     // Validate build IDs and all player references inside builds.
     let mut build_ids = HashSet::new();
@@ -229,6 +234,47 @@ mod tests {
                 .contains("duplicate player ID")
         );
     }
+}
+
+pub fn save_teams(path: impl AsRef<Path>, teams: &[FantasyTeam]) -> Result<()> {
+    let path = path.as_ref();
+    let temporary_path = path.with_extension("csv.tmp");
+
+    let save_result = (|| -> Result<()> {
+        let mut writer = csv::WriterBuilder::new()
+            .has_headers(true)
+            .from_path(&temporary_path)
+            .with_context(|| {
+                format!(
+                    "failed to create temporary team file: {}",
+                    temporary_path.display(),
+                )
+            })?;
+
+        for team in teams {
+            writer
+                .serialize(team)
+                .with_context(|| format!("failed to serialize team {:?}", team.name,))?;
+        }
+
+        writer
+            .flush()
+            .with_context(|| format!("failed to flush team file: {}", temporary_path.display(),))?;
+
+        drop(writer);
+
+        fs::rename(&temporary_path, path).with_context(|| {
+            format!("failed to replace {} with saved team data", path.display(),)
+        })?;
+
+        Ok(())
+    })();
+
+    if save_result.is_err() {
+        let _ = fs::remove_file(&temporary_path);
+    }
+
+    save_result
 }
 
 pub fn save_players(path: impl AsRef<Path>, players: &[Player]) -> Result<()> {
