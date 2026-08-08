@@ -9,15 +9,8 @@ pub struct Build {
     pub id: String,
     pub title: String,
     pub required_players: Vec<PlayerId>,
-    pub identity: String,
-    pub sections: Vec<BuildSection>,
+    pub text: String,
     pub target_players: Vec<PlayerId>,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct BuildSection {
-    pub title: String,
-    pub items: Vec<String>,
 }
 
 #[derive(Debug, Deserialize)]

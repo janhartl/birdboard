@@ -450,7 +450,7 @@ impl App {
 
             KeyCode::Esc
                 if matches!(&self.interaction_mode, InteractionMode::Edit)
-                    && matches!(&self.screen, Screen::Rosters | Screen::Strategy) =>
+                    && matches!(&self.screen, Screen::Rosters) =>
             {
                 self.toggle_edit_mode();
             }
@@ -799,10 +799,7 @@ impl App {
     }
 
     pub fn current_screen_is_editable(&self) -> bool {
-        matches!(
-            self.screen,
-            Screen::Draft | Screen::Rosters | Screen::Strategy
-        )
+        matches!(self.screen, Screen::Draft | Screen::Rosters)
     }
 
     pub fn cut_selected_player(&mut self) -> bool {

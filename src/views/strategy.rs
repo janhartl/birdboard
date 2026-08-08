@@ -106,22 +106,8 @@ fn build_text(build: &Build, app: &App) -> Text<'static> {
     let mut lines = vec![
         Line::from(Span::styled(build.title.clone(), heading_style)),
         Line::from(""),
-        Line::from(Span::styled("Identity", heading_style)),
-        Line::from(build.identity.clone()),
+        Line::from(build.text.clone()),
     ];
-
-    for section in &build.sections {
-        lines.push(Line::from(""));
-
-        lines.push(Line::from(Span::styled(
-            section.title.clone(),
-            heading_style,
-        )));
-
-        for item in &section.items {
-            lines.push(Line::from(format!("  • {item}")));
-        }
-    }
 
     if !build.target_players.is_empty() {
         lines.push(Line::from(""));
