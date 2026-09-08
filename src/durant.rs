@@ -1,6 +1,12 @@
-use std::collections::{HashMap, HashSet};
+use std::{
+    collections::{HashMap, HashSet, hash_map::DefaultHasher},
+    fs,
+    hash::{Hash, Hasher},
+    path::PathBuf,
+};
 
 use anyhow::{Result, bail};
+use serde::{Deserialize, Serialize};
 
 use crate::{
     player::PlayerId,
@@ -65,6 +71,65 @@ pub struct DurantScore {
     pub total: f64,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct DynamicDurantScore {
+    pub player_id: PlayerId,
+    pub player_name: String,
+
+    /// Candidate's X-score contributions, ordered as:
+    /// FG%, FT%, 3PM, PTS, REB, AST, STL, BLK, TO.
+    pub x_scores: [f64; 9],
+
+    /// Immediate category win probabilities after adding only this candidate.
+    pub category_win_probabilities: [f64; 9],
+
+    /// Immediate expected number of categories won.
+    pub expected_categories: f64,
+
+    /// Immediate probability of winning at least five of nine categories.
+    pub matchup_win_probability: f64,
+
+    /// Immediate increase in matchup win probability versus the current roster.
+    pub marginal_matchup_win_probability: f64,
+
+    /// Best deterministic continuation found after filling the remaining
+    /// roster spots from the currently available player pool.
+    pub projected_matchup_win_probability: f64,
+    pub projected_expected_categories: f64,
+    pub projected_category_win_probabilities: [f64; 9],
+
+    /// Human-readable identity of the projected completed roster. This is
+    /// derived from the final category win probabilities, not directly from j.
+    pub build_name: String,
+    /// Human-readable interpretation of the best future category-weight vector j.
+    /// A zero weight can mean either a true punt or a category that is already
+    /// strong enough to coast; j_name distinguishes those cases.
+    pub j_name: String,
+    /// Best future category-weight vector j, in DYNAMIC_CATEGORY_NAMES order.
+    pub j_weights: [f64; 9],
+    /// Runner-up j strategies from the same search, best first. These make
+    /// strategy flexibility/rigidity observable instead of hiding it behind
+    /// a single argmax.
+    pub j_alternatives: Vec<StrategyAlternative>,
+    /// Difference between the best and second-best projected matchup win
+    /// probabilities. Small means many strategies are essentially tied.
+    pub j_margin: f64,
+
+    /// Greedy future players selected under the best j. These are diagnostics
+    /// now and can later power the Strategy UI / draft explanation panel.
+    pub projected_future_players: Vec<PlayerId>,
+    pub projected_future_player_names: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StrategyAlternative {
+    pub j_name: String,
+    pub j_weights: [f64; 9],
+    pub projected_matchup_win_probability: f64,
+    pub projected_expected_categories: f64,
+    pub build_name: String,
+}
+
 #[derive(Debug, Clone)]
 pub struct DurantModel {
     /// Number of players in Q. For a 13-team, 13-player league this is 169.
@@ -76,9 +141,18 @@ pub struct DurantModel {
     /// Fitted category-level parameters. These are also useful later for
     /// X-score / H-score calculations.
     pub parameters: DurantParameters,
+    /// Player-to-player X-score variance across Q, ordered as:
+    /// FG%, FT%, 3PM, PTS, REB, AST, STL, BLK, TO. This is the
+    /// X_sigma^2 term used by Rosenof's dynamic matchup model.
+    pub x_variance: [f64; 9],
     /// All players with enough weekly observations to receive a static score,
     /// sorted best-to-worst by aggregate G-score.
     pub scores: Vec<DurantScore>,
+    /// Historical stats cache directory, reused for persistent dynamic-search
+    /// results so expensive j searches only need to be done once per state.
+    cache_dir: PathBuf,
+    /// Fingerprint of the fitted model used to invalidate stale dynamic caches.
+    model_fingerprint: u64,
 }
 
 impl DurantModel {
@@ -90,7 +164,10 @@ impl DurantModel {
             team_size: roster_size,
             reference_players: Vec::new(),
             parameters: DurantParameters::default(),
+            x_variance: [0.0; 9],
             scores: Vec::new(),
+            cache_dir: PathBuf::new(),
+            model_fingerprint: 0,
         }
     }
 
@@ -148,12 +225,18 @@ impl DurantModel {
 
         scores.sort_by(|a, b| b.total.total_cmp(&a.total));
 
+        let x_variance = fit_x_variance(&reference_players, &scores, parameters);
+        let model_fingerprint = fingerprint_model(&scores, parameters, reference_size, roster_size);
+
         Ok(Self {
             reference_size,
             team_size: roster_size,
             reference_players,
             parameters,
+            x_variance,
             scores,
+            cache_dir: stats.cache_dir.clone(),
+            model_fingerprint,
         })
     }
 
@@ -162,6 +245,485 @@ impl DurantModel {
             .iter()
             .find(|score| &score.player_id == player_id)
     }
+
+    /// Return the player's dynamic X-score vector. Higher is better in every
+    /// component, including turnovers, where the sign has already been
+    /// reversed by the static score.
+    pub fn x_score_for(&self, player_id: &PlayerId) -> Option<[f64; 9]> {
+        self.score_for(player_id)
+            .map(|score| score_to_x_vector(score, self.parameters))
+    }
+
+    fn dynamic_cache_key(
+        &self,
+        own_roster: &[PlayerId],
+        opponent_rosters: &[Vec<PlayerId>],
+        candidates: &[PlayerId],
+    ) -> u64 {
+        let mut hasher = DefaultHasher::new();
+        DYNAMIC_SEARCH_VERSION.hash(&mut hasher);
+        self.model_fingerprint.hash(&mut hasher);
+        self.reference_size.hash(&mut hasher);
+        self.team_size.hash(&mut hasher);
+
+        own_roster.len().hash(&mut hasher);
+        for player_id in own_roster {
+            player_id.hash(&mut hasher);
+        }
+
+        opponent_rosters.len().hash(&mut hasher);
+        for roster in opponent_rosters {
+            roster.len().hash(&mut hasher);
+            for player_id in roster {
+                player_id.hash(&mut hasher);
+            }
+        }
+
+        candidates.len().hash(&mut hasher);
+        for player_id in candidates {
+            player_id.hash(&mut hasher);
+        }
+
+        hasher.finish()
+    }
+
+    fn dynamic_cache_path(
+        &self,
+        own_roster: &[PlayerId],
+        opponent_rosters: &[Vec<PlayerId>],
+        candidates: &[PlayerId],
+    ) -> Option<PathBuf> {
+        if self.cache_dir.as_os_str().is_empty() {
+            return None;
+        }
+
+        let key = self.dynamic_cache_key(own_roster, opponent_rosters, candidates);
+        Some(
+            self.cache_dir
+                .join("durant")
+                .join(format!("dynamic_v{DYNAMIC_SEARCH_VERSION}_{key:016x}.json")),
+        )
+    }
+
+    fn load_dynamic_cache(
+        &self,
+        own_roster: &[PlayerId],
+        opponent_rosters: &[Vec<PlayerId>],
+        candidates: &[PlayerId],
+    ) -> Option<Vec<DynamicDurantScore>> {
+        let path = self.dynamic_cache_path(own_roster, opponent_rosters, candidates)?;
+        let json = fs::read_to_string(path).ok()?;
+        serde_json::from_str(&json).ok()
+    }
+
+    fn save_dynamic_cache(
+        &self,
+        own_roster: &[PlayerId],
+        opponent_rosters: &[Vec<PlayerId>],
+        candidates: &[PlayerId],
+        scores: &[DynamicDurantScore],
+    ) {
+        let Some(path) = self.dynamic_cache_path(own_roster, opponent_rosters, candidates) else {
+            return;
+        };
+        let Some(parent) = path.parent() else {
+            return;
+        };
+
+        if fs::create_dir_all(parent).is_err() {
+            return;
+        }
+
+        let Ok(json) = serde_json::to_string(scores) else {
+            return;
+        };
+
+        let _ = fs::write(path, json);
+    }
+
+    /// Rank candidates by a roster-dependent Most-Categories H-score and a
+    /// deterministic future-roster rollout.
+    ///
+    /// For every candidate, BirdBoard:
+    /// 1. adds the candidate to the known roster,
+    /// 2. tries a library of interpretable category-weight vectors j,
+    /// 3. greedily fills the remaining roster slots from the available pool,
+    /// 4. evaluates the completed roster against the current/generic opponents,
+    /// 5. keeps the j with the highest projected matchup-win probability.
+    ///
+    /// This is intentionally a practical BirdBoard approximation to H0's
+    /// future-pick optimizer X_delta(j): we use the real remaining player pool
+    /// instead of approximating future players as a multivariate Gaussian.
+    pub fn dynamic_scores(
+        &self,
+        own_roster: &[PlayerId],
+        opponent_rosters: &[Vec<PlayerId>],
+        candidates: &[PlayerId],
+    ) -> Vec<DynamicDurantScore> {
+        if let Some(cached) = self.load_dynamic_cache(own_roster, opponent_rosters, candidates) {
+            return cached;
+        }
+
+        let own_sum = self.aggregate_x_scores(own_roster);
+
+        let generic_opponent = vec![Vec::<PlayerId>::new()];
+        let opponents = if opponent_rosters.is_empty() {
+            generic_opponent.as_slice()
+        } else {
+            opponent_rosters
+        };
+
+        let opponent_sums = opponents
+            .iter()
+            .map(|roster| (self.aggregate_x_scores(roster), roster.len()))
+            .collect::<Vec<_>>();
+
+        let baseline = self.evaluate_dynamic_state(own_sum, &opponent_sums);
+        let strategies = rollout_strategies();
+        let strategy_rankings = self.rank_available_by_strategy(candidates, &strategies);
+
+        let owned = own_roster.iter().cloned().collect::<HashSet<_>>();
+        let future_slots_after_candidate = self
+            .team_size
+            .saturating_sub(own_roster.len().saturating_add(1));
+
+        let mut results = candidates
+            .iter()
+            .filter(|player_id| !owned.contains(*player_id))
+            .filter_map(|player_id| {
+                let static_score = self.score_for(player_id)?;
+                let candidate_x = score_to_x_vector(static_score, self.parameters);
+                let with_candidate = add_vectors(own_sum, candidate_x);
+                let immediate = self.evaluate_dynamic_state(with_candidate, &opponent_sums);
+
+                let mut rollouts = self.top_rollouts_for_candidate(
+                    player_id,
+                    with_candidate,
+                    future_slots_after_candidate,
+                    &strategies,
+                    &strategy_rankings,
+                    &opponent_sums,
+                    3,
+                );
+                if rollouts.is_empty() {
+                    return None;
+                }
+
+                let rollout = rollouts.remove(0);
+                let second_probability = rollouts
+                    .first()
+                    .map(|result| result.evaluation.matchup_win_probability)
+                    .unwrap_or(rollout.evaluation.matchup_win_probability);
+                let alternatives = rollouts
+                    .iter()
+                    .map(|result| StrategyAlternative {
+                        j_name: describe_strategy(
+                            &result.strategy,
+                            result.evaluation.category_win_probabilities,
+                        ),
+                        j_weights: result.strategy.weights,
+                        projected_matchup_win_probability: result
+                            .evaluation
+                            .matchup_win_probability,
+                        projected_expected_categories: result.evaluation.expected_categories,
+                        build_name: describe_projected_build(
+                            result.evaluation.category_win_probabilities,
+                        ),
+                    })
+                    .collect::<Vec<_>>();
+
+                Some(DynamicDurantScore {
+                    player_id: player_id.clone(),
+                    player_name: static_score.player_name.clone(),
+                    x_scores: candidate_x,
+                    category_win_probabilities: immediate.category_win_probabilities,
+                    expected_categories: immediate.expected_categories,
+                    matchup_win_probability: immediate.matchup_win_probability,
+                    marginal_matchup_win_probability: immediate.matchup_win_probability
+                        - baseline.matchup_win_probability,
+                    projected_matchup_win_probability: rollout.evaluation.matchup_win_probability,
+                    projected_expected_categories: rollout.evaluation.expected_categories,
+                    projected_category_win_probabilities: rollout
+                        .evaluation
+                        .category_win_probabilities,
+                    build_name: describe_projected_build(
+                        rollout.evaluation.category_win_probabilities,
+                    ),
+                    j_name: describe_strategy(
+                        &rollout.strategy,
+                        rollout.evaluation.category_win_probabilities,
+                    ),
+                    j_weights: rollout.strategy.weights,
+                    j_alternatives: alternatives,
+                    j_margin: rollout.evaluation.matchup_win_probability - second_probability,
+                    projected_future_players: rollout.future_players,
+                    projected_future_player_names: rollout.future_player_names,
+                })
+            })
+            .collect::<Vec<_>>();
+
+        results.sort_by(|a, b| {
+            b.projected_matchup_win_probability
+                .total_cmp(&a.projected_matchup_win_probability)
+                .then_with(|| {
+                    b.matchup_win_probability
+                        .total_cmp(&a.matchup_win_probability)
+                })
+                .then_with(|| b.expected_categories.total_cmp(&a.expected_categories))
+        });
+
+        self.save_dynamic_cache(own_roster, opponent_rosters, candidates, &results);
+        results
+    }
+
+    fn rank_available_by_strategy(
+        &self,
+        candidates: &[PlayerId],
+        strategies: &[RolloutStrategy],
+    ) -> Vec<Vec<PlayerId>> {
+        strategies
+            .iter()
+            .map(|strategy| {
+                let mut ranked = candidates
+                    .iter()
+                    .filter_map(|player_id| {
+                        let x = self.x_score_for(player_id)?;
+                        Some((player_id.clone(), weighted_x_score(x, strategy.weights)))
+                    })
+                    .collect::<Vec<_>>();
+
+                ranked.sort_by(|a, b| b.1.total_cmp(&a.1));
+                ranked.into_iter().map(|(player_id, _)| player_id).collect()
+            })
+            .collect()
+    }
+
+    fn top_rollouts_for_candidate(
+        &self,
+        candidate: &PlayerId,
+        with_candidate: [f64; 9],
+        future_slots: usize,
+        strategies: &[RolloutStrategy],
+        strategy_rankings: &[Vec<PlayerId>],
+        opponent_sums: &[([f64; 9], usize)],
+        keep: usize,
+    ) -> Vec<RolloutResult> {
+        if keep == 0 {
+            return Vec::new();
+        }
+
+        if future_slots == 0 || strategies.is_empty() {
+            return vec![RolloutResult {
+                strategy: RolloutStrategy::balanced(),
+                evaluation: self.evaluate_dynamic_state(with_candidate, opponent_sums),
+                future_players: Vec::new(),
+                future_player_names: Vec::new(),
+            }];
+        }
+
+        let mut best = Vec::<RolloutResult>::with_capacity(keep + 1);
+        let market_stride = self.league_teams().max(1);
+
+        for (strategy, ranked_players) in strategies.iter().zip(strategy_rankings.iter()) {
+            let mut completed_x = with_candidate;
+            let mut future_players = Vec::with_capacity(future_slots);
+            let mut future_player_names = Vec::with_capacity(future_slots);
+
+            let valid_ranked = ranked_players
+                .iter()
+                .filter(|player_id| *player_id != candidate)
+                .filter(|player_id| self.x_score_for(player_id).is_some())
+                .collect::<Vec<_>>();
+
+            let mut used_indices = HashSet::new();
+
+            for slot in 0..future_slots {
+                if valid_ranked.is_empty() {
+                    break;
+                }
+
+                let target_index = ((slot + 1) * market_stride).saturating_sub(1);
+                let mut index = target_index.min(valid_ranked.len() - 1);
+
+                while used_indices.contains(&index) && index + 1 < valid_ranked.len() {
+                    index += 1;
+                }
+
+                if used_indices.contains(&index) {
+                    if let Some(fallback) = (0..valid_ranked.len())
+                        .find(|candidate_index| !used_indices.contains(candidate_index))
+                    {
+                        index = fallback;
+                    } else {
+                        break;
+                    }
+                }
+
+                used_indices.insert(index);
+                let player_id = valid_ranked[index];
+                let Some(x) = self.x_score_for(player_id) else {
+                    continue;
+                };
+
+                completed_x = add_vectors(completed_x, x);
+                future_players.push(player_id.clone());
+
+                if let Some(score) = self.score_for(player_id) {
+                    future_player_names.push(score.player_name.clone());
+                }
+            }
+
+            let result = RolloutResult {
+                strategy: strategy.clone(),
+                evaluation: self.evaluate_dynamic_state(completed_x, opponent_sums),
+                future_players,
+                future_player_names,
+            };
+
+            best.push(result);
+            best.sort_by(|a, b| {
+                b.evaluation
+                    .matchup_win_probability
+                    .total_cmp(&a.evaluation.matchup_win_probability)
+                    .then_with(|| {
+                        b.evaluation
+                            .expected_categories
+                            .total_cmp(&a.evaluation.expected_categories)
+                    })
+            });
+            best.truncate(keep);
+        }
+
+        best
+    }
+
+    fn league_teams(&self) -> usize {
+        if self.team_size == 0 {
+            1
+        } else {
+            (self.reference_size / self.team_size).max(1)
+        }
+    }
+
+    fn aggregate_x_scores(&self, roster: &[PlayerId]) -> [f64; 9] {
+        roster.iter().fold([0.0; 9], |acc, player_id| {
+            match self.x_score_for(player_id) {
+                Some(x) => add_vectors(acc, x),
+                None => acc,
+            }
+        })
+    }
+
+    fn evaluate_dynamic_state(
+        &self,
+        own_x: [f64; 9],
+        opponent_sums: &[([f64; 9], usize)],
+    ) -> DynamicStateEvaluation {
+        let mut average_category_probabilities = [0.0; 9];
+        let mut average_expected_categories = 0.0;
+        let mut average_matchup_probability = 0.0;
+
+        for (opponent_x, known_opponent_players) in opponent_sums {
+            let unknown_opponent_slots = self
+                .team_size
+                .saturating_sub((*known_opponent_players).min(self.team_size));
+
+            let mut category_probabilities = [0.0; 9];
+
+            for category in 0..9 {
+                let mean_difference = own_x[category] - opponent_x[category];
+
+                // In the X-score basis, one full roster contributes variance
+                // N for each team from scoring-period noise. Rosenof adds
+                // player-to-player variance for the opponent's unknown future
+                // picks, assumed random around their expected means.
+                let variance = 2.0 * self.team_size as f64
+                    + unknown_opponent_slots as f64 * self.x_variance[category];
+
+                let std_dev = variance.max(f64::EPSILON).sqrt();
+                category_probabilities[category] = normal_cdf(mean_difference / std_dev);
+                average_category_probabilities[category] +=
+                    category_probabilities[category] / opponent_sums.len() as f64;
+            }
+
+            let expected_categories = category_probabilities.iter().sum::<f64>();
+            let matchup_probability = most_categories_probability(category_probabilities);
+
+            average_expected_categories += expected_categories / opponent_sums.len() as f64;
+            average_matchup_probability += matchup_probability / opponent_sums.len() as f64;
+        }
+
+        DynamicStateEvaluation {
+            category_win_probabilities: average_category_probabilities,
+            expected_categories: average_expected_categories,
+            matchup_win_probability: average_matchup_probability,
+        }
+    }
+}
+
+fn fingerprint_model(
+    scores: &[DurantScore],
+    parameters: DurantParameters,
+    reference_size: usize,
+    team_size: usize,
+) -> u64 {
+    let mut hasher = DefaultHasher::new();
+    reference_size.hash(&mut hasher);
+    team_size.hash(&mut hasher);
+
+    for score in scores {
+        score.player_id.hash(&mut hasher);
+        for value in [
+            score.field_goal,
+            score.free_throw,
+            score.threes,
+            score.points,
+            score.rebounds,
+            score.assists,
+            score.steals,
+            score.blocks,
+            score.turnovers,
+            score.total,
+        ] {
+            value.to_bits().hash(&mut hasher);
+        }
+    }
+
+    for value in [
+        parameters.points.mean,
+        parameters.points.sigma,
+        parameters.points.tau,
+        parameters.threes.mean,
+        parameters.threes.sigma,
+        parameters.threes.tau,
+        parameters.rebounds.mean,
+        parameters.rebounds.sigma,
+        parameters.rebounds.tau,
+        parameters.assists.mean,
+        parameters.assists.sigma,
+        parameters.assists.tau,
+        parameters.steals.mean,
+        parameters.steals.sigma,
+        parameters.steals.tau,
+        parameters.blocks.mean,
+        parameters.blocks.sigma,
+        parameters.blocks.tau,
+        parameters.turnovers.mean,
+        parameters.turnovers.sigma,
+        parameters.turnovers.tau,
+        parameters.field_goal.mean_attempts,
+        parameters.field_goal.mean_rate,
+        parameters.field_goal.sigma_rate,
+        parameters.field_goal.tau_rate,
+        parameters.free_throw.mean_attempts,
+        parameters.free_throw.mean_rate,
+        parameters.free_throw.sigma_rate,
+        parameters.free_throw.tau_rate,
+    ] {
+        value.to_bits().hash(&mut hasher);
+    }
+
+    hasher.finish()
 }
 
 // -----------------------------------------------------------------------------
@@ -564,6 +1126,296 @@ where
 }
 
 // -----------------------------------------------------------------------------
+// Deterministic future-roster rollout / build identity
+// -----------------------------------------------------------------------------
+
+const DYNAMIC_SEARCH_VERSION: u32 = 4;
+const MAX_NON_NEUTRAL_WEIGHTS: usize = 3;
+const J_WEIGHT_LEVELS: [f64; 4] = [1.0, 0.0, 0.5, 1.5];
+
+#[derive(Debug, Clone)]
+struct RolloutStrategy {
+    weights: [f64; 9],
+}
+
+impl RolloutStrategy {
+    fn balanced() -> Self {
+        Self { weights: [1.0; 9] }
+    }
+}
+
+#[derive(Debug, Clone)]
+struct RolloutResult {
+    strategy: RolloutStrategy,
+    evaluation: DynamicStateEvaluation,
+    future_players: Vec<PlayerId>,
+    future_player_names: Vec<String>,
+}
+
+/// Search a denser but still tractable j-space. Every category can be neutral
+/// (1.0), ignored/coasted (0.0), de-emphasized (0.5), or pushed (1.5), with
+/// up to three non-neutral categories at once. This produces 2,620 strategies
+/// and, unlike the original 91-vector library, includes mixed plans such as
+/// coast FT%, de-emphasize TO, and push REB in the same j.
+fn rollout_strategies() -> Vec<RolloutStrategy> {
+    let total_codes = J_WEIGHT_LEVELS.len().pow(9);
+    let mut strategies = Vec::with_capacity(2620);
+
+    for mut code in 0..total_codes {
+        let mut weights = [1.0; 9];
+        let mut changed = 0usize;
+
+        for weight in &mut weights {
+            let digit = code % J_WEIGHT_LEVELS.len();
+            code /= J_WEIGHT_LEVELS.len();
+            *weight = J_WEIGHT_LEVELS[digit];
+            if digit != 0 {
+                changed += 1;
+            }
+        }
+
+        if changed <= MAX_NON_NEUTRAL_WEIGHTS {
+            strategies.push(RolloutStrategy { weights });
+        }
+    }
+
+    strategies
+}
+
+fn weighted_x_score(x_scores: [f64; 9], weights: [f64; 9]) -> f64 {
+    x_scores
+        .iter()
+        .zip(weights.iter())
+        .map(|(&x, &weight)| x * weight)
+        .sum()
+}
+
+/// Describe what j is asking future picks to do. A zero weight is not
+/// automatically a punt: if the completed roster already has a high win
+/// probability in that category, j is simply choosing not to spend more draft
+/// capital there ("Coast").
+fn describe_strategy(strategy: &RolloutStrategy, projected_probabilities: [f64; 9]) -> String {
+    let mut coast = Vec::new();
+    let mut punt = Vec::new();
+    let mut de_emphasize = Vec::new();
+    let mut push = Vec::new();
+
+    for index in 0..9 {
+        let weight = strategy.weights[index];
+        let name = DYNAMIC_CATEGORY_NAMES[index];
+        let probability = projected_probabilities[index];
+
+        if weight <= f64::EPSILON {
+            if probability >= 0.65 {
+                coast.push(name);
+            } else if probability <= 0.35 {
+                punt.push(name);
+            } else {
+                de_emphasize.push(name);
+            }
+        } else if weight < 1.0 - f64::EPSILON {
+            de_emphasize.push(name);
+        } else if weight > 1.0 + f64::EPSILON {
+            push.push(name);
+        }
+    }
+
+    let mut parts = Vec::new();
+    if !coast.is_empty() {
+        parts.push(format!("Coast {}", coast.join(" + ")));
+    }
+    if !punt.is_empty() {
+        parts.push(format!("Punt {}", punt.join(" + ")));
+    }
+    if !de_emphasize.is_empty() {
+        parts.push(format!("De-emphasize {}", de_emphasize.join(" + ")));
+    }
+    if !push.is_empty() {
+        parts.push(format!("Push {}", push.join(" + ")));
+    }
+
+    if parts.is_empty() {
+        "Balanced".to_string()
+    } else {
+        parts.join(" / ")
+    }
+}
+
+/// Name the projected roster from the categories it is actually expected to
+/// lose/win. This is deliberately separate from j: j describes future marginal
+/// priorities, while build_name describes the resulting team identity.
+fn describe_projected_build(probabilities: [f64; 9]) -> String {
+    let mut ranked = (0..9)
+        .map(|index| (index, probabilities[index]))
+        .collect::<Vec<_>>();
+    ranked.sort_by(|a, b| a.1.total_cmp(&b.1));
+
+    let punts = ranked
+        .iter()
+        .filter(|(_, probability)| *probability <= 0.35)
+        .map(|(index, _)| *index)
+        .collect::<Vec<_>>();
+
+    if !punts.is_empty() {
+        let shown = punts
+            .iter()
+            .take(2)
+            .map(|&index| DYNAMIC_CATEGORY_NAMES[index])
+            .collect::<Vec<_>>()
+            .join(" + ");
+
+        return if punts.len() > 2 {
+            format!("Punt {shown} (+{})", punts.len() - 2)
+        } else {
+            format!("Punt {shown}")
+        };
+    }
+
+    ranked.sort_by(|a, b| b.1.total_cmp(&a.1));
+    let strengths = ranked
+        .iter()
+        .filter(|(_, probability)| *probability >= 0.65)
+        .take(2)
+        .map(|(index, _)| DYNAMIC_CATEGORY_NAMES[*index])
+        .collect::<Vec<_>>();
+
+    if strengths.len() >= 2 {
+        format!("{} + {} Core", strengths[0], strengths[1])
+    } else if strengths.len() == 1 {
+        format!("{} Core", strengths[0])
+    } else {
+        "Balanced".to_string()
+    }
+}
+
+// -----------------------------------------------------------------------------
+// Dynamic H-score core
+// -----------------------------------------------------------------------------
+
+#[derive(Debug, Clone, Copy)]
+struct DynamicStateEvaluation {
+    category_win_probabilities: [f64; 9],
+    expected_categories: f64,
+    matchup_win_probability: f64,
+}
+
+/// Category order used by the dynamic model:
+/// FG%, FT%, 3PM, PTS, REB, AST, STL, BLK, TO.
+pub const DYNAMIC_CATEGORY_NAMES: [&str; 9] =
+    ["FG%", "FT%", "3PM", "PTS", "REB", "AST", "STL", "BLK", "TO"];
+
+fn score_to_x_vector(score: &DurantScore, parameters: DurantParameters) -> [f64; 9] {
+    [
+        g_to_x_percentage(score.field_goal, parameters.field_goal),
+        g_to_x_percentage(score.free_throw, parameters.free_throw),
+        g_to_x_counting(score.threes, parameters.threes),
+        g_to_x_counting(score.points, parameters.points),
+        g_to_x_counting(score.rebounds, parameters.rebounds),
+        g_to_x_counting(score.assists, parameters.assists),
+        g_to_x_counting(score.steals, parameters.steals),
+        g_to_x_counting(score.blocks, parameters.blocks),
+        g_to_x_counting(score.turnovers, parameters.turnovers),
+    ]
+}
+
+fn g_to_x_counting(g_score: f64, parameters: CountingParameters) -> f64 {
+    let denominator = (parameters.tau.powi(2) + parameters.sigma.powi(2)).sqrt();
+
+    if parameters.tau <= f64::EPSILON || denominator <= f64::EPSILON {
+        0.0
+    } else {
+        // G = X * tau / sqrt(tau^2 + sigma^2).
+        g_score * denominator / parameters.tau
+    }
+}
+
+fn g_to_x_percentage(g_score: f64, parameters: PercentageParameters) -> f64 {
+    let denominator = (parameters.tau_rate.powi(2) + parameters.sigma_rate.powi(2)).sqrt();
+
+    if parameters.tau_rate <= f64::EPSILON || denominator <= f64::EPSILON {
+        0.0
+    } else {
+        g_score * denominator / parameters.tau_rate
+    }
+}
+
+fn fit_x_variance(
+    reference_players: &[PlayerId],
+    scores: &[DurantScore],
+    parameters: DurantParameters,
+) -> [f64; 9] {
+    let reference_set = reference_players.iter().cloned().collect::<HashSet<_>>();
+    let vectors = scores
+        .iter()
+        .filter(|score| reference_set.contains(&score.player_id))
+        .map(|score| score_to_x_vector(score, parameters))
+        .collect::<Vec<_>>();
+
+    if vectors.is_empty() {
+        return [0.0; 9];
+    }
+
+    let means = array_means(&vectors);
+    let std_devs = array_stddevs(&vectors, means);
+    std_devs.map(|std_dev| std_dev.powi(2))
+}
+
+fn add_vectors(left: [f64; 9], right: [f64; 9]) -> [f64; 9] {
+    let mut result = [0.0; 9];
+
+    for index in 0..9 {
+        result[index] = left[index] + right[index];
+    }
+
+    result
+}
+
+/// Probability of winning at least five of nine independent categories.
+/// This is a Poisson-binomial DP equivalent to enumerating the 256 winning
+/// scenarios in Rosenof's Most-Categories objective.
+fn most_categories_probability(category_probabilities: [f64; 9]) -> f64 {
+    let mut wins = [0.0; 10];
+    wins[0] = 1.0;
+
+    for (processed, probability) in category_probabilities.into_iter().enumerate() {
+        let probability = probability.clamp(0.0, 1.0);
+
+        for won in (0..=processed + 1).rev() {
+            let lose_part = wins[won] * (1.0 - probability);
+            let win_part = if won == 0 {
+                0.0
+            } else {
+                wins[won - 1] * probability
+            };
+
+            wins[won] = lose_part + win_part;
+        }
+    }
+
+    wins[5..=9].iter().sum()
+}
+
+/// Standard normal CDF. The approximation is more than sufficient for draft
+/// ranking and avoids introducing a statistics crate solely for erf().
+fn normal_cdf(value: f64) -> f64 {
+    0.5 * (1.0 + erf_approx(value / std::f64::consts::SQRT_2))
+}
+
+fn erf_approx(value: f64) -> f64 {
+    // Abramowitz & Stegun 7.1.26. Maximum error is about 1.5e-7.
+    let sign = if value < 0.0 { -1.0 } else { 1.0 };
+    let x = value.abs();
+    let t = 1.0 / (1.0 + 0.3275911 * x);
+
+    let polynomial = (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736)
+        * t
+        + 0.254829592)
+        * t;
+
+    sign * (1.0 - polynomial * (-x * x).exp())
+}
+
+// -----------------------------------------------------------------------------
 // Math helpers
 // -----------------------------------------------------------------------------
 
@@ -734,5 +1586,91 @@ mod tests {
             (10.0 / parameters.mean_attempts) * (0.6 - parameters.mean_rate) / denominator;
 
         assert!((high_volume - 2.0 * low_volume).abs() < 1e-12);
+    }
+
+    #[test]
+    fn normal_cdf_is_symmetric() {
+        assert!((normal_cdf(0.0) - 0.5).abs() < 1e-7);
+        assert!((normal_cdf(1.0) + normal_cdf(-1.0) - 1.0).abs() < 1e-7);
+    }
+
+    #[test]
+    fn nine_coinflip_categories_give_fifty_percent_matchup_odds() {
+        let probability = most_categories_probability([0.5; 9]);
+        assert!((probability - 0.5).abs() < 1e-12);
+    }
+
+    #[test]
+    fn dominant_categories_raise_matchup_probability() {
+        let neutral = most_categories_probability([0.5; 9]);
+        let strong = most_categories_probability([0.7; 9]);
+
+        assert!(strong > neutral);
+    }
+
+    #[test]
+    fn rollout_strategy_library_is_dense_but_bounded() {
+        let strategies = rollout_strategies();
+
+        assert_eq!(strategies.len(), 2620);
+        assert!(
+            strategies
+                .iter()
+                .any(|strategy| strategy.weights == [1.0; 9])
+        );
+
+        let mut mixed = [1.0; 9];
+        mixed[1] = 0.0;
+        mixed[4] = 1.5;
+        mixed[8] = 0.5;
+        assert!(strategies.iter().any(|strategy| strategy.weights == mixed));
+
+        assert!(strategies.iter().all(|strategy| {
+            strategy
+                .weights
+                .iter()
+                .filter(|&&weight| (weight - 1.0).abs() > f64::EPSILON)
+                .count()
+                <= MAX_NON_NEUTRAL_WEIGHTS
+        }));
+    }
+
+    #[test]
+    fn projected_build_is_named_from_actual_weak_categories() {
+        let probabilities = [0.80, 0.73, 0.89, 0.93, 0.84, 0.83, 0.43, 0.71, 0.10];
+
+        assert_eq!(describe_projected_build(probabilities), "Punt TO");
+    }
+
+    #[test]
+    fn zero_j_weight_on_locked_categories_is_coasting_not_punting() {
+        let strategy = RolloutStrategy {
+            weights: [1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+        };
+        let probabilities = [0.50, 0.60, 0.89, 0.93, 0.55, 0.55, 0.50, 0.50, 0.50];
+
+        assert_eq!(
+            describe_strategy(&strategy, probabilities),
+            "Coast 3PM + PTS"
+        );
+    }
+
+    #[test]
+    fn zero_j_weight_on_lost_categories_is_a_punt() {
+        let strategy = RolloutStrategy {
+            weights: [1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0],
+        };
+        let probabilities = [0.60, 0.18, 0.60, 0.70, 0.70, 0.70, 0.60, 0.70, 0.12];
+
+        assert_eq!(describe_strategy(&strategy, probabilities), "Punt FT% + TO");
+    }
+
+    #[test]
+    fn weighted_x_score_ignores_a_zero_weight_category() {
+        let x = [10.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0];
+        let mut weights = [1.0; 9];
+        weights[0] = 0.0;
+
+        assert!((weighted_x_score(x, weights) - 8.0).abs() < 1e-12);
     }
 }

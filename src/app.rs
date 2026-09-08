@@ -6,7 +6,7 @@ use crate::data::validate_data;
 use crate::draft::DraftError;
 use crate::draft::DraftMode;
 use crate::draft::DraftPick;
-use crate::durant::DurantModel;
+use crate::durant::{DurantModel, DynamicDurantScore};
 use crate::player::{Player, PlayerId};
 use crate::stats::StatsBundle;
 use crate::strategy::{
@@ -979,6 +979,46 @@ impl App {
         self.teams_dirty = false;
 
         Ok(())
+    }
+
+    pub fn dynamic_durant_scores(&self) -> Vec<DynamicDurantScore> {
+        use std::collections::HashSet;
+
+        let own_roster = self
+            .draft_picks
+            .iter()
+            .filter(|pick| pick.team_id == self.user_team_id)
+            .map(|pick| pick.player_id.clone())
+            .collect::<Vec<_>>();
+
+        let opponent_rosters = self
+            .teams
+            .iter()
+            .filter(|team| team.id != self.user_team_id)
+            .map(|team| {
+                self.draft_picks
+                    .iter()
+                    .filter(|pick| pick.team_id == team.id)
+                    .map(|pick| pick.player_id.clone())
+                    .collect::<Vec<_>>()
+            })
+            .collect::<Vec<_>>();
+
+        let drafted = self
+            .draft_picks
+            .iter()
+            .map(|pick| pick.player_id.clone())
+            .collect::<HashSet<_>>();
+
+        let candidates = self
+            .players
+            .iter()
+            .filter(|player| !drafted.contains(&player.id))
+            .map(|player| player.id.clone())
+            .collect::<Vec<_>>();
+
+        self.durant
+            .dynamic_scores(&own_roster, &opponent_rosters, &candidates)
     }
 
     fn open_edit_player_form(&mut self) {

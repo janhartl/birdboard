@@ -22,6 +22,226 @@ use tui::init_terminal;
 use tui::restore_terminal;
 use ui::draw;
 
+fn format_j(weights: [f64; 9]) -> String {
+    weights
+        .iter()
+        .map(|weight| {
+            if (weight - weight.round()).abs() < 1e-9 {
+                format!("{:.0}", weight)
+            } else {
+                format!("{:.1}", weight)
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+fn print_blank_dynamic(app: &App) {
+    let scores = dynamic_scenario(app, &[]);
+
+    println!();
+    println!("==========================================================================");
+    println!("DYNAMIC DURANT — EMPTY ROSTER");
+    println!("Roster: —");
+    println!("==========================================================================");
+
+    println!(
+        "{:>3} {:<23} {:>7} {:>7}  {:<18} {:<25} {}",
+        "#", "Player", "NOW", "FINAL", "BUILD", "j-PLAN", "j",
+    );
+
+    for (index, score) in scores.iter().take(50).enumerate() {
+        println!(
+            "{:>3} {:<23} {:>6.2}% {:>6.2}%  {:<18} {:<25} [{}]",
+            index + 1,
+            score.player_name,
+            score.matchup_win_probability * 100.0,
+            score.projected_matchup_win_probability * 100.0,
+            score.build_name,
+            score.j_name,
+            format_j(score.j_weights),
+        );
+    }
+    println!();
+    println!("TOP 10 STARTING PATHS");
+
+    for score in scores.iter().take(30) {
+        println!();
+        println!("{}", score.player_name);
+
+        println!("  BUILD : {}", score.build_name);
+        println!("  j-plan: {}", score.j_name);
+        println!("  j     : [{}]", format_j(score.j_weights));
+        println!("          FG FT 3 PTS REB AST STL BLK TO");
+        println!(
+            "  j margin: {:.3} percentage points",
+            score.j_margin * 100.0
+        );
+
+        println!("  TOP j:");
+
+        println!(
+            "    1. {:<45} {:>6.2}%  [{}]",
+            score.j_name,
+            score.projected_matchup_win_probability * 100.0,
+            format_j(score.j_weights),
+        );
+
+        for (index, alternative) in score.j_alternatives.iter().enumerate() {
+            println!(
+                "    {}. {:<45} {:>6.2}%  [{}]",
+                index + 2,
+                alternative.j_name,
+                alternative.projected_matchup_win_probability * 100.0,
+                format_j(alternative.j_weights),
+            );
+        }
+
+        println!(
+            "  future: {}",
+            score
+                .projected_future_player_names
+                .iter()
+                .take(6)
+                .cloned()
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+
+        let p = score.projected_category_win_probabilities;
+
+        println!(
+            "  FG {:>3.0}% | FT {:>3.0}% | 3PM {:>3.0}% | PTS {:>3.0}% | \
+             REB {:>3.0}% | AST {:>3.0}% | STL {:>3.0}% | BLK {:>3.0}% | TO {:>3.0}%",
+            p[0] * 100.0,
+            p[1] * 100.0,
+            p[2] * 100.0,
+            p[3] * 100.0,
+            p[4] * 100.0,
+            p[5] * 100.0,
+            p[6] * 100.0,
+            p[7] * 100.0,
+            p[8] * 100.0,
+        );
+    }
+}
+
+fn dynamic_scenario(app: &App, roster_names: &[&str]) -> Vec<durant::DynamicDurantScore> {
+    use std::collections::HashSet;
+
+    let own_roster = roster_names
+        .iter()
+        .map(|name| {
+            app.players
+                .iter()
+                .find(|player| player.name == *name)
+                .unwrap_or_else(|| panic!("could not find player: {name}"))
+                .id
+                .clone()
+        })
+        .collect::<Vec<_>>();
+
+    let owned = own_roster.iter().cloned().collect::<HashSet<_>>();
+
+    let candidates = app
+        .players
+        .iter()
+        .filter(|player| !owned.contains(&player.id))
+        .map(|player| player.id.clone())
+        .collect::<Vec<_>>();
+
+    // Empty opponents = generic average opponent in DurantModel.
+    app.durant.dynamic_scores(&own_roster, &[], &candidates)
+}
+
+fn print_dynamic_scenarios(app: &App) {
+    use std::collections::HashMap;
+
+    let neutral = dynamic_scenario(app, &[]);
+
+    let neutral_ranks = neutral
+        .iter()
+        .enumerate()
+        .map(|(index, score)| (score.player_id.clone(), index + 1))
+        .collect::<HashMap<_, _>>();
+
+    let scenarios: &[(&str, &[&str])] = &[
+        ("GIANNIS", &["Giannis Antetokounmpo"]),
+        (
+            "GIANNIS + GOBERT",
+            &["Giannis Antetokounmpo", "Rudy Gobert"],
+        ),
+        ("SGA + MAXEY", &["Shai Gilgeous-Alexander", "Tyrese Maxey"]),
+    ];
+
+    for (title, roster) in scenarios {
+        let scores = dynamic_scenario(app, roster);
+
+        println!();
+        println!("==========================================================================");
+        println!("DYNAMIC DURANT — {title}");
+        println!("Roster: {}", roster.join(", "));
+        println!("==========================================================================");
+
+        println!(
+            "{:>3} {:<23} {:>6} {:>7} {:>7}  {:<24}",
+            "#", "Player", "MOVE", "NOW", "FINAL", "BUILD",
+        );
+
+        for (index, score) in scores.iter().take(50).enumerate() {
+            let rank = index + 1;
+
+            let old_rank = neutral_ranks.get(&score.player_id).copied().unwrap_or(rank);
+
+            let movement = old_rank as isize - rank as isize;
+
+            println!(
+                "{:>3} {:<23} {:+6} {:>6.2}% {:>6.2}%  {:<24}",
+                rank,
+                score.player_name,
+                movement,
+                score.matchup_win_probability * 100.0,
+                score.projected_matchup_win_probability * 100.0,
+                score.build_name,
+            );
+        }
+
+        println!();
+        println!("TOP 5 PROJECTED CONTINUATIONS");
+
+        for score in scores.iter().take(5) {
+            println!();
+            println!("{} -> {}", score.player_name, score.build_name);
+
+            println!(
+                "  future: {}",
+                score
+                    .projected_future_player_names
+                    .iter()
+                    .take(6)
+                    .cloned()
+                    .collect::<Vec<_>>()
+                    .join(", ")
+            );
+
+            let p = score.projected_category_win_probabilities;
+
+            println!(
+                "  FG {:>3.0}% | FT {:>3.0}% | 3PM {:>3.0}% | PTS {:>3.0}% | \
+                 REB {:>3.0}% | AST {:>3.0}% | STL {:>3.0}% | BLK {:>3.0}% | TO {:>3.0}%",
+                p[0] * 100.0,
+                p[1] * 100.0,
+                p[2] * 100.0,
+                p[3] * 100.0,
+                p[4] * 100.0,
+                p[5] * 100.0,
+                p[6] * 100.0,
+                p[7] * 100.0,
+                p[8] * 100.0,
+            );
+        }
+    }
+}
 fn print_durant_debug(app: &App) {
     use std::collections::HashMap;
 
@@ -203,7 +423,11 @@ fn main() -> Result<()> {
 
     let mut app = App::new(season_stats)?;
 
-    print_durant_debug(&app);
+    print_dynamic_scenarios(&app);
+    print_blank_dynamic(&app);
+
+    // print_durant_debug(&app);
+
     return Ok(());
 
     let mut terminal = init_terminal()?;
