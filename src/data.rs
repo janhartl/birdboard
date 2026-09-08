@@ -43,7 +43,7 @@ pub fn validate_data(
     let mut player_ids = HashSet::new();
 
     for player in players {
-        if !player_ids.insert(player.id) {
+        if !player_ids.insert(player.id.clone()) {
             bail!(
                 "duplicate player ID {:?} for player {:?}",
                 player.id,
@@ -85,7 +85,7 @@ pub fn validate_data(
                 );
             }
 
-            if !required_players.insert(*player_id) {
+            if !required_players.insert(player_id.clone()) {
                 bail!(
                     "build {:?} contains duplicate required player {:?}",
                     build.id,
@@ -105,7 +105,7 @@ pub fn validate_data(
                 );
             }
 
-            if !target_players.insert(*player_id) {
+            if !target_players.insert(player_id.clone()) {
                 bail!(
                     "build {:?} contains duplicate target player {:?}",
                     build.id,
@@ -137,7 +137,7 @@ pub fn validate_data(
                 );
             }
 
-            if !primary_players.insert(*player_id) {
+            if !primary_players.insert(player_id.clone()) {
                 bail!(
                     "replacement {:?} contains duplicate primary player {:?}",
                     replacement.id,
@@ -154,13 +154,13 @@ pub fn validate_data(
                 );
             }
 
-            primary_player_owners.insert(*player_id, replacement.id.as_str());
+            primary_player_owners.insert(player_id.clone(), replacement.id.as_str());
         }
 
         let mut alternatives = HashSet::new();
 
         for alternative in &replacement.alternatives {
-            let player_id = alternative.player_id;
+            let player_id = alternative.player_id.clone();
 
             if !player_ids.contains(&player_id) {
                 bail!(
@@ -170,7 +170,7 @@ pub fn validate_data(
                 );
             }
 
-            if !alternatives.insert(player_id) {
+            if !alternatives.insert(player_id.clone()) {
                 bail!(
                     "replacement {:?} contains duplicate alternative player {:?}",
                     replacement.id,
@@ -208,14 +208,14 @@ mod tests {
     fn duplicate_player_ids_are_rejected() {
         let players = vec![
             Player {
-                id: PlayerId(0),
+                id: PlayerId("bird".to_string()),
                 name: String::from("Bird"),
                 position: String::from("SF"),
                 projected_value: 50,
                 short_name: Some(String::from("Bird")),
             },
             Player {
-                id: PlayerId(0),
+                id: PlayerId("bird".to_string()),
                 name: String::from("Larry"),
                 position: String::from("SF"),
                 projected_value: 50,

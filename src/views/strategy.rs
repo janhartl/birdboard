@@ -115,11 +115,11 @@ fn build_text(build: &Build, app: &App) -> Text<'static> {
         lines.push(Line::from(Span::styled("Targets", heading_style)));
 
         for player_id in &build.target_players {
-            let Some(player) = app.player_by_id(*player_id) else {
+            let Some(player) = app.player_by_id(player_id) else {
                 continue;
             };
 
-            let (status, style) = match app.draft_pick_for_player(*player_id) {
+            let (status, style) = match app.draft_pick_for_player(player_id) {
                 None => (String::from("AVAILABLE"), Style::default()),
 
                 Some(pick) if pick.team_id == app.user_team_id => (
@@ -163,11 +163,11 @@ fn replacement_text(group: &ReplacementGroup, app: &App) -> Text<'static> {
     ];
 
     for option in &group.alternatives {
-        let Some(player) = app.player_by_id(option.player_id) else {
+        let Some(player) = app.player_by_id(&option.player_id) else {
             continue;
         };
 
-        let (status, style) = match app.draft_pick_for_player(option.player_id) {
+        let (status, style) = match app.draft_pick_for_player(&option.player_id) {
             None => (String::from("AVAILABLE"), Style::default()),
 
             Some(pick) if pick.team_id == app.user_team_id => (

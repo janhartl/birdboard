@@ -68,7 +68,7 @@ fn render_player_board(frame: &mut Frame, app: &App, area: Rect) {
         .iter()
         .enumerate()
         .map(|(index, player)| {
-            let drafted = app.draft_pick_for_player(player.id).is_some();
+            let drafted = app.draft_pick_for_player(&player.id).is_some();
 
             let status = if drafted { " DRAFTED" } else { "" };
 
@@ -194,7 +194,7 @@ fn render_roster_panel(frame: &mut Frame, app: &App, area: Rect) {
         .iter()
         .filter(|pick| pick.team_id == team.id)
         .filter_map(|pick| {
-            let player = app.player_by_id(pick.player_id)?;
+            let player = app.player_by_id(&pick.player_id)?;
 
             let price = format!("${}", pick.price);
 

@@ -49,7 +49,7 @@ pub fn draw(frame: &mut Frame, app: &App) {
                 .iter()
                 .filter(|pick| pick.team_id == team.id)
             {
-                if let Some(player) = app.player_by_id(pick.player_id) {
+                if let Some(player) = app.player_by_id(&pick.player_id) {
                     let price = format!("${}", pick.price);
 
                     let row_width = area.width.saturating_sub(2) as usize;

@@ -3,6 +3,7 @@ mod data;
 mod draft;
 mod event;
 mod player;
+mod stats;
 mod strategy;
 mod team;
 mod tui;
@@ -34,7 +35,16 @@ fn run(terminal: &mut BirdTerminal, app: &mut App) -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    let mut app = App::new()?;
+    let season_stats = stats::load_or_fetch()?;
+
+    println!(
+        "Loaded {} players for {} using {} statistics",
+        season_stats.players.len(),
+        season_stats.draft_season,
+        season_stats.source_season,
+    );
+
+    let mut app = App::new(season_stats)?;
     let mut terminal = init_terminal()?;
 
     let result = run(&mut terminal, &mut app);

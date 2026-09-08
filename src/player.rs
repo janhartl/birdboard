@@ -1,8 +1,8 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Deserialize, Serialize)]
 #[serde(transparent)]
-pub struct PlayerId(pub u32);
+pub struct PlayerId(pub String);
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Player {

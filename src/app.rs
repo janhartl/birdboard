@@ -7,6 +7,7 @@ use crate::draft::DraftError;
 use crate::draft::DraftMode;
 use crate::draft::DraftPick;
 use crate::player::{Player, PlayerId};
+use crate::stats::StatsBundle;
 use crate::strategy::{
     Build, ReplacementGroup, active_build, load_builds, load_replacements, replacement_for_player,
 };
@@ -50,7 +51,7 @@ pub struct PlayerRegister {
     pub original_index: usize,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PlayerFormMode {
     Add,
     Edit(PlayerId),
@@ -132,6 +133,8 @@ pub struct App {
     pub selected_roster_team: Option<usize>,
     pub user_team_id: TeamId,
 
+    pub stats: StatsBundle,
+
     pub draft_picks: Vec<DraftPick>,
     pub draft_price_input: String,
     pub draft_mode: DraftMode,
@@ -156,7 +159,7 @@ pub struct App {
 }
 
 impl App {
-    pub fn new() -> Result<App> {
+    pub fn new(stats: StatsBundle) -> Result<App> {
         let players = load_players("data/players.csv")?;
 
         let selected_player = if players.is_empty() { None } else { Some(0) };
@@ -200,6 +203,8 @@ impl App {
             teams,
             selected_roster_team,
             user_team_id,
+
+            stats,
 
             draft_picks,
             draft_price_input: String::new(),
@@ -520,7 +525,7 @@ impl App {
                     && matches!(&self.interaction_mode, InteractionMode::Browse)
                     && let Some(player_index) = self.selected_player
                     && self
-                        .draft_pick_for_player(self.players[player_index].id)
+                        .draft_pick_for_player(&self.players[player_index].id)
                         .is_none() =>
             {
                 self.begin_drafting_selected_player();
@@ -582,7 +587,7 @@ impl App {
             return Err(DraftError::InvalidTeam);
         }
 
-        let player_id = self.players[player_index].id;
+        let player_id = self.players[player_index].id.clone();
         let team_id = self.teams[team_index].id;
 
         let player_already_drafted = self
@@ -673,20 +678,20 @@ impl App {
         self.draft_price_input.clear();
     }
 
-    pub fn draft_pick_for_player(&self, player_id: PlayerId) -> Option<&DraftPick> {
+    pub fn draft_pick_for_player(&self, player_id: &PlayerId) -> Option<&DraftPick> {
         self.draft_picks
             .iter()
-            .find(|pick| pick.player_id == player_id)
+            .find(|pick| &pick.player_id == player_id)
     }
 
-    pub fn player_by_id(&self, player_id: PlayerId) -> Option<&Player> {
-        self.players.iter().find(|player| player.id == player_id)
+    pub fn player_by_id(&self, player_id: &PlayerId) -> Option<&Player> {
+        self.players.iter().find(|player| &player.id == player_id)
     }
 
-    pub fn team_has_player(&self, team_id: TeamId, player_id: PlayerId) -> bool {
+    pub fn team_has_player(&self, team_id: TeamId, player_id: &PlayerId) -> bool {
         self.draft_picks
             .iter()
-            .any(|pick| pick.team_id == team_id && pick.player_id == player_id)
+            .any(|pick| pick.team_id == team_id && &pick.player_id == player_id)
     }
 
     pub fn team_by_id(&self, team_id: TeamId) -> Option<&FantasyTeam> {
@@ -707,7 +712,6 @@ impl App {
         build
             .target_players
             .iter()
-            .copied()
             .filter(|player_id| {
                 matches!(
                     self.draft_pick_for_player(*player_id),
@@ -985,7 +989,7 @@ impl App {
         self.edit_status = None;
 
         self.player_form = Some(PlayerForm {
-            mode: PlayerFormMode::Edit(player.id),
+            mode: PlayerFormMode::Edit(player.id.clone()),
             active_field: PlayerFormField::Name,
             name: player.name.clone(),
             short_name: player.short_name.clone().unwrap_or_default(),
@@ -1065,7 +1069,7 @@ impl App {
             return;
         };
 
-        let mode = form.mode;
+        let mode = form.mode.clone();
         let name = form.name.trim().to_string();
         let short_name = form.short_name.trim().to_string();
         let position = form.position.trim().to_string();
@@ -1110,8 +1114,10 @@ impl App {
             }
 
             PlayerFormMode::Add => {
-                let Some(player_id) = self.next_available_player_id() else {
-                    self.set_player_form_error("No unused player IDs remain.");
+                let Some(player_id) = self.player_id_for_name(&name) else {
+                    self.set_player_form_error(
+                        "Could not find this player in the statistics dataset. ",
+                    );
                     return;
                 };
 
@@ -1146,22 +1152,12 @@ impl App {
         }
     }
 
-    fn next_available_player_id(&self) -> Option<PlayerId> {
-        let largest_id = self
+    fn player_id_for_name(&self, name: &str) -> Option<PlayerId> {
+        self.stats
             .players
             .iter()
-            .map(|player| player.id.0)
-            .chain(
-                self.player_register
-                    .iter()
-                    .map(|register| register.player.id.0),
-            )
-            .max();
-
-        match largest_id {
-            Some(id) => id.checked_add(1).map(PlayerId),
-            None => Some(PlayerId(0)),
-        }
+            .find(|stats| stats.player_name.eq_ignore_ascii_case(name))
+            .map(|stats| stats.player_id.clone())
     }
 
     fn open_edit_team_input(&mut self) {
@@ -1308,6 +1304,16 @@ mod tests {
     use crate::team::TeamId;
 
     use super::*;
+    use std::path::PathBuf;
+
+    fn empty_stats() -> StatsBundle {
+        StatsBundle {
+            draft_season: String::from("2026-27"),
+            source_season: String::from("2025-26"),
+            cache_dir: PathBuf::new(),
+            players: Vec::new(),
+        }
+    }
 
     fn test_app(players: Vec<Player>, selected_player: Option<usize>) -> App {
         App {
@@ -1317,6 +1323,9 @@ mod tests {
             interaction_mode: InteractionMode::Browse,
 
             players,
+
+            stats: empty_stats(),
+
             selected_player,
 
             teams: vec![FantasyTeam {
@@ -1355,7 +1364,7 @@ mod tests {
     fn single_player_test_app() -> App {
         test_app(
             vec![Player {
-                id: PlayerId(0),
+                id: PlayerId("bird".to_string()),
                 name: String::from("Bird"),
                 position: String::from("SF"),
                 projected_value: 200,
@@ -1370,14 +1379,14 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
-                    id: PlayerId(0),
+                    id: PlayerId("bird".to_string()),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                     short_name: Some(String::from("Bird")),
                 },
                 Player {
-                    id: PlayerId(1),
+                    id: PlayerId("luka".to_string()),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -1397,14 +1406,14 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
-                    id: PlayerId(0),
+                    id: PlayerId("bird".to_string()),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                     short_name: Some(String::from("Bird")),
                 },
                 Player {
-                    id: PlayerId(1),
+                    id: PlayerId("luka".to_string()),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -1424,14 +1433,14 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
-                    id: PlayerId(0),
+                    id: PlayerId("bird".to_string()),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                     short_name: Some(String::from("Bird")),
                 },
                 Player {
-                    id: PlayerId(1),
+                    id: PlayerId("luka".to_string()),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -1461,14 +1470,14 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
-                    id: PlayerId(0),
+                    id: PlayerId("bird".to_string()),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                     short_name: Some(String::from("Bird")),
                 },
                 Player {
-                    id: PlayerId(1),
+                    id: PlayerId("luka".to_string()),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -1489,14 +1498,14 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
-                    id: PlayerId(0),
+                    id: PlayerId("bird".to_string()),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                     short_name: Some(String::from("Bird")),
                 },
                 Player {
-                    id: PlayerId(1),
+                    id: PlayerId("luka".to_string()),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -1517,14 +1526,14 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
-                    id: PlayerId(0),
+                    id: PlayerId("bird".to_string()),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                     short_name: Some(String::from("Bird")),
                 },
                 Player {
-                    id: PlayerId(1),
+                    id: PlayerId("luka".to_string()),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -1544,14 +1553,14 @@ mod tests {
         let mut app = test_app(
             vec![
                 Player {
-                    id: PlayerId(0),
+                    id: PlayerId("bird".to_string()),
                     name: String::from("Bird"),
                     position: String::from("SF"),
                     projected_value: 200,
                     short_name: Some(String::from("Bird")),
                 },
                 Player {
-                    id: PlayerId(1),
+                    id: PlayerId("luka".to_string()),
                     name: String::from("Luka"),
                     position: String::from("PG"),
                     projected_value: 77,
@@ -1562,7 +1571,7 @@ mod tests {
         );
 
         app.draft_picks.push(DraftPick {
-            player_id: PlayerId(0),
+            player_id: PlayerId("bird".to_string()),
             team_id: TeamId(0),
             price: 1,
         });
@@ -1584,7 +1593,7 @@ mod tests {
 
         let pick = &app.draft_picks[0];
 
-        assert_eq!(pick.player_id, PlayerId(0));
+        assert_eq!(pick.player_id, PlayerId("bird".to_string()));
         assert_eq!(pick.team_id, TeamId(0));
         assert_eq!(pick.price, 37);
     }

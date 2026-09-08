@@ -53,7 +53,7 @@ pub fn load_builds(path: &str) -> Result<Vec<Build>> {
 
 pub fn active_build<F>(builds: &[Build], owns_player: F) -> Option<&Build>
 where
-    F: Fn(PlayerId) -> bool,
+    F: Fn(&PlayerId) -> bool,
 {
     builds
         .iter()
@@ -61,7 +61,7 @@ where
             build
                 .required_players
                 .iter()
-                .all(|player_id| owns_player(*player_id))
+                .all(|player_id| owns_player(player_id))
         })
         .max_by_key(|build| build.required_players.len())
 }
@@ -76,10 +76,10 @@ pub fn load_replacements(path: &str) -> Result<Vec<ReplacementGroup>> {
     Ok(replacement_file.replacements)
 }
 
-pub fn replacement_for_player(
-    replacements: &[ReplacementGroup],
-    player_id: PlayerId,
-) -> Option<&ReplacementGroup> {
+pub fn replacement_for_player<'a>(
+    replacements: &'a [ReplacementGroup],
+    player_id: &PlayerId,
+) -> Option<&'a ReplacementGroup> {
     replacements
         .iter()
         .find(|replacement| replacement.primary_players.contains(&player_id))
