@@ -6,6 +6,7 @@ use crate::data::validate_data;
 use crate::draft::DraftError;
 use crate::draft::DraftMode;
 use crate::draft::DraftPick;
+use crate::durant::DurantModel;
 use crate::player::{Player, PlayerId};
 use crate::stats::StatsBundle;
 use crate::strategy::{
@@ -134,6 +135,7 @@ pub struct App {
     pub user_team_id: TeamId,
 
     pub stats: StatsBundle,
+    pub durant: DurantModel,
 
     pub draft_picks: Vec<DraftPick>,
     pub draft_price_input: String,
@@ -165,6 +167,7 @@ impl App {
         let selected_player = if players.is_empty() { None } else { Some(0) };
 
         let mut teams = load_teams("data/teams.csv")?;
+        let durant = DurantModel::from_stats(&stats, teams.len(), 13)?;
 
         let user_team_id = teams
             .iter()
@@ -205,6 +208,7 @@ impl App {
             user_team_id,
 
             stats,
+            durant,
 
             draft_picks,
             draft_price_input: String::new(),
@@ -1312,6 +1316,7 @@ mod tests {
             source_season: String::from("2025-26"),
             cache_dir: PathBuf::new(),
             players: Vec::new(),
+            weekly: Vec::new(),
         }
     }
 
@@ -1325,6 +1330,7 @@ mod tests {
             players,
 
             stats: empty_stats(),
+            durant: DurantModel::empty(13, 13),
 
             selected_player,
 
