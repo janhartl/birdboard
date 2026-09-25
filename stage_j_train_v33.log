@@ -1,0 +1,29 @@
+Loaded 582 players for 2026-27 using 2025-26 statistics
+
+========================================================================
+STAGE-AWARE EARLY j TRAINING — v33
+========================================================================
+0 / 600 states already checkpointed | deep=212941 | pricing bank=300
+per-run compute budget: 6.00 hours
+  [  1/600] roster=0 drafted=4 H= 70.23% | 102.8s | checkpointed
+  [  2/600] roster=1 drafted=14 H= 61.36% | 132.6s | checkpointed
+  [  3/600] roster=2 drafted=27 H= 57.13% | 124.8s | checkpointed
+  [  4/600] roster=3 drafted=40 H= 53.93% | 112.5s | checkpointed
+  [  5/600] roster=4 drafted=49 H= 53.49% | 107.0s | checkpointed
+  [  6/600] roster=0 drafted=4 H= 73.33% | 106.3s | checkpointed
+  [  7/600] roster=1 drafted=14 H= 63.20% | 123.8s | checkpointed
+  [  8/600] roster=2 drafted=27 H= 55.18% | 123.1s | checkpointed
+  [  9/600] roster=3 drafted=40 H= 50.78% | 121.3s | checkpointed
+  [ 10/600] roster=4 drafted=49 H= 46.15% | 116.1s | checkpointed
+  [ 11/600] roster=0 drafted=4 H= 75.61% | 104.2s | checkpointed
+  [ 12/600] roster=1 drafted=14 H= 65.00% | 129.6s | checkpointed
+  [ 13/600] roster=2 drafted=27 H= 57.62% | 132.9s | checkpointed
+  [ 14/600] roster=3 drafted=40 H= 49.39% | 117.2s | checkpointed
+  [ 15/600] roster=4 drafted=49 H= 56.05% | 110.1s | checkpointed
+  [ 16/600] roster=0 drafted=4 H= 71.96% | 104.4s | checkpointed
+  [ 17/600] roster=1 drafted=14 H= 63.49% | 127.1s | checkpointed
+  [ 18/600] roster=2 drafted=27 H= 63.81% | 120.5s | checkpointed
+  [ 19/600] roster=3 drafted=40 H= 57.18% | 114.6s | checkpointed
+  [ 20/600] roster=4 drafted=49 H= 55.34% | 116.6s | checkpointed
+  [ 21/600] roster=0 drafted=4 H= 68.14% | 137.5s | checkpointed
+  [ 22/600] roster=1 drafted=14 H= 61.70% | 168.2s | checkpointed
