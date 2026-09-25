@@ -1,0 +1,185 @@
+[[replacements]]
+id = "derrick_white"
+title = "Derrick White Archetype — Guard Glue"
+primary_players = ["whitede01"]
+left_label = "Gives"
+right_label = "Loses"
+rule = "White is worth a personal premium because his combination is rare. He is not worth destroying the roster."
+
+[[replacements.alternatives]]
+player_id = "wallaca01"
+left = "Steals, efficiency, low TO, upside"
+right = "Usage and assists"
+
+[[replacements.alternatives]]
+player_id = "nembhan01"
+left = "Assists, efficiency, low TO"
+right = "Blocks/threes ceiling"
+
+[[replacements.alternatives]]
+player_id = "holidjr01"
+left = "Defense, assists, low TO"
+right = "Age and volume"
+
+[[replacements.alternatives]]
+player_id = "pritcpa01"
+left = "Threes, FT%, low TO"
+right = "Defensive categories"
+
+[[replacements.alternatives]]
+player_id = "murraja01"
+left = "Scoring, assists, threes"
+right = "Stocks"
+
+[[replacements.alternatives]]
+player_id = "vassede01"
+left = "Points, threes, FT%"
+right = "Assists and defensive floor"
+
+[[replacements.alternatives]]
+player_id = "quickim01"
+left = "Assists, threes, FT%"
+right = "FG% and stocks"
+
+[[replacements.alternatives]]
+player_id = "sheppre01"
+left = "Threes, steals, efficiency upside"
+right = "Proven volume"
+
+[[replacements]]
+id = "brandon_miller"
+title = "Brandon Miller Archetype — Scoring Wing, Threes, FT%"
+primary_players = ["millebr02"]
+left_label = "What remains"
+right_label = "What changes"
+rule = "If Miller exceeds $34, do not replace him by paying $30 for the next name. Shift into the best discounted profile."
+
+[[replacements.alternatives]]
+player_id = "murphtr02"
+left = "Threes, FT%, scoring upside"
+right = "Less creation"
+
+[[replacements.alternatives]]
+player_id = "portemi01"
+left = "Threes, rebounds, percentages"
+right = "Fewer assists/stocks"
+
+[[replacements.alternatives]]
+player_id = "anunoog01"
+left = "Threes, efficiency, stocks"
+right = "Less volume scoring"
+
+[[replacements.alternatives]]
+player_id = "bridgmi01"
+left = "Durability, points, threes"
+right = "Lower ceiling"
+
+[[replacements.alternatives]]
+player_id = "murrake02"
+left = "Threes, rebounds, efficiency"
+right = "Lower usage"
+
+[[replacements.alternatives]]
+player_id = "knuepko01"
+left = "Shooting and youth upside"
+right = "Rookie uncertainty"
+
+[[replacements.alternatives]]
+player_id = "powelno01"
+left = "Efficient scoring and threes"
+right = "Less long-term upside"
+
+[[replacements]]
+id = "amen_thompson"
+title = "Amen Thompson Archetype — Defensive Creator"
+primary_players = ["thompam01"]
+left_label = "Gives"
+right_label = "Main concern"
+
+[[replacements.alternatives]]
+player_id = "barnesc01"
+left = "Rebounds, assists, stocks"
+right = "Much more expensive"
+
+[[replacements.alternatives]]
+player_id = "castlst01"
+left = "Rebounds, assists, steals"
+right = "Efficiency"
+
+[[replacements.alternatives]]
+player_id = "daniedy01"
+left = "Elite steals, rebounds"
+right = "Shooting/scoring"
+
+[[replacements.alternatives]]
+player_id = "coulibi01"
+left = "Stocks and wing upside"
+right = "Usage"
+
+[[replacements.alternatives]]
+player_id = "giddejo01"
+left = "Rebounds and assists"
+right = "Defensive ceiling"
+
+[[replacements.alternatives]]
+player_id = "blackan01"
+left = "Size, assists, defensive upside"
+right = "Role certainty"
+
+[[replacements.alternatives]]
+player_id = "camarto01"
+left = "Cheap stocks/rebounds"
+right = "Limited creation"
+
+[[replacements]]
+id = "walker_kessler"
+title = "Walker Kessler Archetype — Blocks and FG%"
+primary_players = ["kesslwa01"]
+left_label = "Gives"
+right_label = "Difference"
+rule = "Blocks are scarce, but one-category desperation creates overpays. Draft the cheapest compatible source."
+
+[[replacements.alternatives]]
+player_id = "clingdo01"
+left = "Blocks/rebounds"
+right = "FT% and role risk"
+
+[[replacements.alternatives]]
+player_id = "sarral01"
+left = "Blocks/upside"
+right = "Lower FG%"
+
+[[replacements.alternatives]]
+player_id = "allenja01"
+left = "FG%, rebounds, blocks"
+right = "Lower block ceiling"
+
+[[replacements.alternatives]]
+player_id = "okongon01"
+left = "Stocks, FG%, some threes"
+right = "Role"
+
+[[replacements.alternatives]]
+player_id = "zubaciv01"
+left = "FG%, rebounds, blocks"
+right = "Less ceiling"
+
+[[replacements.alternatives]]
+player_id = "livelde01"
+left = "FG%, blocks, youth"
+right = "Health/minutes"
+
+[[replacements.alternatives]]
+player_id = "wareke01"
+left = "Blocks/rebounds/upside"
+right = "Volatility"
+
+[[replacements.alternatives]]
+player_id = "edeyza01"
+left = "FG%, rebounds, blocks"
+right = "Mobility/health"
+
+[[replacements.alternatives]]
+player_id = "missiyv01"
+left = "Cheap blocks/rebounds"
+right = "Lower floor"

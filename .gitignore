@@ -1,3 +1,23 @@
-/target
-sessions/
-data/
+# Rust
+target/
+
+# Local backups / temporary artifacts
+src_backup_*/
+*.log
+*.zip
+
+# Generated DURANT / strategy research caches
+data/stats/*/durant/auction_v1_*.json
+data/stats/*/durant/dynamic_v*.json
+data/stats/*/durant/deep_dynamic_v*.json
+data/stats/*/durant/overnight_dynamic_v*.json
+
+data/stats/*/durant/h_validation_*
+data/stats/*/durant/*_report.json
+
+data/stats/*/durant/strategy_bank_validation_*
+data/stats/*/durant/strategy_census*.csv
+data/stats/*/durant/strategy_funnel_benchmark_*
+data/stats/*/durant/strategy_stage_*checkpoint*
+data/stats/*/durant/strategy_stage_*census*
+data/stats/*/durant/strategy_stage_snapshot_*

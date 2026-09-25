@@ -1,0 +1,8081 @@
+{
+  "schema_version": 3,
+  "search_profile": "auction_no_stride_budget_medium_30178",
+  "draft_season": "2026-27",
+  "category_order": [
+    "FG%",
+    "FT%",
+    "3PM",
+    "PTS",
+    "REB",
+    "AST",
+    "STL",
+    "BLK",
+    "TO"
+  ],
+  "searched_strategy_count": 30178,
+  "scenario_count": 8,
+  "best_observations": 765,
+  "top_three_observations": 2295,
+  "distinct_best": 214,
+  "distinct_top_three": 478,
+  "selection": {
+    "max_live_strategies": 300,
+    "coverage_target": 0.99,
+    "niche_min_wins": 2,
+    "niche_min_average_margin_pp": 0.5,
+    "selected_count": 300,
+    "selected_best_coverage": 1.0,
+    "core_count": 207
+  },
+  "strategies": [
+    {
+      "bank_rank": 1,
+      "weights": [
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 55,
+      "top_three_appearances": 79,
+      "state_count": 6,
+      "average_margin_pp": 0.6816531651267121,
+      "average_h_pct": 73.94507583658321,
+      "best_decision_share": 0.0718954248366013,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / James Harden",
+        "EMPTY / Anthony Edwards",
+        "EMPTY / Kevin Durant"
+      ]
+    },
+    {
+      "bank_rank": 2,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        0.5
+      ],
+      "best_wins": 35,
+      "top_three_appearances": 73,
+      "state_count": 7,
+      "average_margin_pp": 0.321781569203715,
+      "average_h_pct": 74.3299088950147,
+      "best_decision_share": 0.0457516339869281,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Michael Porter Jr.",
+        "EMPTY / Nikola Jokić",
+        "EMPTY / Luka Dončić"
+      ]
+    },
+    {
+      "bank_rank": 3,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 31,
+      "top_three_appearances": 55,
+      "state_count": 4,
+      "average_margin_pp": 0.001343101189564141,
+      "average_h_pct": 73.37415921066209,
+      "best_decision_share": 0.040522875816993466,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Kel'el Ware",
+        "GIANNIS + GOBERT / Joel Embiid",
+        "GIANNIS + GOBERT / Jayson Tatum"
+      ]
+    },
+    {
+      "bank_rank": 4,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.5,
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        1.0
+      ],
+      "best_wins": 22,
+      "top_three_appearances": 30,
+      "state_count": 5,
+      "average_margin_pp": 0.4823134113994659,
+      "average_h_pct": 75.03088424118863,
+      "best_decision_share": 0.02875816993464052,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Austin Reaves",
+        "EMPTY / Jaylen Brown",
+        "EMPTY / Kyrie Irving"
+      ]
+    },
+    {
+      "bank_rank": 5,
+      "weights": [
+        1.0,
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 20,
+      "top_three_appearances": 35,
+      "state_count": 3,
+      "average_margin_pp": 0.48690866108005715,
+      "average_h_pct": 74.40452823559025,
+      "best_decision_share": 0.026143790849673203,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Pascal Siakam",
+        "WEMBY / Rudy Gobert",
+        "WEMBY / Dejounte Murray"
+      ]
+    },
+    {
+      "bank_rank": 6,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "best_wins": 19,
+      "top_three_appearances": 52,
+      "state_count": 7,
+      "average_margin_pp": 0.027362954332369637,
+      "average_h_pct": 73.01136625704517,
+      "best_decision_share": 0.02483660130718954,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Dejounte Murray",
+        "EMPTY / Paul George",
+        "JOKIC / Dejounte Murray"
+      ]
+    },
+    {
+      "bank_rank": 7,
+      "weights": [
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 16,
+      "top_three_appearances": 36,
+      "state_count": 4,
+      "average_margin_pp": 0.2582653204969282,
+      "average_h_pct": 73.15777664498263,
+      "best_decision_share": 0.02091503267973856,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / De'Aaron Fox",
+        "EMPTY / Jaden McDaniels",
+        "EMPTY / LeBron James"
+      ]
+    },
+    {
+      "bank_rank": 8,
+      "weights": [
+        1.0,
+        1.5,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0
+      ],
+      "best_wins": 14,
+      "top_three_appearances": 25,
+      "state_count": 5,
+      "average_margin_pp": 1.1502347785339864,
+      "average_h_pct": 74.6168637720633,
+      "best_decision_share": 0.018300653594771243,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Jalen Williams",
+        "EMPTY / Rudy Gobert",
+        "EMPTY / Josh Hart"
+      ]
+    },
+    {
+      "bank_rank": 9,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 14,
+      "top_three_appearances": 20,
+      "state_count": 2,
+      "average_margin_pp": 0.49537370769602296,
+      "average_h_pct": 74.0214439699898,
+      "best_decision_share": 0.018300653594771243,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Rudy Gobert",
+        "GIANNIS + GOBERT / Pascal Siakam",
+        "GIANNIS + GOBERT / Jalen Williams"
+      ]
+    },
+    {
+      "bank_rank": 10,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0
+      ],
+      "best_wins": 13,
+      "top_three_appearances": 19,
+      "state_count": 3,
+      "average_margin_pp": 0.5050231029989847,
+      "average_h_pct": 74.04065090725412,
+      "best_decision_share": 0.01699346405228758,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Fred VanVleet",
+        "EMPTY / VJ Edgecombe",
+        "JOKIC / Fred VanVleet"
+      ]
+    },
+    {
+      "bank_rank": 11,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        1.5
+      ],
+      "best_wins": 13,
+      "top_three_appearances": 16,
+      "state_count": 2,
+      "average_margin_pp": 0.2898588668727019,
+      "average_h_pct": 73.34160946237674,
+      "best_decision_share": 0.01699346405228758,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Norman Powell",
+        "EMPTY / Jalen Brunson",
+        "EMPTY / Grayson Allen"
+      ]
+    },
+    {
+      "bank_rank": 12,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 11,
+      "top_three_appearances": 25,
+      "state_count": 3,
+      "average_margin_pp": 0.18721043360866843,
+      "average_h_pct": 74.42518185785609,
+      "best_decision_share": 0.01437908496732026,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Deni Avdija",
+        "LUKA / LaMelo Ball",
+        "LUKA / Jalen Johnson"
+      ]
+    },
+    {
+      "bank_rank": 13,
+      "weights": [
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 10,
+      "top_three_appearances": 29,
+      "state_count": 3,
+      "average_margin_pp": 0.6490497095583736,
+      "average_h_pct": 74.34807472246762,
+      "best_decision_share": 0.013071895424836602,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Josh Giddey",
+        "LUKA / Alex Sarr",
+        "LUKA / OG Anunoby"
+      ]
+    },
+    {
+      "bank_rank": 14,
+      "weights": [
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 10,
+      "top_three_appearances": 28,
+      "state_count": 5,
+      "average_margin_pp": 0.6237120483202296,
+      "average_h_pct": 74.11349316380299,
+      "best_decision_share": 0.013071895424836602,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / LaMelo Ball",
+        "EMPTY / Keyonte George",
+        "EMPTY / Cade Cunningham"
+      ]
+    },
+    {
+      "bank_rank": 15,
+      "weights": [
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        0.5,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 10,
+      "top_three_appearances": 20,
+      "state_count": 5,
+      "average_margin_pp": 0.14294774398666998,
+      "average_h_pct": 73.55458597437112,
+      "best_decision_share": 0.013071895424836602,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Andrew Wiggins",
+        "JOKIC / Andrew Wiggins",
+        "WEMBY / Deni Avdija"
+      ]
+    },
+    {
+      "bank_rank": 16,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.0,
+        0.5
+      ],
+      "best_wins": 9,
+      "top_three_appearances": 52,
+      "state_count": 7,
+      "average_margin_pp": 0.0792945615069423,
+      "average_h_pct": 73.93573767049418,
+      "best_decision_share": 0.011764705882352941,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Nickeil Alexander-Walker",
+        "EMPTY / Pascal Siakam",
+        "JOKIC / Nickeil Alexander-Walker"
+      ]
+    },
+    {
+      "bank_rank": 17,
+      "weights": [
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 9,
+      "top_three_appearances": 46,
+      "state_count": 6,
+      "average_margin_pp": 0.033694405959721556,
+      "average_h_pct": 73.59091932017117,
+      "best_decision_share": 0.011764705882352941,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Julius Randle",
+        "EMPTY / Jabari Smith Jr.",
+        "JOKIC / Julius Randle"
+      ]
+    },
+    {
+      "bank_rank": 18,
+      "weights": [
+        1.0,
+        1.5,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0
+      ],
+      "best_wins": 9,
+      "top_three_appearances": 20,
+      "state_count": 3,
+      "average_margin_pp": 0.9534171674775783,
+      "average_h_pct": 73.27613266457205,
+      "best_decision_share": 0.011764705882352941,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Donovan Clingan",
+        "EMPTY / Cooper Flagg",
+        "EMPTY / Tyrese Haliburton"
+      ]
+    },
+    {
+      "bank_rank": 19,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 9,
+      "top_three_appearances": 17,
+      "state_count": 5,
+      "average_margin_pp": 0.4030880204397976,
+      "average_h_pct": 73.63097285491497,
+      "best_decision_share": 0.011764705882352941,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Keyonte George",
+        "LUKA / Keegan Murray",
+        "LUKA / Naz Reid"
+      ]
+    },
+    {
+      "bank_rank": 20,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0
+      ],
+      "best_wins": 9,
+      "top_three_appearances": 14,
+      "state_count": 4,
+      "average_margin_pp": 0.7990950575242326,
+      "average_h_pct": 73.76493068195535,
+      "best_decision_share": 0.011764705882352941,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Alperen Şengün",
+        "EMPTY / Amen Thompson",
+        "EMPTY / Evan Mobley"
+      ]
+    },
+    {
+      "bank_rank": 21,
+      "weights": [
+        1.0,
+        1.0,
+        0.25,
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 9,
+      "top_three_appearances": 10,
+      "state_count": 6,
+      "average_margin_pp": 0.7031619625093478,
+      "average_h_pct": 74.06030741211241,
+      "best_decision_share": 0.011764705882352941,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Jimmy Butler",
+        "EMPTY / Kevin Porter Jr.",
+        "JOKIC / Jimmy Butler"
+      ]
+    },
+    {
+      "bank_rank": 22,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 8,
+      "top_three_appearances": 24,
+      "state_count": 5,
+      "average_margin_pp": 0.41127861414658184,
+      "average_h_pct": 73.05253409844022,
+      "best_decision_share": 0.01045751633986928,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Keegan Murray",
+        "JOKIC / Keegan Murray",
+        "LUKA / Cade Cunningham"
+      ]
+    },
+    {
+      "bank_rank": 23,
+      "weights": [
+        1.0,
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 8,
+      "top_three_appearances": 16,
+      "state_count": 4,
+      "average_margin_pp": 0.27953372128538406,
+      "average_h_pct": 73.2659394428621,
+      "best_decision_share": 0.01045751633986928,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Giannis Antetokounmpo",
+        "JOKIC / Giannis Antetokounmpo",
+        "LUKA / Giannis Antetokounmpo"
+      ]
+    },
+    {
+      "bank_rank": 24,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 8,
+      "top_three_appearances": 11,
+      "state_count": 4,
+      "average_margin_pp": 0.10205486915349227,
+      "average_h_pct": 73.71957890695137,
+      "best_decision_share": 0.01045751633986928,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Deni Avdija",
+        "EMPTY / Brandon Miller",
+        "EMPTY / Tyrese Maxey"
+      ]
+    },
+    {
+      "bank_rank": 25,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.5,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 8,
+      "top_three_appearances": 8,
+      "state_count": 4,
+      "average_margin_pp": 0.2911312551336587,
+      "average_h_pct": 74.24479738778696,
+      "best_decision_share": 0.01045751633986928,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Stephen Curry",
+        "EMPTY / Lauri Markkanen",
+        "JOKIC / Stephen Curry"
+      ]
+    },
+    {
+      "bank_rank": 26,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.25
+      ],
+      "best_wins": 7,
+      "top_three_appearances": 38,
+      "state_count": 4,
+      "average_margin_pp": 0.514985439166961,
+      "average_h_pct": 74.51184443515099,
+      "best_decision_share": 0.009150326797385621,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Jaylen Brown",
+        "LUKA / Jaren Jackson Jr.",
+        "LUKA + CLINGAN / Trey Murphy III"
+      ]
+    },
+    {
+      "bank_rank": 27,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.25
+      ],
+      "best_wins": 7,
+      "top_three_appearances": 25,
+      "state_count": 3,
+      "average_margin_pp": 0.042981235884152556,
+      "average_h_pct": 72.8859436810623,
+      "best_decision_share": 0.009150326797385621,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Julius Randle",
+        "LUKA + CLINGAN / Michael Porter Jr.",
+        "LUKA + CLINGAN / Donovan Mitchell"
+      ]
+    },
+    {
+      "bank_rank": 28,
+      "weights": [
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 6,
+      "top_three_appearances": 15,
+      "state_count": 5,
+      "average_margin_pp": 0.167732870755688,
+      "average_h_pct": 74.0473369916686,
+      "best_decision_share": 0.00784313725490196,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Jaren Jackson Jr.",
+        "JOKIC / Jaren Jackson Jr.",
+        "WEMBY / Jaylen Brown"
+      ]
+    },
+    {
+      "bank_rank": 29,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 6,
+      "top_three_appearances": 14,
+      "state_count": 5,
+      "average_margin_pp": 0.22046901988302023,
+      "average_h_pct": 72.86527409671852,
+      "best_decision_share": 0.00784313725490196,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Grayson Allen",
+        "ANT + CHET + LAMELO + OG / Collin Gillespie",
+        "ANT + CHET + LAMELO + OG / Josh Hart"
+      ]
+    },
+    {
+      "bank_rank": 30,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.25,
+        1.0,
+        0.0
+      ],
+      "best_wins": 6,
+      "top_three_appearances": 7,
+      "state_count": 2,
+      "average_margin_pp": 0.17062769266974104,
+      "average_h_pct": 72.5329863650298,
+      "best_decision_share": 0.00784313725490196,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Stephen Curry",
+        "WEMBY / Jalen Johnson",
+        "WEMBY / Cooper Flagg"
+      ]
+    },
+    {
+      "bank_rank": 31,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5,
+        1.0,
+        1.0
+      ],
+      "best_wins": 6,
+      "top_three_appearances": 7,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.71457742144386,
+      "best_decision_share": 0.00784313725490196,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Jalen Suggs",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Darius Garland",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / VJ Edgecombe"
+      ]
+    },
+    {
+      "bank_rank": 32,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.5,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 5,
+      "top_three_appearances": 14,
+      "state_count": 5,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.77334489615546,
+      "best_decision_share": 0.006535947712418301,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Keyonte George",
+        "WEMBY / Damian Lillard",
+        "WEMBY / Paul George"
+      ]
+    },
+    {
+      "bank_rank": 33,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0,
+        0.0
+      ],
+      "best_wins": 5,
+      "top_three_appearances": 13,
+      "state_count": 5,
+      "average_margin_pp": 0.07520565030180171,
+      "average_h_pct": 72.86815370184804,
+      "best_decision_share": 0.006535947712418301,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Nikola Vučević",
+        "JOKIC / Nikola Vučević",
+        "JOKIC / Ty Jerome"
+      ]
+    },
+    {
+      "bank_rank": 34,
+      "weights": [
+        0.5,
+        1.0,
+        0.0,
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 5,
+      "top_three_appearances": 11,
+      "state_count": 3,
+      "average_margin_pp": 0.5325712605957067,
+      "average_h_pct": 73.85609487810763,
+      "best_decision_share": 0.006535947712418301,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Dyson Daniels",
+        "EMPTY / Alondes Williams",
+        "JOKIC / Dyson Daniels"
+      ]
+    },
+    {
+      "bank_rank": 35,
+      "weights": [
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.5
+      ],
+      "best_wins": 5,
+      "top_three_appearances": 11,
+      "state_count": 2,
+      "average_margin_pp": 1.1102230246251565e-14,
+      "average_h_pct": 73.17393050898578,
+      "best_decision_share": 0.006535947712418301,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Keyonte George",
+        "ANT + CHET + LAMELO + OG / Tyler Herro",
+        "ANT + CHET + LAMELO + OG / Ty Jerome"
+      ]
+    },
+    {
+      "bank_rank": 36,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 5,
+      "top_three_appearances": 10,
+      "state_count": 5,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.82839964582382,
+      "best_decision_share": 0.006535947712418301,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Naz Reid",
+        "EMPTY / Myles Turner",
+        "JOKIC / Naz Reid"
+      ]
+    },
+    {
+      "bank_rank": 37,
+      "weights": [
+        0.0,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 5,
+      "top_three_appearances": 9,
+      "state_count": 5,
+      "average_margin_pp": 0.2553521896917421,
+      "average_h_pct": 73.05883015526308,
+      "best_decision_share": 0.006535947712418301,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / OG Anunoby",
+        "WEMBY / Tyler Herro",
+        "WEMBY / Mikal Bridges"
+      ]
+    },
+    {
+      "bank_rank": 38,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.75
+      ],
+      "best_wins": 5,
+      "top_three_appearances": 8,
+      "state_count": 4,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.68836713367783,
+      "best_decision_share": 0.006535947712418301,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / LaMelo Ball",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Austin Reaves",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Ryan Rollins"
+      ]
+    },
+    {
+      "bank_rank": 39,
+      "weights": [
+        0.0,
+        1.0,
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 5,
+      "top_three_appearances": 6,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.27906468251588,
+      "best_decision_share": 0.006535947712418301,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Jaylen Brown",
+        "ANT + CHET + LAMELO + OG / Ryan Rollins",
+        "ANT + CHET + LAMELO + OG / Naz Reid"
+      ]
+    },
+    {
+      "bank_rank": 40,
+      "weights": [
+        0.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 5,
+      "top_three_appearances": 6,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.40259252034235,
+      "best_decision_share": 0.006535947712418301,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Jayson Tatum",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Zach Edey",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Kevin Porter Jr."
+      ]
+    },
+    {
+      "bank_rank": 41,
+      "weights": [
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 23,
+      "state_count": 5,
+      "average_margin_pp": 1.6653345369377348e-14,
+      "average_h_pct": 73.74499755979438,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Scottie Barnes",
+        "JOKIC / Scottie Barnes",
+        "WEMBY / Scottie Barnes"
+      ]
+    },
+    {
+      "bank_rank": 42,
+      "weights": [
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 21,
+      "state_count": 5,
+      "average_margin_pp": 0.019162934682800947,
+      "average_h_pct": 72.93150914761755,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Brandon Ingram",
+        "JOKIC / Brandon Ingram",
+        "LUKA / Dyson Daniels"
+      ]
+    },
+    {
+      "bank_rank": 43,
+      "weights": [
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 20,
+      "state_count": 3,
+      "average_margin_pp": 0.2178202386615702,
+      "average_h_pct": 72.131616188976,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / James Harden",
+        "GIANNIS + GOBERT / Jimmy Butler",
+        "GIANNIS + GOBERT / Anthony Davis"
+      ]
+    },
+    {
+      "bank_rank": 44,
+      "weights": [
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        0.5
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 8,
+      "state_count": 4,
+      "average_margin_pp": 0.6507862201419606,
+      "average_h_pct": 74.31820346248823,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Josh Giddey",
+        "ANT + CHET + LAMELO + OG / Alex Sarr",
+        "ANT + CHET + LAMELO + OG / LeBron James"
+      ]
+    },
+    {
+      "bank_rank": 45,
+      "weights": [
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 7,
+      "state_count": 1,
+      "average_margin_pp": 0.1338505057503242,
+      "average_h_pct": 72.51578704742286,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Nickeil Alexander-Walker",
+        "GIANNIS + GOBERT / Donovan Clingan",
+        "GIANNIS + GOBERT / Kel'el Ware"
+      ]
+    },
+    {
+      "bank_rank": 46,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 6,
+      "state_count": 4,
+      "average_margin_pp": 0.14686406038713073,
+      "average_h_pct": 72.74645609613508,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Anthony Davis",
+        "JOKIC / Anthony Davis",
+        "WEMBY / Anthony Davis"
+      ]
+    },
+    {
+      "bank_rank": 47,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25,
+        1.0
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 5,
+      "state_count": 3,
+      "average_margin_pp": 0.5943758458135273,
+      "average_h_pct": 73.35778066947714,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Neemias Queta",
+        "EMPTY / Jarrett Allen",
+        "JOKIC / Neemias Queta"
+      ]
+    },
+    {
+      "bank_rank": 48,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 5,
+      "state_count": 5,
+      "average_margin_pp": 0.33742464447371334,
+      "average_h_pct": 74.54078846730911,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Walker Kessler",
+        "JOKIC / Walker Kessler",
+        "WEMBY / Walker Kessler"
+      ]
+    },
+    {
+      "bank_rank": 49,
+      "weights": [
+        1.0,
+        1.0,
+        1.5,
+        0.5,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 5,
+      "state_count": 1,
+      "average_margin_pp": 0.27962665610268556,
+      "average_h_pct": 73.48885640413319,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Dejounte Murray",
+        "LUKA / Julius Randle",
+        "LUKA / Jarrett Allen"
+      ]
+    },
+    {
+      "bank_rank": 50,
+      "weights": [
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.5,
+        0.0
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.4783207687753227,
+      "average_h_pct": 74.10708389314932,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Evan Mobley",
+        "GIANNIS + GOBERT / Zach Edey",
+        "GIANNIS + GOBERT / Jalen Duren"
+      ]
+    },
+    {
+      "bank_rank": 51,
+      "weights": [
+        0.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.4653078875611505,
+      "average_h_pct": 73.70372465393245,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Jalen Suggs",
+        "LUKA + CLINGAN / Devin Booker",
+        "LUKA + CLINGAN / VJ Edgecombe"
+      ]
+    },
+    {
+      "bank_rank": 52,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 4,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.87172220032888,
+      "best_decision_share": 0.00522875816993464,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Ty Jerome",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Saddiq Bey",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Evan Mobley"
+      ]
+    },
+    {
+      "bank_rank": 53,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        0.5,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 18,
+      "state_count": 5,
+      "average_margin_pp": 0.18550704238566862,
+      "average_h_pct": 72.07510977438973,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "JOKIC / Shai Gilgeous-Alexander",
+        "LUKA + CLINGAN / Keyonte George",
+        "LUKA + CLINGAN / Amen Thompson"
+      ]
+    },
+    {
+      "bank_rank": 54,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 14,
+      "state_count": 5,
+      "average_margin_pp": 7.401486830834376e-15,
+      "average_h_pct": 72.5571279889087,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Matas Buzelis",
+        "JOKIC / Matas Buzelis",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Shai Gilgeous-Alexander"
+      ]
+    },
+    {
+      "bank_rank": 55,
+      "weights": [
+        0.5,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 13,
+      "state_count": 3,
+      "average_margin_pp": 0.3486226918244184,
+      "average_h_pct": 74.28556633501539,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Kon Knueppel",
+        "JOKIC / Kon Knueppel",
+        "LUKA / Cooper Flagg"
+      ]
+    },
+    {
+      "bank_rank": 56,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 9,
+      "state_count": 2,
+      "average_margin_pp": 0.44059961953636745,
+      "average_h_pct": 73.85736701368933,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Walker Kessler",
+        "GIANNIS + GOBERT / Michael Porter Jr.",
+        "LUKA + CLINGAN / Giannis Antetokounmpo"
+      ]
+    },
+    {
+      "bank_rank": 57,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 8,
+      "state_count": 2,
+      "average_margin_pp": 0.19502863397958076,
+      "average_h_pct": 71.83623425916295,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Onyeka Okongwu",
+        "GIANNIS + GOBERT / Paul George",
+        "GIANNIS + GOBERT / Damian Lillard"
+      ]
+    },
+    {
+      "bank_rank": 58,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 8,
+      "state_count": 3,
+      "average_margin_pp": 7.401486830834376e-15,
+      "average_h_pct": 72.93744094500246,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Nickeil Alexander-Walker",
+        "ANT + CHET + LAMELO + OG / Paul George",
+        "ANT + CHET + LAMELO + OG / Kadary Richmond"
+      ]
+    },
+    {
+      "bank_rank": 59,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 8,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.07308348470846,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Onyeka Okongwu",
+        "ANT + CHET + LAMELO + OG / Kawhi Leonard",
+        "ANT + CHET + LAMELO + OG / Evan Mobley"
+      ]
+    },
+    {
+      "bank_rank": 60,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 7,
+      "state_count": 4,
+      "average_margin_pp": 0.4605957726629602,
+      "average_h_pct": 75.44766632753816,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Nickeil Alexander-Walker",
+        "ANT + CHET + LAMELO + OG / Stephen Curry",
+        "ANT + CHET + LAMELO + OG / Lauri Markkanen"
+      ]
+    },
+    {
+      "bank_rank": 61,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        0.5,
+        1.0,
+        0.5,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 7,
+      "state_count": 3,
+      "average_margin_pp": 0.14002756930319898,
+      "average_h_pct": 74.06292993313718,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Devin Booker",
+        "JOKIC / Devin Booker",
+        "JOKIC / Payton Pritchard"
+      ]
+    },
+    {
+      "bank_rank": 62,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 7,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.51952439650637,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Bam Adebayo",
+        "ANT + CHET + LAMELO + OG / Amen Thompson",
+        "ANT + CHET + LAMELO + OG / Nickeil Alexander-Walker"
+      ]
+    },
+    {
+      "bank_rank": 63,
+      "weights": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.5,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 6,
+      "state_count": 2,
+      "average_margin_pp": 0.6491311880653845,
+      "average_h_pct": 74.2860796417426,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Matas Buzelis",
+        "GIANNIS + GOBERT / Nikola Jokić",
+        "GIANNIS + GOBERT / Luka Dončić"
+      ]
+    },
+    {
+      "bank_rank": 64,
+      "weights": [
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 6,
+      "state_count": 1,
+      "average_margin_pp": 0.275681633763325,
+      "average_h_pct": 72.47212886662568,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Jalen Suggs",
+        "GIANNIS + GOBERT / Fred VanVleet",
+        "GIANNIS + GOBERT / Derrick White"
+      ]
+    },
+    {
+      "bank_rank": 65,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 5,
+      "state_count": 1,
+      "average_margin_pp": 0.1857808048415251,
+      "average_h_pct": 74.53536258297072,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Julius Randle",
+        "GIANNIS + GOBERT / Dejounte Murray",
+        "GIANNIS + GOBERT / Brandon Ingram"
+      ]
+    },
+    {
+      "bank_rank": 66,
+      "weights": [
+        1.0,
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 5,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.41019870729521,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Kevin Durant",
+        "GIANNIS + GOBERT / Jalen Johnson",
+        "GIANNIS + GOBERT / Trey Murphy III"
+      ]
+    },
+    {
+      "bank_rank": 67,
+      "weights": [
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.8237409774424997,
+      "average_h_pct": 73.11278295055655,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Cade Cunningham",
+        "LUKA + CLINGAN / Jalen Johnson",
+        "LUKA + CLINGAN / Tyrese Haliburton"
+      ]
+    },
+    {
+      "bank_rank": 68,
+      "weights": [
+        0.0,
+        1.0,
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.34185879257844587,
+      "average_h_pct": 73.28101188586388,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Jaden McDaniels",
+        "GIANNIS + GOBERT / Reed Sheppard",
+        "GIANNIS + GOBERT / Jabari Smith Jr."
+      ]
+    },
+    {
+      "bank_rank": 69,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25,
+        1.0,
+        0.75,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 4,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.17678803206528,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Jamal Murray",
+        "JOKIC / Jamal Murray",
+        "JOKIC / Trae Young"
+      ]
+    },
+    {
+      "bank_rank": 70,
+      "weights": [
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.46211262027394673,
+      "average_h_pct": 73.24063305937378,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Jaren Jackson Jr.",
+        "GIANNIS + GOBERT / Ryan Rollins",
+        "GIANNIS + GOBERT / Immanuel Quickley"
+      ]
+    },
+    {
+      "bank_rank": 71,
+      "weights": [
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 3,
+      "state_count": 3,
+      "average_margin_pp": 1.8503717077085944e-14,
+      "average_h_pct": 74.03220139892194,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Karl-Anthony Towns",
+        "JOKIC / Karl-Anthony Towns",
+        "WEMBY / Jamal Murray"
+      ]
+    },
+    {
+      "bank_rank": 72,
+      "weights": [
+        0.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.79742324809165,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Damian Lillard",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Jalen Brunson",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Myles Turner"
+      ]
+    },
+    {
+      "bank_rank": 73,
+      "weights": [
+        1.25,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 3,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.3555582410805,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Luka Dončić",
+        "LUKA / Victor Wembanyama",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Rudy Gobert"
+      ]
+    },
+    {
+      "bank_rank": 74,
+      "weights": [
+        0.25,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 3,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.31065982319856,
+      "best_decision_share": 0.00392156862745098,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Alex Sarr",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / OG Anunoby",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / LeBron James"
+      ]
+    },
+    {
+      "bank_rank": 75,
+      "weights": [
+        0.5,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 23,
+      "state_count": 2,
+      "average_margin_pp": 0.42916139129215436,
+      "average_h_pct": 74.36467803495887,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Giannis Antetokounmpo",
+        "WEMBY / LeBron James"
+      ]
+    },
+    {
+      "bank_rank": 76,
+      "weights": [
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 17,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.2474407063654,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Kel'el Ware",
+        "JOKIC / Kel'el Ware"
+      ]
+    },
+    {
+      "bank_rank": 77,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 12,
+      "state_count": 4,
+      "average_margin_pp": 0.10481566700053513,
+      "average_h_pct": 72.76007644358316,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Kevin Durant",
+        "LUKA + CLINGAN / Anthony Edwards"
+      ]
+    },
+    {
+      "bank_rank": 78,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 12,
+      "state_count": 5,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.04644909583216,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Jaren Jackson Jr.",
+        "LUKA + CLINGAN / Kel'el Ware"
+      ]
+    },
+    {
+      "bank_rank": 79,
+      "weights": [
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 12,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.1294858296295,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Onyeka Okongwu",
+        "JOKIC / Onyeka Okongwu"
+      ]
+    },
+    {
+      "bank_rank": 80,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 11,
+      "state_count": 5,
+      "average_margin_pp": 0.036097102970500394,
+      "average_h_pct": 72.95750873354014,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Kristaps Porziņģis",
+        "JOKIC / Kristaps Porziņģis"
+      ]
+    },
+    {
+      "bank_rank": 81,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 11,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.53585671578213,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "JOKIC / Keyonte George",
+        "ANT + CHET + LAMELO + OG / Jalen Duren"
+      ]
+    },
+    {
+      "bank_rank": 82,
+      "weights": [
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 10,
+      "state_count": 2,
+      "average_margin_pp": 0.04896864068378304,
+      "average_h_pct": 73.08366503786674,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Jalen Williams",
+        "LUKA / Mikal Bridges"
+      ]
+    },
+    {
+      "bank_rank": 83,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.25
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 9,
+      "state_count": 2,
+      "average_margin_pp": 0.03251200978546254,
+      "average_h_pct": 74.15917013303506,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Kon Knueppel",
+        "LUKA / Kevin Durant"
+      ]
+    },
+    {
+      "bank_rank": 84,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 8,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.720404768071,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Kevin Porter Jr.",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Keyonte George"
+      ]
+    },
+    {
+      "bank_rank": 85,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 7,
+      "state_count": 3,
+      "average_margin_pp": 0.3004558783962441,
+      "average_h_pct": 74.10181933874006,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Zach Edey",
+        "JOKIC / Zach Edey"
+      ]
+    },
+    {
+      "bank_rank": 86,
+      "weights": [
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.25
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 7,
+      "state_count": 5,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.09533103208105,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Joel Embiid",
+        "JOKIC / Joel Embiid"
+      ]
+    },
+    {
+      "bank_rank": 87,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 6,
+      "state_count": 2,
+      "average_margin_pp": 0.06970273768069912,
+      "average_h_pct": 71.86638978184166,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Karl-Anthony Towns",
+        "LUKA + CLINGAN / Anthony Davis"
+      ]
+    },
+    {
+      "bank_rank": 88,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.5,
+        0.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 6,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.6289803286144,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Trae Young",
+        "GIANNIS + GOBERT / Ty Jerome"
+      ]
+    },
+    {
+      "bank_rank": 89,
+      "weights": [
+        1.0,
+        1.0,
+        0.25,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25,
+        1.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 5,
+      "state_count": 2,
+      "average_margin_pp": 0.8836508725502845,
+      "average_h_pct": 73.97041848801355,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Zach Edey",
+        "WEMBY / Onyeka Okongwu"
+      ]
+    },
+    {
+      "bank_rank": 90,
+      "weights": [
+        0.5,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 5,
+      "state_count": 3,
+      "average_margin_pp": 0.3803682397872321,
+      "average_h_pct": 72.51554248362595,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Payton Pritchard",
+        "LUKA + CLINGAN / Joel Embiid"
+      ]
+    },
+    {
+      "bank_rank": 91,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        0.5,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 5,
+      "state_count": 2,
+      "average_margin_pp": 0.01987515017707886,
+      "average_h_pct": 72.20640789042045,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Tyler Herro",
+        "LUKA + CLINGAN / Kristaps Porziņģis"
+      ]
+    },
+    {
+      "bank_rank": 92,
+      "weights": [
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 5,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.49811700616272,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Jalen Johnson",
+        "JOKIC / Jalen Johnson"
+      ]
+    },
+    {
+      "bank_rank": 93,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 5,
+      "state_count": 4,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.614129548027,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Trey Murphy III",
+        "JOKIC / Trey Murphy III"
+      ]
+    },
+    {
+      "bank_rank": 94,
+      "weights": [
+        0.0,
+        1.5,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 5,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.75184925405014,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Donovan Mitchell",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Anthony Edwards"
+      ]
+    },
+    {
+      "bank_rank": 95,
+      "weights": [
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 5,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.73803565379254,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Joel Embiid",
+        "ANT + CHET + LAMELO + OG / Donovan Clingan"
+      ]
+    },
+    {
+      "bank_rank": 96,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 5,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.67300977008031,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Jarrett Allen",
+        "LUKA + CLINGAN / Neemias Queta"
+      ]
+    },
+    {
+      "bank_rank": 97,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 5,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 75.01485503196484,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Stephen Curry",
+        "LUKA / Lauri Markkanen"
+      ]
+    },
+    {
+      "bank_rank": 98,
+      "weights": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.3037935050191176,
+      "average_h_pct": 74.3374023768546,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Scottie Barnes",
+        "GIANNIS + GOBERT / Cooper Flagg"
+      ]
+    },
+    {
+      "bank_rank": 99,
+      "weights": [
+        0.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25,
+        1.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 4,
+      "state_count": 4,
+      "average_margin_pp": 0.2923769551180566,
+      "average_h_pct": 74.65575758265965,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Bam Adebayo",
+        "JOKIC / Bam Adebayo"
+      ]
+    },
+    {
+      "bank_rank": 100,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        0.5
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.1326265769840851,
+      "average_h_pct": 75.05199220090535,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Devin Booker",
+        "LUKA / Jalen Suggs"
+      ]
+    },
+    {
+      "bank_rank": 101,
+      "weights": [
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 4,
+      "state_count": 2,
+      "average_margin_pp": 0.08716044291630087,
+      "average_h_pct": 72.53610197848475,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Alondes Williams",
+        "GIANNIS + GOBERT / Payton Pritchard"
+      ]
+    },
+    {
+      "bank_rank": 102,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 4,
+      "state_count": 2,
+      "average_margin_pp": 0.023588635981780515,
+      "average_h_pct": 74.17200107143238,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Norman Powell",
+        "ANT + CHET + LAMELO + OG / Jamal Murray"
+      ]
+    },
+    {
+      "bank_rank": 103,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.0,
+        0.5
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 4,
+      "state_count": 3,
+      "average_margin_pp": 0.008786081036693538,
+      "average_h_pct": 73.71808574346605,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / OG Anunoby",
+        "JOKIC / OG Anunoby"
+      ]
+    },
+    {
+      "bank_rank": 104,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        0.75,
+        0.25
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 4,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.99645152711798,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Jalen Duren",
+        "JOKIC / Jalen Duren"
+      ]
+    },
+    {
+      "bank_rank": 105,
+      "weights": [
+        0.25,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 4,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.59293617745598,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / OG Anunoby",
+        "ANT + CHET + LAMELO + OG / Nikola Jokić"
+      ]
+    },
+    {
+      "bank_rank": 106,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 4,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.36968441656569,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Jalen Duren",
+        "LUKA + CLINGAN / Evan Mobley"
+      ]
+    },
+    {
+      "bank_rank": 107,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.5
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 1.2219983483508057,
+      "average_h_pct": 73.23714251636055,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "high_margin_niche",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Kevin Porter Jr.",
+        "GIANNIS + GOBERT / Tyrese Haliburton"
+      ]
+    },
+    {
+      "bank_rank": 108,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.21335567676808997,
+      "average_h_pct": 74.22939196654035,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Kadary Richmond",
+        "LUKA / Kadary Richmond"
+      ]
+    },
+    {
+      "bank_rank": 109,
+      "weights": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.15396408043144016,
+      "average_h_pct": 73.39783304827546,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Andrew Wiggins",
+        "GIANNIS + GOBERT / Shai Gilgeous-Alexander"
+      ]
+    },
+    {
+      "bank_rank": 110,
+      "weights": [
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 1.1102230246251565e-14,
+      "average_h_pct": 71.71543167876439,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Tyler Herro",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Mark Williams"
+      ]
+    },
+    {
+      "bank_rank": 111,
+      "weights": [
+        1.0,
+        1.0,
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.55202852840208,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Deni Avdija",
+        "GIANNIS + GOBERT / Nikola Vučević"
+      ]
+    },
+    {
+      "bank_rank": 112,
+      "weights": [
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.16528845969866,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Austin Reaves",
+        "ANT + CHET + LAMELO + OG / Kyrie Irving"
+      ]
+    },
+    {
+      "bank_rank": 113,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+        1.5,
+        0.5,
+        1.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.3624898334777471,
+      "average_h_pct": 71.64992144081188,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Kadary Richmond",
+        "GIANNIS + GOBERT / Jalen Brunson"
+      ]
+    },
+    {
+      "bank_rank": 114,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.25,
+        1.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.29886186798923076,
+      "average_h_pct": 74.03931866787939,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Donovan Mitchell",
+        "LUKA / Anthony Edwards"
+      ]
+    },
+    {
+      "bank_rank": 115,
+      "weights": [
+        0.0,
+        1.5,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.23543111806998418,
+      "average_h_pct": 73.00222886228094,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Alex Sarr",
+        "JOKIC / Alex Sarr"
+      ]
+    },
+    {
+      "bank_rank": 116,
+      "weights": [
+        0.5,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.18569142568050645,
+      "average_h_pct": 73.97444007512289,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Karl-Anthony Towns",
+        "LUKA / Anthony Davis"
+      ]
+    },
+    {
+      "bank_rank": 117,
+      "weights": [
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        0.25
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.10117858416522352,
+      "average_h_pct": 73.01738114277873,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Jaylen Brown",
+        "LUKA + CLINGAN / Rudy Gobert"
+      ]
+    },
+    {
+      "bank_rank": 118,
+      "weights": [
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.47238535995604,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Deni Avdija",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Brandon Miller"
+      ]
+    },
+    {
+      "bank_rank": 119,
+      "weights": [
+        0.5,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.14454034944795,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Grayson Allen",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Norman Powell"
+      ]
+    },
+    {
+      "bank_rank": 120,
+      "weights": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.18138716168961,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Luka Dončić",
+        "ANT + CHET + LAMELO + OG / Giannis Antetokounmpo"
+      ]
+    },
+    {
+      "bank_rank": 121,
+      "weights": [
+        0.0,
+        1.0,
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.5976988354618,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Paul George",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Kadary Richmond"
+      ]
+    },
+    {
+      "bank_rank": 122,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.69149492426969,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Walker Kessler",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Domantas Sabonis"
+      ]
+    },
+    {
+      "bank_rank": 123,
+      "weights": [
+        0.0,
+        1.25,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 2,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.66115854317741,
+      "best_decision_share": 0.00261437908496732,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Derrick White",
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Nickeil Alexander-Walker"
+      ]
+    },
+    {
+      "bank_rank": 124,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.75,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 14,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.71342625003624,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Reed Sheppard"
+      ]
+    },
+    {
+      "bank_rank": 125,
+      "weights": [
+        1.5,
+        1.5,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 11,
+      "state_count": 2,
+      "average_margin_pp": 0.0703046220733694,
+      "average_h_pct": 73.32506342555702,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Kawhi Leonard"
+      ]
+    },
+    {
+      "bank_rank": 126,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 11,
+      "state_count": 3,
+      "average_margin_pp": 1.1102230246251565e-14,
+      "average_h_pct": 73.56497390209663,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Myles Turner"
+      ]
+    },
+    {
+      "bank_rank": 127,
+      "weights": [
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 10,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.54445448398408,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Keegan Murray"
+      ]
+    },
+    {
+      "bank_rank": 128,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 9,
+      "state_count": 4,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.09545610599567,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Kawhi Leonard"
+      ]
+    },
+    {
+      "bank_rank": 129,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 8,
+      "state_count": 5,
+      "average_margin_pp": 0.02546294382461678,
+      "average_h_pct": 70.658529691991,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Tyrese Haliburton"
+      ]
+    },
+    {
+      "bank_rank": 130,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.5,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 7,
+      "state_count": 5,
+      "average_margin_pp": 0.08179058796200511,
+      "average_h_pct": 74.41734957665473,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Josh Giddey"
+      ]
+    },
+    {
+      "bank_rank": 131,
+      "weights": [
+        1.0,
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 7,
+      "state_count": 2,
+      "average_margin_pp": 0.040308707855318815,
+      "average_h_pct": 72.01895029403187,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / VJ Edgecombe"
+      ]
+    },
+    {
+      "bank_rank": 132,
+      "weights": [
+        0.5,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 7,
+      "state_count": 3,
+      "average_margin_pp": 4.440892098500626e-14,
+      "average_h_pct": 74.14082431408038,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Kristaps Porziņģis"
+      ]
+    },
+    {
+      "bank_rank": 133,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 6,
+      "state_count": 3,
+      "average_margin_pp": 0.8459305377573001,
+      "average_h_pct": 73.07148838654884,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Tyrese Maxey"
+      ]
+    },
+    {
+      "bank_rank": 134,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 6,
+      "state_count": 4,
+      "average_margin_pp": 0.7125243861010211,
+      "average_h_pct": 77.05381973605311,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / James Harden"
+      ]
+    },
+    {
+      "bank_rank": 135,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 6,
+      "state_count": 4,
+      "average_margin_pp": 0.19328277157371065,
+      "average_h_pct": 73.42396135470443,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Kon Knueppel"
+      ]
+    },
+    {
+      "bank_rank": 136,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 6,
+      "state_count": 4,
+      "average_margin_pp": 0.10296736483625946,
+      "average_h_pct": 71.80171103326451,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Mikal Bridges"
+      ]
+    },
+    {
+      "bank_rank": 137,
+      "weights": [
+        0.0,
+        1.5,
+        1.0,
+        1.5,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 6,
+      "state_count": 2,
+      "average_margin_pp": 0.046308001339367966,
+      "average_h_pct": 74.9533009029336,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Kyrie Irving"
+      ]
+    },
+    {
+      "bank_rank": 138,
+      "weights": [
+        0.5,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 6,
+      "state_count": 4,
+      "average_margin_pp": 0.005277849401053025,
+      "average_h_pct": 72.08542210085686,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Andrew Wiggins"
+      ]
+    },
+    {
+      "bank_rank": 139,
+      "weights": [
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 6,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 75.05766620810319,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "JOKIC / LaMelo Ball"
+      ]
+    },
+    {
+      "bank_rank": 140,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 5,
+      "state_count": 1,
+      "average_margin_pp": 0.6312336876763025,
+      "average_h_pct": 74.87778376459417,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Dyson Daniels"
+      ]
+    },
+    {
+      "bank_rank": 141,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.25,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 5,
+      "state_count": 2,
+      "average_margin_pp": 3.3306690738754696e-14,
+      "average_h_pct": 72.43787978002095,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Keyonte George"
+      ]
+    },
+    {
+      "bank_rank": 142,
+      "weights": [
+        0.0,
+        1.5,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 5,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.00965379589125,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Mikal Bridges"
+      ]
+    },
+    {
+      "bank_rank": 143,
+      "weights": [
+        0.5,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 5,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.04826607033391,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Derrick White"
+      ]
+    },
+    {
+      "bank_rank": 144,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.250136275707713,
+      "average_h_pct": 71.346040406339,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Kel'el Ware"
+      ]
+    },
+    {
+      "bank_rank": 145,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        0.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 4,
+      "state_count": 3,
+      "average_margin_pp": 0.02062870059259536,
+      "average_h_pct": 73.65458897238123,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Saddiq Bey"
+      ]
+    },
+    {
+      "bank_rank": 146,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 4,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.00090785877444,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Jayson Tatum"
+      ]
+    },
+    {
+      "bank_rank": 147,
+      "weights": [
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.10463346756161,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Trae Young"
+      ]
+    },
+    {
+      "bank_rank": 148,
+      "weights": [
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.31669338697472016,
+      "average_h_pct": 74.41202441905577,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Joel Embiid"
+      ]
+    },
+    {
+      "bank_rank": 149,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.1932158308055043,
+      "average_h_pct": 72.45663935822714,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Trae Young"
+      ]
+    },
+    {
+      "bank_rank": 150,
+      "weights": [
+        1.0,
+        0.5,
+        0.5,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.09479217935217665,
+      "average_h_pct": 73.85778763243044,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Alperen Şengün"
+      ]
+    },
+    {
+      "bank_rank": 151,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.07211961304158798,
+      "average_h_pct": 71.88566780849077,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Jalen Duren"
+      ]
+    },
+    {
+      "bank_rank": 152,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.5,
+        0.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 2.220446049250313e-14,
+      "average_h_pct": 72.73974496701595,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / LaMelo Ball"
+      ]
+    },
+    {
+      "bank_rank": 153,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.46227464974486,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Jamal Murray"
+      ]
+    },
+    {
+      "bank_rank": 154,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 3,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.97706036114901,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Trae Young"
+      ]
+    },
+    {
+      "bank_rank": 155,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 3,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 75.11378264214436,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Jayson Tatum"
+      ]
+    },
+    {
+      "bank_rank": 156,
+      "weights": [
+        0.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.08990332404073,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Jabari Smith Jr."
+      ]
+    },
+    {
+      "bank_rank": 157,
+      "weights": [
+        0.5,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.86305799315244,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Jarrett Allen"
+      ]
+    },
+    {
+      "bank_rank": 158,
+      "weights": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.5,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.8517462843834478,
+      "average_h_pct": 75.80856351289472,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Anthony Edwards"
+      ]
+    },
+    {
+      "bank_rank": 159,
+      "weights": [
+        1.5,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.7079242933905938,
+      "average_h_pct": 74.57381195516551,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Alperen Şengün"
+      ]
+    },
+    {
+      "bank_rank": 160,
+      "weights": [
+        1.0,
+        1.0,
+        0.5,
+        0.0,
+        1.0,
+        0.0,
+        1.5,
+        1.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.5889272362644471,
+      "average_h_pct": 70.93336028928893,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Shai Gilgeous-Alexander"
+      ]
+    },
+    {
+      "bank_rank": 161,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.5,
+        0.0,
+        1.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.26291939771232453,
+      "average_h_pct": 71.82453769988767,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "EMPTY / Shai Gilgeous-Alexander"
+      ]
+    },
+    {
+      "bank_rank": 162,
+      "weights": [
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.19773418841830814,
+      "average_h_pct": 72.46397423978864,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Pascal Siakam"
+      ]
+    },
+    {
+      "bank_rank": 163,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.25
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.12907955046669306,
+      "average_h_pct": 72.25742986394005,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Michael Porter Jr."
+      ]
+    },
+    {
+      "bank_rank": 164,
+      "weights": [
+        1.5,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.11715965521315042,
+      "average_h_pct": 73.67344143338009,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Matas Buzelis"
+      ]
+    },
+    {
+      "bank_rank": 165,
+      "weights": [
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.07006565222106298,
+      "average_h_pct": 71.72155122875381,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Zach Edey"
+      ]
+    },
+    {
+      "bank_rank": 166,
+      "weights": [
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.028974465951048245,
+      "average_h_pct": 74.1460464856218,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / DeMar DeRozan"
+      ]
+    },
+    {
+      "bank_rank": 167,
+      "weights": [
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.01877496722094696,
+      "average_h_pct": 75.23055641783412,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / James Harden"
+      ]
+    },
+    {
+      "bank_rank": 168,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 2.220446049250313e-14,
+      "average_h_pct": 71.10509217526764,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Chet Holmgren"
+      ]
+    },
+    {
+      "bank_rank": 169,
+      "weights": [
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 1.1102230246251565e-14,
+      "average_h_pct": 71.79908961388783,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Shai Gilgeous-Alexander"
+      ]
+    },
+    {
+      "bank_rank": 170,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.5,
+        1.5,
+        1.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 1.1102230246251565e-14,
+      "average_h_pct": 72.94271616429135,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Neemias Queta"
+      ]
+    },
+    {
+      "bank_rank": 171,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        0.25,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.52839167755944,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Walker Kessler"
+      ]
+    },
+    {
+      "bank_rank": 172,
+      "weights": [
+        0.25,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.73725955469705,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / James Harden"
+      ]
+    },
+    {
+      "bank_rank": 173,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.5,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.96514112724891,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Jalen Williams"
+      ]
+    },
+    {
+      "bank_rank": 174,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.01521277952271,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Jimmy Butler"
+      ]
+    },
+    {
+      "bank_rank": 175,
+      "weights": [
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.25
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.20549676040325,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Kyrie Irving"
+      ]
+    },
+    {
+      "bank_rank": 176,
+      "weights": [
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.76675697182777,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "JOKIC / Kawhi Leonard"
+      ]
+    },
+    {
+      "bank_rank": 177,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.24550227698506,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Joel Embiid"
+      ]
+    },
+    {
+      "bank_rank": 178,
+      "weights": [
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.3357446443254,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Alperen Şengün"
+      ]
+    },
+    {
+      "bank_rank": 179,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.67316707686025,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Dejounte Murray"
+      ]
+    },
+    {
+      "bank_rank": 180,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 76.50510422425226,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Deni Avdija"
+      ]
+    },
+    {
+      "bank_rank": 181,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 70.99559042569892,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Jayson Tatum"
+      ]
+    },
+    {
+      "bank_rank": 182,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.5,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.96861939148036,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / DeMar DeRozan"
+      ]
+    },
+    {
+      "bank_rank": 183,
+      "weights": [
+        0.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.29816207044249,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Karl-Anthony Towns"
+      ]
+    },
+    {
+      "bank_rank": 184,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.25,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.28856393247399,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Nikola Vučević"
+      ]
+    },
+    {
+      "bank_rank": 185,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.77914405950415,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Dyson Daniels"
+      ]
+    },
+    {
+      "bank_rank": 186,
+      "weights": [
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.32636844929145,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Austin Reaves"
+      ]
+    },
+    {
+      "bank_rank": 187,
+      "weights": [
+        0.0,
+        1.5,
+        0.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.46972093583594887,
+      "average_h_pct": 72.81498427427027,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Tyrese Maxey"
+      ]
+    },
+    {
+      "bank_rank": 188,
+      "weights": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.5,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.4012499446690243,
+      "average_h_pct": 73.78840084511504,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Donovan Mitchell"
+      ]
+    },
+    {
+      "bank_rank": 189,
+      "weights": [
+        1.0,
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.35818303657624284,
+      "average_h_pct": 73.10202460098597,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Kon Knueppel"
+      ]
+    },
+    {
+      "bank_rank": 190,
+      "weights": [
+        0.0,
+        1.0,
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.3287939675302054,
+      "average_h_pct": 71.29986940410362,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Karl-Anthony Towns"
+      ]
+    },
+    {
+      "bank_rank": 191,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.5,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.3192311239284318,
+      "average_h_pct": 73.55940239213518,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Jaylen Brown"
+      ]
+    },
+    {
+      "bank_rank": 192,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        0.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.22242235406806365,
+      "average_h_pct": 73.09509315153679,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Josh Giddey"
+      ]
+    },
+    {
+      "bank_rank": 193,
+      "weights": [
+        1.0,
+        1.0,
+        0.25,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.18384015509688156,
+      "average_h_pct": 73.73404341419838,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "WEMBY / Jimmy Butler"
+      ]
+    },
+    {
+      "bank_rank": 194,
+      "weights": [
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.1504942062211967,
+      "average_h_pct": 72.78263331638465,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Devin Booker"
+      ]
+    },
+    {
+      "bank_rank": 195,
+      "weights": [
+        0.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.00385955095270063,
+      "average_h_pct": 72.8575914908903,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Victor Wembanyama"
+      ]
+    },
+    {
+      "bank_rank": 196,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 7.771561172376096e-14,
+      "average_h_pct": 72.79196600620507,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Jayson Tatum"
+      ]
+    },
+    {
+      "bank_rank": 197,
+      "weights": [
+        0.5,
+        1.5,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 4.440892098500626e-14,
+      "average_h_pct": 71.4109852147077,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Joel Embiid"
+      ]
+    },
+    {
+      "bank_rank": 198,
+      "weights": [
+        0.5,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.9965586016919,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA + CLINGAN / Karl-Anthony Towns"
+      ]
+    },
+    {
+      "bank_rank": 199,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 70.81854273654558,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Kevin Porter Jr."
+      ]
+    },
+    {
+      "bank_rank": 200,
+      "weights": [
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.6410259744028,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Jaren Jackson Jr."
+      ]
+    },
+    {
+      "bank_rank": 201,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.30356873327558,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Payton Pritchard"
+      ]
+    },
+    {
+      "bank_rank": 202,
+      "weights": [
+        0.5,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.65021185666792,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Zach Edey"
+      ]
+    },
+    {
+      "bank_rank": 203,
+      "weights": [
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.87487591744409,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Michael Porter Jr."
+      ]
+    },
+    {
+      "bank_rank": 204,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.5,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.11568241965298,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Jimmy Butler"
+      ]
+    },
+    {
+      "bank_rank": 205,
+      "weights": [
+        1.0,
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.80463648150362,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Stephen Curry"
+      ]
+    },
+    {
+      "bank_rank": 206,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        0.25
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.79888426741242,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Giannis Antetokounmpo"
+      ]
+    },
+    {
+      "bank_rank": 207,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.06272613733286,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "coverage_core",
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Mark Williams"
+      ]
+    },
+    {
+      "bank_rank": 208,
+      "weights": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 73.35750654871842,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": [
+        "GIANNIS + GOBERT / Brandon Miller"
+      ]
+    },
+    {
+      "bank_rank": 209,
+      "weights": [
+        0.0,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.21376688957278,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Tyrese Maxey"
+      ]
+    },
+    {
+      "bank_rank": 210,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 74.38836991235688,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": [
+        "LUKA / Tyrese Maxey"
+      ]
+    },
+    {
+      "bank_rank": 211,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 71.25172595488873,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Kawhi Leonard"
+      ]
+    },
+    {
+      "bank_rank": 212,
+      "weights": [
+        1.0,
+        0.0,
+        1.5,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 75.35186559501706,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": [
+        "ANT + CHET + LAMELO + OG / Anthony Davis"
+      ]
+    },
+    {
+      "bank_rank": 213,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 70.5124378988284,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Jimmy Butler"
+      ]
+    },
+    {
+      "bank_rank": 214,
+      "weights": [
+        0.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0
+      ],
+      "best_wins": 1,
+      "top_three_appearances": 1,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 72.7842292568227,
+      "best_decision_share": 0.00130718954248366,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": [
+        "CADE + BAM + BANE + JJJ + QUICKLEY + OKONGWU + CAMARA / Michael Porter Jr."
+      ]
+    },
+    {
+      "bank_rank": 215,
+      "weights": [
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 11,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 216,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.5,
+        0.5,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 9,
+      "state_count": 5,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 217,
+      "weights": [
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 9,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 218,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 8,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 219,
+      "weights": [
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 7,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 220,
+      "weights": [
+        0.5,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 7,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 221,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 7,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 222,
+      "weights": [
+        0.5,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 6,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 223,
+      "weights": [
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 6,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 224,
+      "weights": [
+        0.25,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 6,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 225,
+      "weights": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 6,
+      "state_count": 4,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 226,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 6,
+      "state_count": 4,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 227,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        0.5,
+        0.25
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 6,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 228,
+      "weights": [
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 6,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 229,
+      "weights": [
+        0.5,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 4,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 230,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 4,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 231,
+      "weights": [
+        0.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 232,
+      "weights": [
+        1.0,
+        1.5,
+        0.0,
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 233,
+      "weights": [
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 4,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 234,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 235,
+      "weights": [
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 236,
+      "weights": [
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 237,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.25,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 4,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 238,
+      "weights": [
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 239,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.25,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 240,
+      "weights": [
+        0.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 5,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 241,
+      "weights": [
+        1.0,
+        1.0,
+        0.25,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 242,
+      "weights": [
+        1.0,
+        0.5,
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 4,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 243,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        0.75,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 4,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 244,
+      "weights": [
+        1.0,
+        1.5,
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 4,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 245,
+      "weights": [
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 4,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 246,
+      "weights": [
+        0.5,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 4,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 247,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 4,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 248,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.5,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 4,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 249,
+      "weights": [
+        1.0,
+        1.25,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 250,
+      "weights": [
+        0.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 251,
+      "weights": [
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 252,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.75
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 253,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        0.5,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 254,
+      "weights": [
+        0.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 255,
+      "weights": [
+        0.25,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 256,
+      "weights": [
+        1.0,
+        0.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 257,
+      "weights": [
+        1.0,
+        1.5,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 258,
+      "weights": [
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.75
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 259,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 260,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        0.5,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 261,
+      "weights": [
+        1.5,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 3,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 262,
+      "weights": [
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 263,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        0.75,
+        0.25
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 264,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 265,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.75,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 266,
+      "weights": [
+        1.0,
+        0.5,
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 267,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.75,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 268,
+      "weights": [
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        0.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 269,
+      "weights": [
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 270,
+      "weights": [
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 271,
+      "weights": [
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        0.25
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 3,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 272,
+      "weights": [
+        0.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 273,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 274,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        0.0,
+        1.0,
+        1.0,
+        0.25,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 275,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 276,
+      "weights": [
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.5,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 277,
+      "weights": [
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 278,
+      "weights": [
+        0.0,
+        1.0,
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 279,
+      "weights": [
+        0.0,
+        1.25,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 280,
+      "weights": [
+        1.0,
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 281,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.5,
+        1.5,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 282,
+      "weights": [
+        1.0,
+        0.0,
+        0.5,
+        0.5,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 283,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 284,
+      "weights": [
+        0.5,
+        1.0,
+        1.0,
+        1.5,
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 285,
+      "weights": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 286,
+      "weights": [
+        0.0,
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 287,
+      "weights": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.5,
+        0.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 288,
+      "weights": [
+        1.0,
+        0.0,
+        0.5,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 289,
+      "weights": [
+        1.25,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 290,
+      "weights": [
+        1.0,
+        1.0,
+        0.0,
+        0.5,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        1.5
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 291,
+      "weights": [
+        1.0,
+        0.5,
+        1.0,
+        1.0,
+        1.0,
+        0.5,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 292,
+      "weights": [
+        0.5,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 293,
+      "weights": [
+        0.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 294,
+      "weights": [
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.5,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 295,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.25,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 296,
+      "weights": [
+        0.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.25
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 2,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 297,
+      "weights": [
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.75,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 298,
+      "weights": [
+        0.0,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 299,
+      "weights": [
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        1.25,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    },
+    {
+      "bank_rank": 300,
+      "weights": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.5,
+        1.0,
+        1.0,
+        0.5,
+        1.0
+      ],
+      "best_wins": 0,
+      "top_three_appearances": 2,
+      "state_count": 1,
+      "average_margin_pp": 0.0,
+      "average_h_pct": 0.0,
+      "best_decision_share": 0.0,
+      "selection_reasons": [
+        "top3_competitive"
+      ],
+      "examples": []
+    }
+  ]
+}

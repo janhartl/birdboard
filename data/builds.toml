@@ -1,0 +1,377 @@
+[[builds]]
+id = "wembanyama"
+title = "Victor Wembanyama Build"
+required_players = ["wembavi01"]
+text = """
+Wembanyama creates the strongest blocks and big-man foundation in the league. He already gives you elite blocks, rebounds, FG%, stocks and center scarcity.
+
+Spend the rest of the foundation on guard production: assists, threes, FT%, guard steals and low turnovers where possible.
+
+Do not waste money building an unnecessary advantage in blocks while losing assists and threes. Avoid premium blocks-only centers and another $30+ big unless that player also adds elite assists or scoring. Once the guard foundation is established, chase upside.
+"""
+target_players = [
+    "whitede01", # Derrick White
+    "garlada01", # Darius Garland
+    "sheppre01", # Reed Sheppard
+    "wallaca01", # Cason Wallace
+    "pritcpa01", # Payton Pritchard
+    "nembhan01", # Andrew Nembhard
+    "quickim01", # Immanuel Quickley
+    "murraja01", # Jamal Murray
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "camarto01", # Toumani Camara
+    "wareke01", # Kel'el Ware
+    "buzelma01", # Matas Buzelis
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
+
+
+[[builds]]
+id = "jokic"
+title = "Nikola Jokić Build"
+required_players = ["jokicni01"]
+text = """
+Jokić gives you maximum flexibility. He supplies elite assists from center and contributes everywhere, leaving very few structural weaknesses.
+
+Use that flexibility to add blocks, guard defense, threes, high FT-volume guards and athletic wings.
+
+Do not pay unnecessarily for assists-only guards or low-block centers merely because they rebound. Jokić's versatility is not an excuse to ignore defensive categories. Build a balanced foundation, then draft for value and upside.
+"""
+target_players = [
+    "whitede01", # Derrick White
+    "thompam01", # Amen Thompson
+    "jacksja02", # Jaren Jackson Jr.
+    "sarral01", # Alex Sarr
+    "anunoog01", # OG Anunoby
+    "murphtr02", # Trey Murphy III
+    "wallaca01", # Cason Wallace
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "camarto01", # Toumani Camara
+    "wareke01", # Kel'el Ware
+    "buzelma01", # Matas Buzelis
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
+
+
+[[builds]]
+id = "sga"
+title = "Shai Gilgeous-Alexander Build"
+required_players = ["gilgesh01"]
+text = """
+SGA gives you an elite scoring and efficiency foundation with excellent FT%, strong FG% for a guard and steals. He is strong enough across the board that there is no reason to force a punt.
+
+Use the rest of the foundation to add rebounding, blocks and three-point volume. Favor frontcourt players who contribute defensively and wings who can add threes without damaging efficiency.
+
+Avoid paying another premium for a score-first guard who largely duplicates SGA. Build out the frontcourt and three-point production first, then chase upside.
+"""
+target_players = [
+    "jacksja02", # Jaren Jackson Jr.
+    "adebaba01", # Bam Adebayo
+    "kesslwa01", # Walker Kessler
+    "durenja01", # Jalen Duren
+    "whitede01", # Derrick White
+    "murphtr02", # Trey Murphy III
+    "anunoog01", # OG Anunoby
+    "buzelma01", # Matas Buzelis
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "wallaca01", # Cason Wallace
+    "camarto01", # Toumani Camara
+    "wareke01", # Kel'el Ware
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
+
+
+[[builds]]
+id = "luka"
+title = "Luka Dončić Build"
+required_players = ["doncilu01"]
+text = """
+Luka gives you elite points, assists, rebounds and threes from the guard position. His enormous offensive role lets you spend the rest of the foundation on efficiency and defense rather than more creation.
+
+Add blocks, steals and efficient frontcourt production. Players who support FG% and FT% without needing the ball are especially valuable around Luka.
+
+Avoid stacking another high-turnover ball-dominant guard just because the counting stats look attractive. Do not accidentally destroy FT% either; if you eventually punt it, make that a deliberate decision rather than a consequence of the first few purchases. Once the foundation is secure, chase upside.
+"""
+target_players = [
+    "holmgch01", # Chet Holmgren
+    "jacksja02", # Jaren Jackson Jr.
+    "adebaba01", # Bam Adebayo
+    "kesslwa01", # Walker Kessler
+    "whitede01", # Derrick White
+    "anunoog01", # OG Anunoby
+    "turnemy01", # Myles Turner
+    "buzelma01", # Matas Buzelis
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "wallaca01", # Cason Wallace
+    "camarto01", # Toumani Camara
+    "wareke01", # Kel'el Ware
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
+
+
+[[builds]]
+id = "cade"
+title = "Cade Cunningham Build"
+required_players = ["cunnica01"]
+text = """
+Cade is a balanced superstar foundation. He carries primary creation without forcing a particular punt and allows almost every strategy.
+
+Surround him with efficient wings, blocks, threes, low-turnover players and defensive production.
+
+Avoid stacking too many high-usage guards or adding inefficient volume without solving a real category need. Establish the defensive and efficiency foundation, then prioritize value and upside.
+"""
+target_players = [
+    "whitede01", # Derrick White
+    "murphtr02", # Trey Murphy III
+    "millebr02", # Brandon Miller
+    "anunoog01", # OG Anunoby
+    "sarral01", # Alex Sarr
+    "allenja01", # Jarrett Allen
+    "wallaca01", # Cason Wallace
+    "camarto01", # Toumani Camara
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "wareke01", # Kel'el Ware
+    "buzelma01", # Matas Buzelis
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
+
+
+[[builds]]
+id = "tatum"
+title = "Jayson Tatum Build"
+required_players = ["tatumja01"]
+text = """
+Tatum is the most flexible non-center foundation. He provides scoring, threes, FT%, rebounds and positional stability without forcing a punt.
+
+Add interior production and creation. Target centers who improve blocks and FG%, then make sure the roster has another reliable source of assists and defensive production.
+
+Do not spend heavily on another expensive scoring wing with a similar profile, and do not leave primary creation until too late. Once the foundation is secure, prioritize value and upside.
+"""
+target_players = [
+    "whitede01", # Derrick White
+    "adebaba01", # Bam Adebayo
+    "allenja01", # Jarrett Allen
+    "sarral01", # Alex Sarr
+    "kesslwa01", # Walker Kessler
+    "thompam01", # Amen Thompson
+    "nembhan01", # Andrew Nembhard
+    "garlada01", # Darius Garland
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "wallaca01", # Cason Wallace
+    "camarto01", # Toumani Camara
+    "wareke01", # Kel'el Ware
+    "buzelma01", # Matas Buzelis
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
+
+
+[[builds]]
+id = "edwards"
+title = "Anthony Edwards Build"
+required_players = ["edwaran01"]
+text = """
+Edwards gives you a powerful scoring and three-point foundation without dictating the rest of the build. His biggest advantage is that you can now spend on players who do the less glamorous category work.
+
+Add primary creation, blocks, FG% and frontcourt efficiency. Look for guards who increase assists without simply duplicating Ant's scoring role, plus centers who anchor the defensive categories.
+
+Avoid spending heavily on another score-first wing while leaving assists and blocks unresolved. Establish creation and interior production first, then use the remaining spots for upside.
+"""
+target_players = [
+    "sengual01", # Alperen Sengun
+    "adebaba01", # Bam Adebayo
+    "jacksja02", # Jaren Jackson Jr.
+    "kesslwa01", # Walker Kessler
+    "clingdo01", # Donovan Clingan
+    "whitede01", # Derrick White
+    "garlada01", # Darius Garland
+    "nembhan01", # Andrew Nembhard
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "wallaca01", # Cason Wallace
+    "camarto01", # Toumani Camara
+    "wareke01", # Kel'el Ware
+    "buzelma01", # Matas Buzelis
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
+
+
+[[builds]]
+id = "giannis"
+title = "Giannis Antetokounmpo Build"
+required_players = ["antetgi01"]
+text = """
+This is a punt-FT% build. Giannis should form the basis of elite FG%, rebounds, blocks, steals and points while accepting that FT% is the category you are giving away.
+
+Strengthen the categories Giannis already dominates while keeping assists and turnovers competitive. Add enough threes and creation that punting FT% does not accidentally become a multi-category punt.
+
+Do not pay premiums for FT%-specialist guards or low-FG% scoring guards who fail to add elite assists or steals. Commit to the punt, establish the foundation, then chase upside.
+"""
+target_players = [
+    "thompam01", # Amen Thompson
+    "jacksja02", # Jaren Jackson Jr.
+    "kesslwa01", # Walker Kessler
+    "allenja01", # Jarrett Allen
+    "durenja01", # Jalen Duren
+    "sarral01", # Alex Sarr
+    "daniedy01", # Dyson Daniels
+    "coulibi01", # Bilal Coulibaly
+    "giddejo01", # Josh Giddey
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "wallaca01", # Cason Wallace
+    "camarto01", # Toumani Camara
+    "wareke01", # Kel'el Ware
+    "buzelma01", # Matas Buzelis
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
+
+
+[[builds]]
+id = "haliburton"
+title = "Tyrese Haliburton Build"
+required_players = ["halibty01"]
+text = """
+Haliburton gives you an elite assists, threes, FT% and turnovers foundation. You do not need to spend heavily on more ball-dominant guard production.
+
+Add physical production instead: blocks, rebounds and FG% first, followed by scoring wings and defensive forwards.
+
+Avoid another expensive assists-first guard such as Trae Young, paying for empty guard volume, and stacking excessive injury risk around Haliburton. Once the physical foundation is secure, chase upside.
+"""
+target_players = [
+    "adebaba01", # Bam Adebayo
+    "allenja01", # Jarrett Allen
+    "sarral01", # Alex Sarr
+    "kesslwa01", # Walker Kessler
+    "clingdo01", # Donovan Clingan
+    "okongon01", # Onyeka Okongwu
+    "millebr02", # Brandon Miller
+    "murphtr02", # Trey Murphy III
+    "anunoog01", # OG Anunoby
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "wallaca01", # Cason Wallace
+    "camarto01", # Toumani Camara
+    "wareke01", # Kel'el Ware
+    "buzelma01", # Matas Buzelis
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
+
+
+[[builds]]
+id = "jalen_johnson"
+title = "Jalen Johnson Build"
+required_players = ["johnsja05"]
+text = """
+Jalen Johnson gives you rebounds, FG%, assists from forward and defensive production. The foundation is unusually versatile, but it benefits from guard scoring and shooting around it.
+
+Prioritize FT%, threes and efficient perimeter creation while adding enough blocks to complete the frontcourt. Guards and wings who score without sacrificing steals or efficiency are especially useful.
+
+Avoid overloading the roster with more forwards who rebound but do not shoot or create. Once the shooting, guard production and blocks are secure, lean hard into young upside.
+"""
+target_players = [
+    "reaveau01", # Austin Reaves
+    "whitede01", # Derrick White
+    "garlada01", # Darius Garland
+    "banede01", # Desmond Bane
+    "knuepko01", # Kon Knueppel
+    "turnemy01", # Myles Turner
+    "kesslwa01", # Walker Kessler
+    "buzelma01", # Matas Buzelis
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "wallaca01", # Cason Wallace
+    "camarto01", # Toumani Camara
+    "wareke01", # Kel'el Ware
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
+
+
+[[builds]]
+id = "scottie_middle"
+title = "Scottie Barnes Middle-Domination Build"
+required_players = ["barnesc01"]
+text = """
+Instead of opening with a $65–75 superstar, build a high-upside multidimensional core through the expensive middle. Scottie supplies rebounds, assists from forward, stocks, youth and positional flexibility.
+
+The ideal foundation combines Scottie with a scoring wing, a glue guard and another creator. Brandon Miller, Derrick White and Dylan Harper are especially attractive pieces. Use the center spots to add FG%, blocks and efficient rebounding rather than more usage.
+
+Do not assume the middle-tier approach leaves unlimited money. Build the strong four-to-five player foundation first, preserve enough budget to finish the roster, then shift aggressively toward upside.
+"""
+target_players = [
+    "millebr02", # Brandon Miller
+    "whitede01", # Derrick White
+    "harpedy01", # Dylan Harper
+    "kesslwa01", # Walker Kessler
+    "sarral01", # Alex Sarr
+    "adebaba01", # Bam Adebayo
+    "durenja01", # Jalen Duren
+    "allenja01", # Jarrett Allen
+    "berinjo01", # Joan Beringer
+    "mitchaj01", # Ajay Mitchell
+    "blackan01", # Anthony Black
+    "gonzahu01", # Hugo González
+    "wallaca01", # Cason Wallace
+    "camarto01", # Toumani Camara
+    "wareke01", # Kel'el Ware
+    "buzelma01", # Matas Buzelis
+    "peterda02", # Darryn Peterson
+    "boozeca02", # Cameron Boozer
+    "lendeya01", # Yaxel Lendeborg
+    "hausesa01", # Sam Hauser
+]
